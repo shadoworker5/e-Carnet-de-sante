@@ -2,29 +2,58 @@
     <h1 class="text-center"> Liste des patients </h1>
     
     <div class="row mt-4">
-        <div class="col-md-10">
-            <label for="search" class="sr-only"> Rechercher </label>
-            <input type="text" placeholder="Nom ou code" wire:model="search" id="search" name="search"/>
-        </div>
+        <div class="row">
+            <div class="form-floating col-md-2">
+                <input type="text" class="form-control" wire:model.defer.defer="code_patient" placeholder="Nom ou code du patient" id="floatingSearch" name="search">
+                <label for="floatingSearch"> {{ __("Nom ou code du patient") }} </label>
+            </div>
 
-        <div class="col-auto ml-auto mb-2">
-            <select class="custom-select w-auto" wire:model.lazy="per_page" name="choose" id="choose">
+            <div class="form-floating col-md-2">
+                <input type="date" class="form-control" wire:model.defer="birthday" placeholder="Date de naissance" id="floatingBirthday" name="birthday">
+                <label for="floatingBirthday"> {{ __("Date de naissance") }} </label>
+            </div>
+            
+            <div class="form-floating col-md-2">
+                <input type="text" class="form-control" wire:model.defer="born_location" placeholder="Lieu de naissance" id="floatingLocation" name="born_location">
+                <label for="floatingLocation"> {{ __("Lieu de naissance") }} </label>
+            </div>
+            
+            <div class="form-floating col-md-2">
+                <input type="text" class="form-control" wire:model.defer="name_father" placeholder="Nom du père" id="floatingFather" name="name_father">
+                <label for="floatingFather"> {{ __("Nom du père") }} </label>
+            </div>
+            
+            <div class="form-floating col-md-2">
+                <input type="text" class="form-control" wire:model.defer="name_mother" placeholder="Nom de la mère" id="floatingMother" name="name_mother">
+                <label for="floatingMother"> {{ __("Nom de la mère") }} </label>
+            </div>
+            
+            <div class="form-floating col-md-2">
+                <input type="text" class="form-control" wire:model.defer="helper_contact" placeholder="Contact" id="floatingContact" name="helper_contact">
+                <label for="floatingContact"> {{ __("Contact") }} </label>
+            </div>
+
+            <button class="btn btn-primary mt-2 col-md-2" wire:click="searchPatient">
+                <i class="fa fa-search"></i>
+                {{ __("Rechercher") }}
+            </button>
+
+        </div>
+        <div>
+            <select class="form-control mt-2" wire:model.lazy="per_page" name="choose" id="choose">
                 @for($i = 5; $i <= 100; $i += 5)
                     <option value="{{ $i }}"> {{ $i }} <option>
                 @endfor
             </select>
             <label for="per_page"> {{ __('par page') }} </label>
         </div>
+
     </div>
 
     <div class="table-responsive-sm">
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>
-                        {{ __('#Index') }}
-                    </th>
-
                     <th>
                         {{ __('Code') }}
                     </th>
@@ -35,6 +64,10 @@
 
                     <th>
                         {{ __('Date de naissance') }}
+                    </th>
+                    
+                    <th>
+                        {{ __('Lieu de naissance') }}
                     </th>
                     
                     <th>
@@ -52,12 +85,8 @@
             </thead>
 
             <tbody>
-                @foreach($patients as $patient)
+                @forelse($patients as $patient)
                     <tr class="{{ $loop->index % 2 == 0 ? 'bg-info text-white' : '' }}">
-                        <td>
-                            {{ $loop->index + 1 }}
-                        </td>
-
                         <td>
                             {{ $patient->code_patient }}
                         </td>
@@ -68,6 +97,10 @@
 
                         <td>
                             {{ $patient->birthday }}
+                        </td>
+                        
+                        <td>
+                            {{ $patient->born_location }}
                         </td>
                         
                         <td>
@@ -86,12 +119,18 @@
                             </div>
                         </td>
                     </tr>
-                @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="7">
+                                <center><p class="text-danger"> Aucune ligne trouvée</p></center>
+                            </td>
+                        </tr>
+                    @endforelse
             </tbody>
         </table>
     </div>
     
-    <div>
+    <div class="offset-md-5">
         {{ $patients->links() }}
     </div>
 </div>

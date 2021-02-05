@@ -28,7 +28,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div> -->
         
-        <div class="mt-5">
+        <div class="container-fluid mt-5">
             @yield('main_content')
         </div>
         

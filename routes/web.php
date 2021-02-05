@@ -17,10 +17,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-//     return view('pages.dashboard');
-// })->name('dashboard');
-
 Route::get('/', function () {
     return view('welcome');
 });
@@ -38,7 +34,11 @@ Route::get('/list_vacinate', function(){
 
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function(){
-    Route::get('/dashboard', [PagesController::class, 'dashboard'])->name('dashboard');
+    Route::get('/home', [PagesController::class, 'dashboard'])->name('dashboard');
+});
+
+Route::middleware(['auth:sanctum', 'verified'])->group(function(){
+    Route::get('/list_patient', [PagesController::class, 'listPatient'])->name('list_patient_admin');
 });
 
 Route::resource('patient', PatientsController ::class)->middleware('auth');
