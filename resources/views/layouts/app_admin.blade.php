@@ -10,7 +10,6 @@
         <link rel="stylesheet" href="{{ asset('css/all.min.css') }}">
         <link rel="stylesheet" href="{{ asset('css/sb-admin-2.min.css') }}">
         
-
         <!-- Section PWA -->
         @include('layouts.partials.meta')
 
@@ -22,7 +21,7 @@
             <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
                 <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
                     <div class="sidebar-brand-icon rotate-n-15">
-                        <img src="/images/icon-72x72.png" alt="logo" srcset="logo">
+                        <!-- <img src="/images/icon-72x72.png" alt="logo" srcset="logo"> -->
                     </div>
 
                     <div class="sidebar-brand-text mx-3"> {{ config('app.name') }} </div>
@@ -30,10 +29,17 @@
     
                 <hr class="sidebar-divider my-0">
     
-                <li class="nav-item active">
+                <li class="nav-item {{ $title == 'Dashboard' ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('dashboard') }}">
                         <i class="fas fa-fw fa-tachometer-alt"></i>
                         <span> Dashboard </span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('home') }}">
+                        <i class="fas fa-home"></i>
+                        <span> Home </span>
                     </a>
                 </li>
     
@@ -43,7 +49,7 @@
                     {{ __("Patients et utilisateurs") }}
                 </div>
     
-                <li class="nav-item {{ set_active_route('dashboard') }}">
+                <li class="nav-item {{ $title == 'Liste des patients' ? 'active' : '' }}">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                         aria-expanded="true" aria-controls="collapseTwo">
                         <i class="fas fa-users "></i>
@@ -52,7 +58,7 @@
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header"> {{ __("Options") }} </h6>
-                            <a class="collapse-item" href="{{ route('list_patient_admin') }}"> {{ __("Liste des patients") }} </a>
+                            <a class="collapse-item" href="#"> {{ __("Liste des patients") }} </a>
                             <a class="collapse-item" href="#"> {{ __("Ajouter un patient") }} </a>
                         </div>
                     </div>
@@ -268,7 +274,7 @@
                                 
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                     aria-labelledby="userDropdown">
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" href="{{ route('profile') }}">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         {{ __("Profile") }}
                                     </a>
@@ -287,7 +293,7 @@
                     </nav>
                    
                     <div class="container-fluid">
-                        @yield('container')
+                        @yield('main_content')
                     </div>    
                 </div>
                 
@@ -315,15 +321,22 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                        <h5 class="modal-title" id="exampleModalLabel"> Confirmer </h5>
                         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
-                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                    <div class="modal-body text-center"> Etes vous sûr de vouloir vous deconnecter? </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <a class="btn btn-primary" href="login.html">Logout</a>
+                        
+                        <a class="btn btn-primary" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            {{ __('Deconnexion') }}
+                        </a>
+
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
                     </div>
                 </div>
             </div>

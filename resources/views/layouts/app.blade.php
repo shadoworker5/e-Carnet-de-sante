@@ -9,6 +9,7 @@
 
         <link rel="stylesheet" href="{{ asset('styles_css/bootstrap.css') }}">
         <link rel="stylesheet" href="{{ asset('css/all.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/sb-admin-2.min.css') }}">
 
         <!-- Section PWA -->
         @include('layouts.partials.meta')
@@ -36,10 +37,13 @@
             @include('layouts.partials.footer')
         </div>
 
-        {{-- @stack('modals') --}}
+        @stack('modals')
 
+        <script src="{{ asset('js/jquery.min.js') }}"></script>
         <script src="{{ asset('js/bootstrap.js') }}"></script>
+        <script src="{{ asset('js/bootstrap.bundle.js') }}"></script>
         <script src="{{ asset('js/indexdDB.js') }}"></script>
+        <script src="{{ asset('js/Chart.min.js') }}"></script>
         <!-- <script src="{{ asset('js/register_sw.js') }}"></script> -->
 
         @livewireScripts

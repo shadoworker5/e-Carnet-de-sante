@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\PatientsController;
 use App\Http\Controllers\PatientVacinateController;
@@ -34,11 +35,12 @@ Route::get('/list_vacinate', function(){
 
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function(){
-    Route::get('/home', [PagesController::class, 'dashboard'])->name('dashboard');
+    Route::get('/home', [PagesController::class, 'index'])->name('home');
+    Route::get('/profile', [PagesController::class, 'profile'])->name('profile');
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->group(function(){
-    Route::get('/list_patient', [PagesController::class, 'listPatient'])->name('list_patient_admin');
+Route::middleware(['auth:sanctum', 'verified', 'authadmin'])->group(function(){
+    Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
 });
 
 Route::resource('patient', PatientsController ::class)->middleware('auth');

@@ -16,7 +16,7 @@
 					</li>
 				@else
 					<li class="nav-item">
-						<a class="nav-link active text-white" aria-current="page" href="{{ route('dashboard') }}"> {{ __('Mon compte') }} </a>
+						<a class="nav-link active text-white" aria-current="page" href="{{ route('profile') }}"> {{ __('Mon compte') }} </a>
 					</li>
 				@endif
 				
