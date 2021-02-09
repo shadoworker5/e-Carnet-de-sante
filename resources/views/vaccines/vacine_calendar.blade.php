@@ -2,8 +2,8 @@
 
 @section('main_content')
     <div class="row">
-        <div class="col-md-6 offset-md-3">
-            <h2 class="text-center"> {{ __('Ajouter au calendrier') }} </h2>
+        <div class="col-md-6 offset-md-3 mb-2">
+            <h2 class="text-center"> {{ __('Ajouter dans le calendrier') }} </h2>
 
             <form action="{{ route('calendar.store') }}" class="needs-validation" novalidate method="post">
                 @csrf
@@ -28,7 +28,7 @@
 
                 <div class="form-group {{ $errors->has('illness') ? 'has-error' : '' }}">
                     <label class="control-label" for="illness"> {{ __('Maladie luttée') }} </label>
-                    <textarea  class="form-control" name="illness" id="illness" required cols="50" rows="10">{{ old('illness') }}</textarea>
+                    <textarea  class="form-control" name="illness" id="illness" style="resize:none" required cols="50" rows="10">{{ old('illness') }}</textarea>
                     {!! $errors->first('illness', '<span class="text-danger">:message</span>') !!}
                     <div class="invalid-feedback">
                         Veuillez saisir une description

@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Auth;
 
 class VacineCalendarController extends Controller
 {
+    public function __construct(){
+        // $this->middleware(['authadmin', 'authsupervisor']);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -68,9 +72,10 @@ class VacineCalendarController extends Controller
      * @param  \App\Models\Vaccine_calendar  $vaccine_calendar
      * @return \Illuminate\Http\Response
      */
-    public function edit(Vaccine_calendar $vaccine_calendar)
+    public function edit($vaccine_calendar)
     {
-        return view('vaccines.edit_calendar', ['calendar' => $vaccine_calendar]);
+        $vacine = Vaccine_calendar::findOrFail($vaccine_calendar);
+        return view('vaccines.edit_calendar', ['vacine' => $vacine]);
     }
 
     /**
@@ -80,9 +85,25 @@ class VacineCalendarController extends Controller
      * @param  \App\Models\Vaccine_calendar  $vaccine_calendar
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Vaccine_calendar $vaccine_calendar)
+    public function update(Request $request, $vaccine_calendar)
     {
-        //
+        $this->validate($request, [
+            'age'               => 'required|min:5',
+            'name_vacine'       => 'required',
+            'vacine_status'     => 'required',
+            'illness'           => 'required|min:5'
+        ]);
+        
+        $vacine = Vaccine_calendar::findOrFail($vaccine_calendar);
+        $vacine->update([
+            'patient_age'       => $request->age,
+            'name_vaccine'      => $request->name_vacine,
+            'illness_against'   => $request->illness,
+            'status'            => $request->vacine_status,
+            'user_id'           => Auth::user()->id
+        ]);
+
+        return redirect()->route('calendar.index');
     }
 
     /**

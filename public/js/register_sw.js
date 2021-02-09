@@ -1,22 +1,15 @@
 // 'use strict'
 
 if ('serviceWorker' in navigator) {
-    // alert("sw")
-    navigator.serviceWorker.register('sw.js')
-        .then((reg) => {
-            // code
-            // console.log("Register success: "+reg)
-        }).catch((err) => {
-            // code d'erreur
-            // console.log('Erreur: '+err)
-        })
-}else{
-    // alert('no sw')
+    // navigator.serviceWorker.register('sw.js')
+    //     .then((reg) => {
+    //         // code
+    //         // console.log("Register success: "+reg)
+    //     }).catch((err) => {
+    //         // code d'erreur
+    //         // console.log('Erreur: '+err)
+    //     })
 }
-
-// window.addEventListener("load",  function(){
-    
-// });
 
 // Cheack connexion and send to database
 let dalay_check = 1000;

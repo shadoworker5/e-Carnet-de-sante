@@ -11,9 +11,9 @@
                 {{-- <h1 class="text-center"> {{ __("Tableau des vaccinations à jour") }} </h1> --}}
                 <table class="table table-striped">
                     <thead>
-                        <th class="text-center">
-                            <td colspan="2"> Info du vaccination </td>
-                        </th>
+                        <tr class="text-center">
+                            <th colspan="2"> Info du vaccination </th>
+                        </tr>
                     </thead>
 
                     <tbody>
@@ -71,21 +71,22 @@
                             </tr>
                         @endif
 
-                        <tr>
-                            <td> {{ __("Action ") }} </td>
-                            
-                            <td>
-                                <div class="btn-group" role="group">
-                                    <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#info_delete">
-                                        {{ __('Supprimer') }}
-                                    </a>
-                                    
-                                    <a href="{{ route('vaccinate.edit', $vaccine_info) }}" class="btn btn-primary">
-                                        {{ __('Modifier') }}
-                                    </a>
-                                </div>                                
-                            </td>
-                        </tr>
+                        @if(Auth::user()->user_role !== 'guest')
+                            <tr>
+                                <td> {{ __("Action ") }} </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#info_delete">
+                                            {{ __('Supprimer') }}
+                                        </a>
+                                        
+                                        <a href="{{ route('vaccinate.edit', $vaccine_info) }}" class="btn btn-primary">
+                                            {{ __('Modifier') }}
+                                        </a>
+                                    </div>                                
+                                </td>
+                            </tr>
+                        @endif
                     </tbody>
                 </table>
             </div>
@@ -97,7 +98,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel"> {{ __("Détail sur la vaccination") }} </h5>
+                    <h5 class="modal-title" id="exampleModalLabel"> {{ __("Confirmer la suppression") }} </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 

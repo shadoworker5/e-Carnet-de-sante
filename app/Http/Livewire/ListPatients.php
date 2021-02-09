@@ -9,7 +9,6 @@ class ListPatients extends Component
 {
     use WithPagination;
     
-    public $i = 0;
     public $per_page = 10;
     public $code_patient, $birthday, $born_location, $name_father, $name_mother, $helper_contact;
     public $result = [];

@@ -15,10 +15,6 @@ class AdminController extends Controller{
     }
 
     public function index(){
-        $user_role = Auth::user()->user_role;
-        $view = '';
-
-        if(in_array($user_role, ['root', 'admin'])){
             $user = User::all();
             
             $genre = ['M', 'F'];
@@ -33,12 +29,14 @@ class AdminController extends Controller{
                 $vacinate_count[] = Patient_vaccinate::where(DB::raw("DATE_FORMAT(created_at, '%M')"), $value)->count();
             }
 
-            $view = view('admin.dashboard', [
+            // }
+            return view('admin.dashboard', [
                         'user_count'    => $user,
                         'genre_count'   => $genre_count
                     ])->with('vacinate_count',json_encode($vacinate_count, JSON_NUMERIC_CHECK));
-        }
-        return $view;
-        // return view('admin.dashboard');
+    }
+
+    public function listUser(){
+        return view('admin.users');
     }
 }

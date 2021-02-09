@@ -21,7 +21,7 @@
             <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
                 <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
                     <div class="sidebar-brand-icon rotate-n-15">
-                        <!-- <img src="/images/icon-72x72.png" alt="logo" srcset="logo"> -->
+                        <img class="img-profile rounded-circle" src="images/icon-72x72.png" alt="logo">
                     </div>
 
                     <div class="sidebar-brand-text mx-3"> {{ config('app.name') }} </div>
@@ -58,13 +58,13 @@
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header"> {{ __("Options") }} </h6>
-                            <a class="collapse-item" href="#"> {{ __("Liste des patients") }} </a>
-                            <a class="collapse-item" href="#"> {{ __("Ajouter un patient") }} </a>
+                            <a class="collapse-item" href="{{ route('patient.index') }}"> {{ __("Liste des patients") }} </a>
+                            <a class="collapse-item" href="{{ route('patient.create') }}"> {{ __("Ajouter un patient") }} </a>
                         </div>
                     </div>
                 </li>
     
-                <li class="nav-item">
+                <li class="nav-item {{ $title == 'Liste des utilisateurs' ? 'active' : '' }}">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUsers"
                         aria-expanded="true" aria-controls="collapseUsers">
                         <i class="fas fa-users"></i>
@@ -74,7 +74,7 @@
                         data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header"> {{ __("Options") }} </h6>
-                            <a class="collapse-item" href="#"> {{ __("Liste des utilisateurs") }} </a>
+                            <a class="collapse-item" href="{{ route('list_user') }}"> {{ __("Liste des utilisateurs") }} </a>
                             <a class="collapse-item" href="#"> {{ __("Ajouter un utilisateur") }} </a>
                         </div>
                     </div>
@@ -269,7 +269,7 @@
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="mr-2 d-none d-lg-inline text-gray-600 small"> {{ Auth::user()->name }} </span>
-                                    <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
+                                    <img class="img-profile rounded-circle" src="images/icon-72x72.png">
                                 </a>
                                 
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -342,20 +342,17 @@
             </div>
         </div>
 
-        <!-- Bootstrap core JavaScript-->
         <script src="{{ asset('js/jquery.min.js') }}"></script>
         <script src="{{ asset('js/bootstrap.bundle.js') }}"></script>
     
-        <!-- Core plugin JavaScript-->
         <script src="{{ asset('js/jquery.easing.min.js') }}"></script>
     
-        <!-- Custom scripts for all pages-->
         <script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
     
-        <!-- Page level plugins -->
         <script src="{{ asset('js/Chart.min.js') }}"></script>
+
+        <!-- <script src="{{ asset('js/register_sw.js') }}"></script> -->
     
-        <!-- Page level custom scripts -->
         @livewireScripts
         @yield('script')
     </body>

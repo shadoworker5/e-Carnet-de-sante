@@ -24,16 +24,16 @@
             @include('layouts.partials.menu_top')
         </header>
         
-        <!-- <div class="mt-5 alert alert-warning alert-dismissible fade show" id="offline_banner" role="alert">
+        <div class="mt-5 alert alert-warning alert-dismissible fade" id="offline_banner" role="alert">
             Vous êtes hors ligne maintenant
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div> -->
+        </div>
         
         <div class="container-fluid mt-5">
             @yield('main_content')
         </div>
         
-        <div class="mt-n5">
+        <div>
             @include('layouts.partials.footer')
         </div>
 
@@ -44,8 +44,8 @@
         <script src="{{ asset('js/bootstrap.bundle.js') }}"></script>
         <script src="{{ asset('js/indexdDB.js') }}"></script>
         <script src="{{ asset('js/Chart.min.js') }}"></script>
-        <!-- <script src="{{ asset('js/register_sw.js') }}"></script> -->
-
+        <script src="{{ asset('js/register_sw.js') }}"></script>
+        
         @livewireScripts
         @yield('script_js')
     </body>

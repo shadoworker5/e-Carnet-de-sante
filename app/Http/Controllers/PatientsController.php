@@ -11,6 +11,10 @@ use Illuminate\Support\Str;
 
 class PatientsController extends Controller
 {
+    public function __construct(){
+        // $this->middleware(['authadmin', 'authsupervisor']);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -43,6 +47,7 @@ class PatientsController extends Controller
         $this->validate($request, [
             'name'          => 'required|min:5',
             'birthday'      => 'required',
+            'born_location' => 'required|min:2',
             'father_name'   => 'required|min:5',
             'mother_name'   => 'required|min:5',
             'mentor_name'   => 'required|min:5',
@@ -52,6 +57,7 @@ class PatientsController extends Controller
         Patients::create([
             'full_name'     => $request->name,
             'birthday'      => $request->birthday,
+            'born_location' => $request->born_location,
             'name_father'   => $request->father_name,
             'name_mother'   => $request->mother_name,
             'name_mentor'   => $request->mentor_name,
@@ -86,9 +92,10 @@ class PatientsController extends Controller
      * @param  \App\Models\Patients  $patients
      * @return \Illuminate\Http\Response
      */
-    public function edit(Patients $patients)
+    public function edit($patients)
     {
-        //
+        $patient = Patients::findOrFail($patients);
+        return view('patients.edit_patient', ['patient' => $patient]);
     }
 
     /**
@@ -98,9 +105,31 @@ class PatientsController extends Controller
      * @param  \App\Models\Patients  $patients
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Patients $patients)
+    public function update(Request $request, $patients)
     {
-        //
+        $this->validate($request, [
+            'name'          => 'required|min:5',
+            'birthday'      => 'required',
+            'born_location' => 'required|min:2',
+            'father_name'   => 'required|min:5',
+            'mother_name'   => 'required|min:5',
+            'mentor_name'   => 'required|min:5',
+            'helper_contact'=> 'required'
+        ]);
+
+        $patient = Patients::findOrFail($patients);
+        $patient->update([
+            'full_name'     => $request->name,
+            'birthday'      => $request->birthday,
+            'born_location' => $request->born_location,
+            'name_father'   => $request->father_name,
+            'name_mother'   => $request->mother_name,
+            'name_mentor'   => $request->mentor_name,
+            'helper_contact'=> $request->helper_contact,
+            'helper_email'  => $request->helper_email,
+            'user_id'       => Auth::user()->id
+        ]);
+        return redirect()->route('patient.index');
     }
 
     /**

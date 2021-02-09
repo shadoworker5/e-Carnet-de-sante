@@ -13,9 +13,6 @@ use Illuminate\Support\Facades\DB;
 
 class PagesController extends Controller{
     public function index(){
-        $user_role = Auth::user()->user_role;
-        $view = '';
-
         $user = User::all();
         
         $genre = ['M', 'F'];
@@ -37,10 +34,13 @@ class PagesController extends Controller{
     }
     public function profile(){
         return view('profile.show');
-        // return redirect()->route('profile.show');
     }
 
     public function listPatient(){
         return view('admin.patients');
+    }
+
+    public function getCode($patient_code){
+        # code...
     }
 }

@@ -27,7 +27,7 @@ Route::get('/offline', function(){
 });
 Route::get('/list_vacinate', function(){
     return view('offlines.list_vacinate');
-})->middleware('auth');
+})->middleware('auth')->name('offline_submission');
 
 // Route::get('/email/verify', function () {
 //     return view('auth.verify-email');
@@ -41,8 +41,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
 Route::middleware(['auth:sanctum', 'verified', 'authadmin'])->group(function(){
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
+    Route::get('/list_user', [AdminController::class, 'listUser'])->name('list_user');
 });
 
-Route::resource('patient', PatientsController ::class)->middleware('auth');
+// Route::resource('guest', PagesController::class)->middleware('auth');
+
+Route::resource('patient', PatientsController ::class)->middleware(['auth']);
 Route::resource('vaccinate', PatientVacinateController::class)->middleware('auth');
-Route::resource('calendar', VacineCalendarController::class)->middleware('auth');
+Route::resource('calendar', VacineCalendarController::class)->middleware(['auth', 'authadmin']);

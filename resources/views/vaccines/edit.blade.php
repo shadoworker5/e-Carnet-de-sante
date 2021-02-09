@@ -2,7 +2,7 @@
 
 @section('main_content')
     <div class="row">
-        <div class="col-md-6 offset-md-3">
+        <div class="col-md-6 offset-md-3 mb-2">
             <h2 class="text-center"> {{ __('Modifier une vaccination') }}</h2>
             
             <form action="{{ route('vaccinate.update', $vaccine_info->id) }}" method="POST">
@@ -20,7 +20,7 @@
                     <select class="form-control custom-select" name="vaccine_name" id="vaccine_name">
                         <option value=""> Veuilez choisir un vaccin </option>
                         @foreach($vaccines as $vaccine)
-                            <option value="{{ $vaccine->id }}" {{ old('vaccine_name') === $vaccine->id || $vaccine_info->vaccine_id === $vaccine->id ? "selected" : "" }}>
+                            <option value="{{ $vaccine->id }}" {{ old('vaccine_name') === $vaccine->id || $vaccine_info->vaccine_calendar_id === $vaccine->id ? "selected" : "" }}>
                                 {{ $vaccine->name_vaccine }}
                             </option>
                         @endforeach

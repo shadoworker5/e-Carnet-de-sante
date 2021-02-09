@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\PatientVacinateRequest;
 use App\Models\Patient_vaccinate;
 use App\Models\Patients;
 use App\Models\Vaccine_calendar;
@@ -11,6 +10,10 @@ use Illuminate\Support\Facades\Auth;
 
 class PatientVacinateController extends Controller
 {
+    public function __construct(){
+        // $this->middleware(['authadmin', 'authsupervisor']);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -52,22 +55,21 @@ class PatientVacinateController extends Controller
         
         $patient_id = Patients::where('code_patient', '=', $request->patient_code)->get()->toArray()[0]['id'];
 
-
-        if(get_vacine_status_per_patient($patient_id) === "Pas à jour"){
+        // if(get_vacine_status_per_patient($patient_id) === "Pas à jour"){
             Patient_vaccinate::create([
-                'user_id'           => Auth::id(),
-                'patient_id'        => $patient_id,
-                'vaccine_id'        => $request->vaccine_name,
-                'date_vacination'   => $request->date_vaccinate,
-                'time_vacination'   => $request->time_vaccinate,
-                'name_doctor'       => $request->doctor_name,
-                'doctor_contact'    => $request->doctor_phone,
-                'lot_number_vacine' => $request->lot_number_vaccine,
-                'vacine_status'     => '1',
-                'rappelle'          => $request->rappelle !== ""?: null,
-                'path_capture'      => $request->image_path !== ""?: null    
+                'user_id'               => Auth::id(),
+                'patient_id'            => $patient_id,
+                'vaccine_calendar_id'   => $request->vaccine_name,
+                'date_vacination'       => $request->date_vaccinate,
+                'time_vacination'       => $request->time_vaccinate,
+                'name_doctor'           => $request->doctor_name,
+                'doctor_contact'        => $request->doctor_phone,
+                'lot_number_vacine'     => $request->lot_number_vaccine,
+                'vacine_status'         => '1',
+                'rappelle'              => $request->rappelle !== "" ? $request->rappelle : null,
+                'path_capture'          => $request->image_path !== "" ? $request->image_path : null    
             ]);
-        }
+        // }
         return redirect(route('patient.index'));
     }
 
@@ -109,31 +111,31 @@ class PatientVacinateController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // $this->validate($request, [
-        //     'patient_code'          => 'required|min:8',
-        //     'vaccine_name'          => 'required',
-        //     'date_vaccinate'        => 'required|date',
-        //     'time_vaccinate'        => 'required',
-        //     'doctor_name'           => 'required|min:5',
-        //     'doctor_phone'          => 'required|min:10',
-        //     'lot_number_vaccine'    => 'required|min:5',
-        // ]);
-        // dd($request);
+        $this->validate($request, [
+            'patient_code'          => 'required|min:8',
+            'vaccine_name'          => 'required',
+            'date_vaccinate'        => 'required|date',
+            'time_vaccinate'        => 'required',
+            'doctor_name'           => 'required|min:5',
+            'doctor_phone'          => 'required|min:10',
+            'lot_number_vaccine'    => 'required|min:5',
+        ]);
+
         $patient_id = Patients::where('code_patient', '=', $request->patient_code)->get()->toArray()[0]['id'];
         
         $vaccines = Patient_vaccinate::findOrFail($id);
         $vaccines->update([
-            'user_id'           => Auth::id(),
-            'patient_id'        => $patient_id,
-            'vaccine_id'        => $request->vaccine_name,
-            'date_vacination'   => $request->date_vaccinate,
-            'time_vacination'   => $request->time_vaccinate,
-            'name_doctor'       => $request->doctor_name,
-            'doctor_contact'    => $request->doctor_phone,
-            'lot_number_vacine' => $request->lot_number_vaccine,
-            'vacine_status'     => '1',
-            'rappelle'          => $request->rappelle !== ""? $request->rappelle : null,
-            'path_capture'      => $request->image_path !== ""? $request->image_path : null    
+            'user_id'               => Auth::id(),
+            'patient_id'            => $patient_id,
+            'vaccine_calendar_id'   => $request->vaccine_name,
+            'date_vacination'       => $request->date_vaccinate,
+            'time_vacination'       => $request->time_vaccinate,
+            'name_doctor'           => $request->doctor_name,
+            'doctor_contact'        => $request->doctor_phone,
+            'lot_number_vacine'     => $request->lot_number_vaccine,
+            'vacine_status'         => '1',
+            'rappelle'              => $request->rappelle !== "" ? $request->rappelle : null,
+            'path_capture'          => $request->image_path !== "" ? $request->image_path : null    
         ]);
         return redirect('patient');
     }

@@ -2,7 +2,7 @@
 
 @section('main_content')
     <div class="row">
-        <div class="col-md-6 offset-md-3">
+        <div class="col-md-6 offset-md-3 mb-2">
             <h2 class="text-center"> {{ __('Ajouter une vaccination') }}</h2>
             
             <form action="{{ route('vaccinate.store') }}" id="form_vacinate" class="needs-validation" novalidate method="post">
@@ -111,25 +111,20 @@
 
 @section('script_js')
     <script>
-        // Validation du formulaire
-        // Example starter JavaScript for disabling form submissions if there are invalid fields
         const valide_form = () => {
-        
-        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-        var forms = document.querySelectorAll('.needs-validation')
+            var forms = document.querySelectorAll('.needs-validation')
 
-        // Loop over them and prevent submission
-        Array.prototype.slice.call(forms)
-            .forEach(function (form) {
-            form.addEventListener('submit', function (event) {
-                if (!form.checkValidity()) {
-                event.preventDefault()
-                event.stopPropagation()
-                }
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                    }
 
-                form.classList.add('was-validated')
-            }, false)
-            })
+                    form.classList.add('was-validated')
+                }, false)
+                })
         }
         valide_form();
     </script>

@@ -156,7 +156,7 @@ function SaveData(data_server){
 
 // submit_vacinate_patient
 let btn_send_vacinate = document.getElementById("submit_vacinate_patient");
-btn_send_vacinate.addEventListener("click", function(event) {
+btn_send_vacinate.addEventListener("click", event => {
     if(!navigator.onLine){
         event.preventDefault();        
         // Recuperation du formulaires

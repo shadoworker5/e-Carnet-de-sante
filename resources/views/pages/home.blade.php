@@ -1,66 +1,77 @@
 @extends('layouts.app', ['title' => 'Home'])
 
 @section('main_content')
-    <div class="row" style="height: 483px">
-        <div class="col-xl-8 col-lg-7">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary"> {{ __('Diagramme des vaccinations') }} </h6>
-                    <div class="dropdown no-arrow">
-                        <a class="dropdown-toggle" href="#" style="text-decoration:none" role="button" id="dropdownMenuLink"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                            aria-labelledby="dropdownMenuLink">
-                            <div class="dropdown-header"> {{ __("Options") }} </div>
-                            <a class="dropdown-item" href="#"> {{ __("Actualiser") }} </a>
+    <div class="row">
+        @if(in_array(Auth::user()->user_role, ['root', 'admin', 'supervisor']))
+            <div class="col-xl-8 col-lg-7">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary"> {{ __('Diagramme des vaccinations') }} </h6>
+                        <div class="dropdown no-arrow">
+                            <a class="dropdown-toggle" href="#" style="text-decoration:none" role="button" id="dropdownMenuLink"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                aria-labelledby="dropdownMenuLink">
+                                <div class="dropdown-header"> {{ __("Options") }} </div>
+                                <a class="dropdown-item" href="#"> {{ __("Actualiser") }} </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="chart-area">
+                            <canvas id="myAreaChart"></canvas>
                         </div>
                     </div>
                 </div>
-                
-                <div class="card-body">
-                    <div class="chart-area">
-                        <canvas id="myAreaChart"></canvas>
-                    </div>
-                </div>
             </div>
-        </div>
 
-        <div class="col-xl-4 col-lg-5">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary"> {{ __("Répartion des patients selon le genre") }} </h6>
-                    <div class="dropdown no-arrow">
-                        <a class="dropdown-toggle" href="#" style="text-decoration:none" role="button" id="dropdownMenuLink"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                        </a>
+            <div class="col-xl-4 col-lg-5">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary"> {{ __("Répartion des patients selon le genre") }} </h6>
+                        <div class="dropdown no-arrow">
+                            <a class="dropdown-toggle" href="#" style="text-decoration:none" role="button" id="dropdownMenuLink"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                            </a>
 
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                            aria-labelledby="dropdownMenuLink">
-                            <div class="dropdown-header"> {{ __("Options") }} </div>
-                            <a class="dropdown-item" href="#"> {{ __("Actualiser") }} </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                aria-labelledby="dropdownMenuLink">
+                                <div class="dropdown-header"> {{ __("Options") }} </div>
+                                <a class="dropdown-item" href="#"> {{ __("Actualiser") }} </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="chart-pie pt-4 pb-2">
+                            <canvas id="myPieChart"></canvas>
+                        </div>
+                        <div class="mt-4 text-center small">
+                            <span class="mr-2">
+                                <i class="fas fa-circle text-success"></i> {{ __("Femme") }}
+                            </span>
+
+                            <span class="mr-2">
+                                <i class="fas fa-circle text-primary"></i> {{ __("Homme") }}
+                            </span>
                         </div>
                     </div>
                 </div>
-                
-                <div class="card-body">
-                    <div class="chart-pie pt-4 pb-2">
-                        <canvas id="myPieChart"></canvas>
-                    </div>
-                    <div class="mt-4 text-center small">
-                        <span class="mr-2">
-                            <i class="fas fa-circle text-success"></i> {{ __("Femme") }}
-                        </span>
-
-                        <span class="mr-2">
-                            <i class="fas fa-circle text-primary"></i> {{ __("Homme") }}
-                        </span>
-                    </div>
+            </div>
+        @elseif(in_array(Auth::user()->user_role, ['collector']))
+            Hello world
+        @elseif(in_array(Auth::user()->user_role, ['guest']))
+            <div class="mt-5 mb-2" style="height:379px">
+                <div class="col-md-6 offset-md-3">
+                    <h3 class="text-center"> {{ __("Afficher mon carnet") }} </h3>
+                    @livewire('find-patients')
                 </div>
             </div>
-        </div>
+        @endif
     </div>
 @endsection
 
@@ -214,5 +225,27 @@
             }
         }
         });
+    </script>
+    <script>
+        // eyJpdiI6IjE0V2hKaHZpSnFraGZNV1pFdzNmT3c9PSIsInZhbHVlIjoiUUpoNkdOb3BRVWFMVThjekh3R2FJaDRtMXRNbVFObFg2alVtN0NRZThzTT0iLCJtYWMiOiJhYzcxOGQzMmY3OTllY2E5OTQ0ODI3YmFhZWVlN2EzYWFmZmYzNjUxMWZmZmQ2NTZjZTE3MjgzMGU2YjQ0ODEwIn0=
+
+        // eyJpdiI6IldZbVhJeUduUlNkMDhpT3RmQU04d2c9PSIsInZhbHVlIjoidTJnRVJ6WmI5R29KcWJNMmF1ZnFucVBBdW9kYStlZXp1WERueGh5L0FNMi9ZREd2NU1FRlB2cVEyU0V5emtqYmxFd21LQjVPcC9RYm45Sll5aWttbDl2YUZLSHB3VlBxZ0d4Y0ZMSEdoSTVzbzNTalh5UzNIdThtNExadzc4VmRGTHNObHlUSS9IY1RtLzNKRVpVSzBzZ0NEZmdoa2NaZ0NyVVlYeWNuNERBZy91UXFoSnEwS0JjQitCVmE1WVV5YlhDc2lqdHd2ZmZ4TERwOHZBTUhuSTNqSmIyNlJqRzY2Vit3aStuVmNGbnQvQzVlbForT3J3TW9NejQyU01ocFdQM3ZxbGlienNkNjhoQVVYMUFwc3c9PSIsIm1hYyI6ImJjM2RiYzE2MWI5NjQwNmNiMGNmY2JjMDM0MzRmZDc3YWJhOGNmNTZjODFjNjNjYTk2ZjZlYTkwNWI4ZjFkOWEifQ==
+        const valide_form = () => {
+        
+        var forms = document.querySelectorAll('.needs-validation')
+
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+                }
+
+                form.classList.add('was-validated')
+            }, false)
+            })
+        }
+        valide_form();        
     </script>
 @endsection

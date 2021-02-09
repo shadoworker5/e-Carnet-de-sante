@@ -5,10 +5,11 @@
         <div class="col-md-4">
             <table class="table table-striped">
                 <thead>
-                    <th class="text-center">
-                        <td colspan="2"> Info du patient </td>
-                    </th>
+                    <tr class="text-center">
+                        <th colspan="2"> Info du patient </th>
+                    </tr>
                 </thead>
+                
                 <tbody>
                     <tr>
                         <td> {{ __("Code du patient: ") }} </td>
@@ -46,14 +47,25 @@
                     </tr>
 
                     <tr>
-                        <td> {{ __("Nom: ") }} </td>
+                        <td> {{ __("E-mail: ") }} </td>
                         <td> {{ $infos->helper_email }} </td>
                     </tr>
+                    @if(Auth::user()->user_role !== 'guest')
+                        <tr>
+                            <td> {{ __("Action: ") }} </td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#info_delete"> {{ __("Supprimer") }} </button>
+                                    <a href="{{ route('patient.edit', $infos) }}" class="btn btn-primary"> {{ __("Modifier") }} </a>
+                                </div>
+                            </td>
+                        </tr>
+                    @endif
                 </tbody>
             </table>
             
-            @if(get_vacine_status_per_patient($infos->id) !== "A jour")
-                <a href="{{ route('vaccinate.create') }}" class="btn btn-success">
+            @if(Auth::user()->user_role !== 'guest')
+                <a href="{{ route('vaccinate.create') }}" id="vacine_patient" data-code="{{ $infos->code_patient }}" class="btn btn-success">
                     Ajouter une vaccination
                 </a>
             @endif
@@ -108,11 +120,11 @@
                                     </td>
 
                                     <td>
-                                        {{ $vacine->rappelle  }}
+                                        {{ $vacine->rappelle !== null ? $vacine->rappelle : 'NP' }}
                                     </td>
                                     
                                     <td>
-                                        {{ date('Y-m-d') > $vacine->validity_vacine ? 'Valide' : 'Invalide' }}
+                                        {!! date('Y-m-d') > $vacine->validity_vacine ? '<i class="fa fa-check"></i>' : '<i class="fa fa-times text-danger"></i>' !!}
                                     </td>
                                     
                                     <td>
@@ -188,58 +200,21 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="info_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="info_delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel"> {{ __("Détail sur la vaccination") }} </h5>
+                    <h5 class="modal-title" id="exampleModalLabel"> {{ __("Confirmer la suppression") }} </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
-                <div class="modal-body">
-                    <table class="table table-striped">
-                        <tbody>
-                            <tr>
-                                <td> {{ __("Numéro du lot du vaccin: ") }} </td>
-                                <td> {{ $infos->code_patient }} </td>
-                            </tr>
-                            
-                            <tr>
-                                <td> {{ __("Date de vaccination: ") }} </td>
-                                <td> {{ $infos->full_name }} </td>
-                            </tr>
-
-                            <tr>
-                                <td> {{ __("Heure de vaccination: ") }} </td>
-                                <td> {{ $infos->birthday }} </td>
-                            </tr>
-
-                            <tr>
-                                <td> {{ __("Date de rappelle: ") }} </td>                    
-                                <td> {{ $infos->name_father }} </td>
-                            </tr>
-
-                            <tr>
-                                <td> {{ __("Capture du flacon du vaccin: ") }} </td>
-                                <td> {{ $infos->name_mother }} </td>
-                            </tr>
-
-                            <tr>
-                                <td> {{ __("Nom du vaccinateur") }} </td>
-                                <td> {{ $infos->full_name }} </td>
-                            </tr>
-
-                            <tr>
-                                <td> {{ __("Contact: ") }} </td>
-                                <td> {{ $infos->helper_contact }} </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="modal-body text-center">
+                    {{ __("Etes-vous sûr de vouloir supprimer") }}
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> {{ __("Fermer") }} </button>
-                    <a href="#" class="btn btn-primary"> {{ __("Modifier") }} </a>
+                    <a href="#" class="btn btn-danger"> {{ __("Supprimer") }} </a>
                 </div>
             </div>
         </div>

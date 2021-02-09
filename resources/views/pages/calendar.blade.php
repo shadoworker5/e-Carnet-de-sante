@@ -1,7 +1,7 @@
 @extends('layouts.app', ['title' => 'Calendrier de vaccination'])
 
 @section('main_content')
-    <div>
+    <div class="row">
         <h1 class="text-center"> Calendrier de vaccination au Burkina Faso </h1>
         
         {{-- <div>
@@ -30,10 +30,6 @@
                         
                         <th>
                             {{ __('Prevention contre') }}
-                        </th>
-
-                        <th>
-                            {{ __('Etat du vaccin') }}
                         </th>
                         
                         <th>
@@ -65,10 +61,6 @@
                                 {{ $vacine->status === '1'? 'En cours' : 'Interdit' }}
                             </td>
                             
-                            <td>
-                                {{ $vacine->validity_vaccine }}
-                            </td>
-
                             <td>
                                 <a href="{{ route('calendar.edit', $vacine) }}" class="btn btn-success">
                                     {{ __('Modifier') }}
