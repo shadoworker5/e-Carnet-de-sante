@@ -67,3 +67,11 @@ if(!function_exists('get_vacine_status_per_patient')){
         return $query === false ? 'Pas à jour' : 'A jour';
     } 
 }
+
+if(!function_exists('getPatientName')){
+    function getPatientName($patient_id){
+        $query = Patients::findOrFail($patient_id);
+        
+        return $query->code_patient;
+    }
+}

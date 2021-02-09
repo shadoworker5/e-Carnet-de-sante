@@ -4,10 +4,8 @@ if ('serviceWorker' in navigator) {
     // navigator.serviceWorker.register('sw.js')
     //     .then((reg) => {
     //         // code
-    //         // console.log("Register success: "+reg)
     //     }).catch((err) => {
     //         // code d'erreur
-    //         // console.log('Erreur: '+err)
     //     })
 }
 

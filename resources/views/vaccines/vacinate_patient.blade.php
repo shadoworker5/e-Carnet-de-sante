@@ -110,22 +110,5 @@
 @endsection
 
 @section('script_js')
-    <script>
-        const valide_form = () => {
-            var forms = document.querySelectorAll('.needs-validation')
-
-            Array.prototype.slice.call(forms)
-                .forEach(function (form) {
-                form.addEventListener('submit', function (event) {
-                    if (!form.checkValidity()) {
-                    event.preventDefault()
-                    event.stopPropagation()
-                    }
-
-                    form.classList.add('was-validated')
-                }, false)
-                })
-        }
-        valide_form();
-    </script>
+    <script src="{{ asset('js/form_validate.js') }}"></script>
 @endsection

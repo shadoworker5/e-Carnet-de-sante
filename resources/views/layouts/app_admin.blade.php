@@ -14,6 +14,8 @@
         @include('layouts.partials.meta')
 
         @livewireStyles
+        <!-- Scripts -->
+        <script src="{{ mix('js/app.js') }}" defer></script>
     </head>
 
     <body id="page-top">
@@ -306,16 +308,12 @@
                 </footer>
                 <!-- End of Footer -->
             </div>
-            <!-- End of Content Wrapper -->
         </div>
-        <!-- End of Page Wrapper -->
 
-        <!-- Scroll to Top Button-->
         <a class="scroll-to-top rounded" href="#page-top">
             <i class="fas fa-angle-up"></i>
         </a>
 
-        <!-- Logout Modal-->
         <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -351,7 +349,7 @@
     
         <script src="{{ asset('js/Chart.min.js') }}"></script>
 
-        <!-- <script src="{{ asset('js/register_sw.js') }}"></script> -->
+        <script src="{{ asset('js/register_sw.js') }}"></script>
     
         @livewireScripts
         @yield('script')

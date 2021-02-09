@@ -1,28 +1,29 @@
-const DYNAMIC_CACHE = 'pwa-dynamic-v12';
+const DYNAMIC_CACHE = 'pwa-dynamic-v8';
 
 var filesToCache = [
     '/',
     '/offline',
+    '/list_vacinate',
+    '/vaccinate/create',
     '/css/app.css',
+    '/css/all.css',
+    '/css/sb-admin-2.min.css',
+    '/styles_css/bootstrap.css',
+    '/js/bootstrap.bundle.js',
     '/js/app.js',
-    '/images/icon-72x72.jpg',
-    '/images/icon-96x96.jpg',
-    '/images/icon-128x128.jpg',
-    '/images/icon-144x144.jpg',
-    '/images/icon-152x152.jpg',
-    '/images/icon-192x192.jpg',
-    '/images/icon-384x384.jpg',
-    '/images/icon-512x512.jpg',
+    '/js/jquery.min.js',
+    '/js/bootstrap.js',
+    '/js/form_validate.js'
 ];
 
 // Cache on install
 self.addEventListener("install", event => {
     self.skipWaiting();
-    // event.waitUntil(
-    //     caches.open(DYNAMIC_CACHE).then(cache => {
-    //         // cache.add(filesToCache);            
-    //     })
-    // );
+    event.waitUntil(
+        caches.open(DYNAMIC_CACHE).then(cache => {
+            return cache.addAll(filesToCache);          
+        })
+    );
 });
 
 // Clear cache on activate
@@ -51,18 +52,13 @@ self.addEventListener("fetch", event => {
                 return fetch(event.request).then(fetchResponse => {
                     return caches.open(DYNAMIC_CACHE).then(cache => {
                         cache.put(event.request.url, fetchResponse.clone());
-                        cache.add('/');
-                        cache.add('/list_vacinate');
                         limitCacheSize(DYNAMIC_CACHE, 250);
                         return fetchResponse;
                     })
                 });
             }
         }).catch(() => {
-            // console.log("test: "+err);
-            // receive_data(err)
-            // history.back();
-            return caches.match('offline');
+            return caches.match('/offline');
         })
     );
 });

@@ -30,7 +30,7 @@
 					</li>
 				@endif
 
-				@if(in_array(Auth::user()->user_role, ['root', 'admin', 'supervisor']))
+				@if(in_array(Auth::user()->user_role, ['root', 'admin','collector', 'supervisor']))
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 							Patients

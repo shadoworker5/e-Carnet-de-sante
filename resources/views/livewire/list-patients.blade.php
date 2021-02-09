@@ -116,6 +116,10 @@
                                 <a href="{{ route('patient.show', $patient) }}" class="btn btn-success">
                                     Afficher
                                 </a>
+
+                                <a href="#" class="btn btn-success">
+                                    Vacciner
+                                </a>
                             </div>
                         </td>
                     </tr>

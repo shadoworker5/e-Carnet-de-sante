@@ -22,6 +22,9 @@ class PatientsController extends Controller
      */
     public function index()
     {
+        if(in_array(Auth::user()->user_role, ['guest'])){
+            return redirect()->route('home');
+        }
         return view('pages.list_patient');
 
     }
@@ -33,6 +36,9 @@ class PatientsController extends Controller
      */
     public function create()
     {
+        if(in_array(Auth::user()->user_role, ['collector', 'guest'])){
+            return redirect()->route('home');
+        }
         return view('patients.add_patient');
     }
 
@@ -44,6 +50,10 @@ class PatientsController extends Controller
      */
     public function store(Request $request)
     {
+        if(in_array(Auth::user()->user_role, ['collector', 'guest'])){
+            return redirect()->route('home');
+        }
+
         $this->validate($request, [
             'name'          => 'required|min:5',
             'birthday'      => 'required',
@@ -78,6 +88,10 @@ class PatientsController extends Controller
      */
     public function show($patients)
     {
+        if(in_array(Auth::user()->user_role, ['guest'])){
+            return redirect()->route('home');
+        }
+
         $info = Patients::findOrFail($patients);
         $vaccination = Patient_vaccinate::where('patient_id', '=', $patients)->get();
         // Code a revoir pour refactoring
@@ -94,6 +108,10 @@ class PatientsController extends Controller
      */
     public function edit($patients)
     {
+        if(in_array(Auth::user()->user_role, ['collector', 'guest'])){
+            return redirect()->route('home');
+        }
+
         $patient = Patients::findOrFail($patients);
         return view('patients.edit_patient', ['patient' => $patient]);
     }
@@ -107,6 +125,10 @@ class PatientsController extends Controller
      */
     public function update(Request $request, $patients)
     {
+        if(in_array(Auth::user()->user_role, ['collector', 'guest'])){
+            return redirect()->route('home');
+        }
+
         $this->validate($request, [
             'name'          => 'required|min:5',
             'birthday'      => 'required',

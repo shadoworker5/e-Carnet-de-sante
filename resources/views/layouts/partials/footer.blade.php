@@ -19,18 +19,18 @@
         
         <div class="col-md-4 text-center">
             <h4> Links </h4>
-            <a href="https://www.africasys.com" target="_blank" style="text-decoration:none" class="text-white">
+            <a href="https://www.africasys.com" target="_blank" rel="noopener" style="text-decoration:none" class="text-white">
                 <img src="/images/logo-africasys.png" alt="logo africasys" height="40px">
             </a>
-            <a href="https://www.twitter.com/AfricaSys_Com" style="text-decoration:none" target="_blank" class="text-white">
+            <a href="https://www.twitter.com/AfricaSys_Com" style="text-decoration:none" target="_blank" rel="noopener" class="text-white">
                 <i class="fab fa-twitter-square fa-2x"></i>
             </a>
             
-            <a href="https://www.facebook.com/africasys" style="text-decoration:none" target="_blank" class="text-white">
+            <a href="https://www.facebook.com/africasys" style="text-decoration:none" target="_blank" rel="noopener" class="text-white">
                 <i class="fab fa-facebook-square fa-2x"></i>
             </a>
             
-            <a href="https://www.linkedin.com/africasys" style="text-decoration:none" target="_blank" class="text-white">
+            <a href="https://www.linkedin.com/africasys" style="text-decoration:none" target="_blank" rel="noopener" class="text-white">
                 <i class="fab fa-linkedin fa-2x"></i>
             </a>
         </div>

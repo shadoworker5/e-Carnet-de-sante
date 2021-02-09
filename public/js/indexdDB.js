@@ -1,4 +1,3 @@
-//Initialisation de l'IndexedDB
 const DB_VERSION = 1;
 const DB_Name = 'esante_db';
 const PATIENT_DATA = 'data_patient';
@@ -9,10 +8,8 @@ var request, db;
 request = indexedDB.open(DB_Name, DB_VERSION);
 
 request.onupgradeneeded = () => {
-    
     db = request.result;
     getData();
-
 
     const patient = db.createObjectStore(PATIENT_DATA, {keyPath: "id", autoIncrement: true});
     const vacinate_patient = db.createObjectStore(VACINATE_PATIENT_DATA, {keyPath: "id", autoIncrement: true});
@@ -25,14 +22,15 @@ request.onupgradeneeded = () => {
 
 request.onsuccess =  function showData() {
     db = request.result;
-    renderData();
     if(navigator.onLine){
         SendData()
+    }else{
+        renderData();
     }
 };
 
 request.onblocked = () => {
-    // alert('Please close all other tabs of this site open');
+    // code
 };
 
 function getVacineName(id){
@@ -110,7 +108,6 @@ function renderData(){
 
 // Get data from server and save
 const getData = function() {
-    // const url = 'api/patient';
     const url = '/api/vacine_calendar';
     
     fetch(url, { method: "GET" })
@@ -131,8 +128,6 @@ function SaveData(data_server){
         };
         store.put(vacine);
     }
-
-
 
     // let transaction = db.transaction(["data_patient"], "readwrite");
     // let store = transaction.objectStore("data_patient");
@@ -155,61 +150,68 @@ function SaveData(data_server){
 }
 
 // submit_vacinate_patient
+let courant_page = window.location.pathname;
+
+// btn_edit_vacinate
+
 let btn_send_vacinate = document.getElementById("submit_vacinate_patient");
-btn_send_vacinate.addEventListener("click", event => {
-    if(!navigator.onLine){
-        event.preventDefault();        
-        // Recuperation du formulaires
-        let vacinate_data = document.querySelector('#form_vacinate');
-
-        let transaction = db.transaction(["data_vacinate_patient"], "readwrite");
-        let store = transaction.objectStore("data_vacinate_patient");
-
-        // Recuperation des donnees du formulaires
-        let user_id = document.querySelector("a[data-user]").getAttribute('data-user')
-        const data_vacinate = {
-            user_id             : user_id,
-            code_patient        : vacinate_data.patient_code.value,
-            vaccine_name        : vacinate_data.vaccine_name.value,
-            date_vaccinate      : vacinate_data.date_vaccinate.value,
-            time_vaccinate      : vacinate_data.time_vaccinate.value,
-            doctor_name         : vacinate_data.doctor_name.value,
-            doctor_phone        : vacinate_data.doctor_phone.value,
-            lot_number_vaccine  : vacinate_data.lot_number_vaccine.value,
-            rappelle            : vacinate_data.rappelle.value,
-            image_path          : vacinate_data.image_path.value,
-            status              : 'not save yet'
-        };
-
-        let request = store.add(data_vacinate);
-        request.onsuccess = function(e){
-            window.location.href = '/list_vacinate';
-
-            vacinate_data.patient_code.value        = '';
-            vacinate_data.vaccine_name.value        = '';
-            vacinate_data.date_vaccinate.value      = '';
-            vacinate_data.time_vaccinate.value      = '';
-            vacinate_data.doctor_name.value         = '';
-            vacinate_data.doctor_phone.value        = '';
-            vacinate_data.lot_number_vaccine.value  = '';
-            vacinate_data.rappelle.value            = '';
-            vacinate_data.image_path.value          = '';
+if(courant_page === "/vaccinate/create"){
+    btn_send_vacinate.addEventListener("click", event => {
+        if(!navigator.onLine){
+            event.preventDefault();        
+            // Recuperation du formulaires
+            let vacinate_data = document.querySelector('#form_vacinate');
+    
+            let transaction = db.transaction(["data_vacinate_patient"], "readwrite");
+            let store = transaction.objectStore("data_vacinate_patient");
+    
+            // Recuperation des donnees du formulaires
+            let user_id = document.querySelector("a[data-user]").getAttribute('data-user')
+            const data_vacinate = {
+                user_id             : user_id,
+                code_patient        : vacinate_data.patient_code.value,
+                vaccine_name        : vacinate_data.vaccine_name.value,
+                date_vaccinate      : vacinate_data.date_vaccinate.value,
+                time_vaccinate      : vacinate_data.time_vaccinate.value,
+                doctor_name         : vacinate_data.doctor_name.value,
+                doctor_phone        : vacinate_data.doctor_phone.value,
+                lot_number_vaccine  : vacinate_data.lot_number_vaccine.value,
+                rappelle            : vacinate_data.rappelle.value,
+                image_path          : vacinate_data.image_path.value,
+                status              : 'not save yet'
+            };
+    
+            let request = store.add(data_vacinate);
+            request.onsuccess = function(e){
+                window.location.href = '/list_vacinate';
+    
+                vacinate_data.patient_code.value        = '';
+                vacinate_data.vaccine_name.value        = '';
+                vacinate_data.date_vaccinate.value      = '';
+                vacinate_data.time_vaccinate.value      = '';
+                vacinate_data.doctor_name.value         = '';
+                vacinate_data.doctor_phone.value        = '';
+                vacinate_data.lot_number_vaccine.value  = '';
+                vacinate_data.rappelle.value            = '';
+                vacinate_data.image_path.value          = '';
+            }
+    
+            request.onerror = function(e){
+                // code
+            }
         }
+    });
+}
 
-        request.onerror = function(e){
-            // console.log("Erreur: "+e.target.error.name)
+let btn_add_patient = document.getElementById("submit_add_patient");
+if(courant_page === "/patient/create"){
+    btn_add_patient.addEventListener('click', event => {
+        if(!navigator.onLine){
+            event.preventDefault();
+            // Recuperation des donnees du formulaires    
         }
-    }
-});
-
-let btn_add_patient = document.getElementById("submit_add_patient")
-// btn_add_patient.addEventListener('click', event => {
-//     if(!navigator.onLine){
-//         event.preventDefault();
-
-//         // Recuperation des donnees du formulaires
-//     }
-// });
+    });
+}
 
 // show into the patient vacinate
 
@@ -225,7 +227,7 @@ function SendData(){
             for(let i = 0; i < request.result.length; i++){
                 if(request.result[i].status === "not save yet"){
                     let vaccination = {
-                        user_id             : request.result[i].user_id,
+                        user_id             : atob(request.result[i].user_id),
                         vaccine_id          : request.result[i].vaccine_name,
                         code_patient        : request.result[i].code_patient,
                         date_vacination     : request.result[i].date_vaccinate,
@@ -246,7 +248,9 @@ function SendData(){
                     fetch(url, options)
                     .then(resulte => resulte.json())
                     .then(resulte => console.log(resulte));
+
                     // mise a jour
+                    console.log("Sending: "+request.result[i].rappelle);
                     request.result[i].status = 'update'
                     store.put(request.result[i]);
                 }

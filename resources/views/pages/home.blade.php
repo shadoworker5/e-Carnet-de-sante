@@ -6,14 +6,14 @@
             <div class="col-xl-8 col-lg-7">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h6 class="m-0 font-weight-bold text-primary"> {{ __('Diagramme des vaccinations') }} </h6>
+                        <h6 class="m-0 font-weight-bold"> {{ __('Diagramme des vaccinations') }} </h6>
                         <div class="dropdown no-arrow">
-                            <a class="dropdown-toggle" href="#" style="text-decoration:none" role="button" id="dropdownMenuLink"
+                            <a class="dropdown-toggle" href="#" style="text-decoration:none" aria-label="Reload line chart" role="button" id="dropdownMenuLink1"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                aria-labelledby="dropdownMenuLink">
+                                aria-labelledby="dropdownMenuLink1">
                                 <div class="dropdown-header"> {{ __("Options") }} </div>
                                 <a class="dropdown-item" href="#"> {{ __("Actualiser") }} </a>
                             </div>
@@ -31,9 +31,9 @@
             <div class="col-xl-4 col-lg-5">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h6 class="m-0 font-weight-bold text-primary"> {{ __("Répartion des patients selon le genre") }} </h6>
+                        <h6 class="m-0 font-weight-bold"> {{ __("Répartion des patients selon le genre") }} </h6>
                         <div class="dropdown no-arrow">
-                            <a class="dropdown-toggle" href="#" style="text-decoration:none" role="button" id="dropdownMenuLink"
+                            <a class="dropdown-toggle" href="#" style="text-decoration:none" aria-label="Reload pie chart" role="button"  id="dropdownMenuLink"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                             </a>

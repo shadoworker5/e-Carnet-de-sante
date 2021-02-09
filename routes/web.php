@@ -25,9 +25,7 @@ Route::get('/', function () {
 Route::get('/offline', function(){
     return view('offlines.offline');
 });
-Route::get('/list_vacinate', function(){
-    return view('offlines.list_vacinate');
-})->middleware('auth')->name('offline_submission');
+Route::get('/list_vacinate', [PagesController::class, 'offlineSubmission'])->middleware('auth')->name('offline_submission');
 
 // Route::get('/email/verify', function () {
 //     return view('auth.verify-email');

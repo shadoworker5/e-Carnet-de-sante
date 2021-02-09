@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('api_token', 100)->nullable()->unique()->default(null);
             $table->string('password');
-            $table->enum('user_role', ['root', 'admin', 'supervisor', 'doctor', 'colltector', 'guest'])->default('guest');
+            $table->enum('user_role', ['root', 'admin', 'supervisor', 'doctor', 'collector', 'guest'])->default('guest');
             $table->rememberToken();
             $table->text('profile_photo_path')->nullable();
             $table->timestamps();

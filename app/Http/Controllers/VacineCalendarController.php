@@ -18,6 +18,10 @@ class VacineCalendarController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
+        if(in_array(Auth::user()->user_role, ['collector', 'guest'])){
+            return redirect()->route('home');
+        }
+
         return view('pages.calendar', ['vacines' => Vaccine_calendar::paginate(10)]);
     }
 
@@ -28,6 +32,10 @@ class VacineCalendarController extends Controller
      */
     public function create()
     {
+        if(in_array(Auth::user()->user_role, ['collector', 'guest'])){
+            return redirect()->route('home');
+        }
+
         return view('vaccines.vacine_calendar');
     }
 
@@ -39,6 +47,10 @@ class VacineCalendarController extends Controller
      */
     public function store(Request $request)
     {
+        if(in_array(Auth::user()->user_role, ['collector', 'guest'])){
+            return redirect()->route('home');
+        }
+
         $this->validate($request, [
             'age'               => 'required|min:5',
             'name_vacine'       => 'required',
@@ -74,6 +86,10 @@ class VacineCalendarController extends Controller
      */
     public function edit($vaccine_calendar)
     {
+        if(in_array(Auth::user()->user_role, ['collector', 'guest'])){
+            return redirect()->route('home');
+        }
+
         $vacine = Vaccine_calendar::findOrFail($vaccine_calendar);
         return view('vaccines.edit_calendar', ['vacine' => $vacine]);
     }
@@ -87,6 +103,10 @@ class VacineCalendarController extends Controller
      */
     public function update(Request $request, $vaccine_calendar)
     {
+        if(in_array(Auth::user()->user_role, ['collector', 'guest'])){
+            return redirect()->route('home');
+        }
+        
         $this->validate($request, [
             'age'               => 'required|min:5',
             'name_vacine'       => 'required',

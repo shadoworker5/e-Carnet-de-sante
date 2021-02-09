@@ -92,27 +92,5 @@
 @endsection
 
 @section('script_js')
-    <script>
-        // Validation du formulaire
-        // Example starter JavaScript for disabling form submissions if there are invalid fields
-        const valide_form = () => {
-        
-        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-        var forms = document.querySelectorAll('.needs-validation')
-
-        // Loop over them and prevent submission
-        Array.prototype.slice.call(forms)
-            .forEach(function (form) {
-            form.addEventListener('submit', function (event) {
-                if (!form.checkValidity()) {
-                event.preventDefault()
-                event.stopPropagation()
-                }
-
-                form.classList.add('was-validated')
-            }, false)
-            })
-        }
-        valide_form();        
-    </script>
+    <script src="{{ asset('js/form_validate.js') }}"></script>
 @endsection

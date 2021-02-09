@@ -40,7 +40,9 @@ class PagesController extends Controller{
         return view('admin.patients');
     }
 
-    public function getCode($patient_code){
-        # code...
+    public function offlineSubmission(){
+        $submission = Patient_vaccinate::where('user_id', '=', Auth::id())->get();
+        
+        return view('offlines.list_vacinate', ['submissions' => $submission]);
     }
 }

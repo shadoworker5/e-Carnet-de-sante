@@ -31,6 +31,10 @@ class PatientVacinateController extends Controller
      */
     public function create()
     {
+        if(in_array(Auth::user()->user_role, ['guest'])){
+            return redirect()->route('home');
+        }
+
         $vaccines = Vaccine_calendar::all();
         return view('vaccines.vacinate_patient', ['vaccines' => $vaccines]);
     }
@@ -43,6 +47,10 @@ class PatientVacinateController extends Controller
      */
     public function store(Request $request)
     {
+        if(in_array(Auth::user()->user_role, ['guest'])){
+            return redirect()->route('home');
+        }
+
         $this->validate($request, [
             'patient_code'          => 'required|min:8',
             'vaccine_name'          => 'required',
@@ -70,6 +78,9 @@ class PatientVacinateController extends Controller
                 'path_capture'          => $request->image_path !== "" ? $request->image_path : null    
             ]);
         // }
+        if(Auth::user()->user_role === 'collector'){
+            return redirect(route('offline_submission'));
+        }
         return redirect(route('patient.index'));
     }
 
@@ -81,6 +92,10 @@ class PatientVacinateController extends Controller
      */
     public function show($patient_vaccinates)
     {
+        if(in_array(Auth::user()->user_role, ['guest'])){
+            return redirect()->route('home');
+        }
+
         $vaccine_info = Patient_vaccinate::findOrFail($patient_vaccinates);
         $code_patient = Patients::findOrFail($vaccine_info->patient_id);
 
@@ -95,6 +110,10 @@ class PatientVacinateController extends Controller
      */
     public function edit($patient_vaccinates)
     {
+        if(in_array(Auth::user()->user_role, ['guest'])){
+            return redirect()->route('home');
+        }
+
         $vaccines = Vaccine_calendar::all();
         $vaccine_info = Patient_vaccinate::findOrFail($patient_vaccinates);
         $patient_code = Patients::findOrFail($vaccine_info->patient_id);
@@ -111,6 +130,10 @@ class PatientVacinateController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(in_array(Auth::user()->user_role, ['guest'])){
+            return redirect()->route('home');
+        }
+
         $this->validate($request, [
             'patient_code'          => 'required|min:8',
             'vaccine_name'          => 'required',
