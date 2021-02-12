@@ -76,9 +76,11 @@
                                 <td> {{ __("Action ") }} </td>
                                 <td>
                                     <div class="btn-group" role="group">
-                                        <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#info_delete">
-                                            {{ __('Supprimer') }}
-                                        </a>
+                                        @if(Auth::user()->user_role !== 'collector')
+                                            <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#info_delete">
+                                                {{ __('Supprimer') }}
+                                            </a>
+                                        @endif
                                         
                                         <a href="{{ route('vaccinate.edit', $vaccine_info) }}" class="btn btn-primary">
                                             {{ __('Modifier') }}

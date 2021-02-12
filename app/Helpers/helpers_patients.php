@@ -64,7 +64,7 @@ if(!function_exists('get_vacine_status_per_patient')){
     function get_vacine_status_per_patient($patient_id){
         $query = (bool)DB::select('SELECT id FROM vaccine_calendars WHERE id NOT IN (SELECT vaccine_calendar_id FROM patient_vaccinates WHERE patient_id = '.$patient_id.')');
 
-        return $query === false ? 'Pas à jour' : 'A jour';
+        return $query;
     } 
 }
 

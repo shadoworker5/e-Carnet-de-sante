@@ -1,6 +1,6 @@
 <div class="container-fluid bg-primary text-white">
     <div class="row">
-        <div class="col-md-4 text-center">
+        <div class="col-md-4 text-center mt-3">
             <h4> Address </h4>
             <span>
                 Boulevard circulaire Tensoba <br> En face de la station SOGEL-B <br>
@@ -10,14 +10,14 @@
             </span>   
         </div>
 
-        <div class="col-md-4 text-center">
+        <div class="col-md-4 text-center mt-3">
             <h4> Contact </h4>
             TEL: +22665827860 /+22677445544 <br>
             https://www.africasys.com <br>
             Email: contact@africasys.com
         </div>
         
-        <div class="col-md-4 text-center">
+        <div class="col-md-4 text-center mt-3">
             <h4> Links </h4>
             <a href="https://www.africasys.com" target="_blank" rel="noopener" style="text-decoration:none" class="text-white">
                 <img src="/images/logo-africasys.png" alt="logo africasys" height="40px">

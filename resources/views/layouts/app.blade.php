@@ -10,13 +10,13 @@
         <link rel="stylesheet" href="{{ asset('styles_css/bootstrap.css') }}">
         <link rel="stylesheet" href="{{ asset('css/all.css') }}">
         <link rel="stylesheet" href="{{ asset('css/sb-admin-2.min.css') }}">
+        
+        @yield('head_file')
 
-        <!-- Section PWA -->
         @include('layouts.partials.meta')
 
         @livewireStyles
 
-        <!-- Scripts -->
         <script src="{{ mix('js/app.js') }}" defer></script>
     </head>
     <body>
@@ -24,10 +24,7 @@
             @include('layouts.partials.menu_top')
         </header>
         
-        <div class="mt-5 alert alert-warning alert-dismissible fade" id="offline_banner" role="alert">
-            Vous êtes hors ligne maintenant
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+        <div id="error_network"></div>
         
         <div class="container-fluid mt-5">
             @yield('main_content')

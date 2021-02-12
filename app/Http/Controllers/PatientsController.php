@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Patient_vaccinate;
 use App\Models\Patients;
+use App\Models\Vaccine_calendar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -11,8 +12,10 @@ use Illuminate\Support\Str;
 
 class PatientsController extends Controller
 {
-    public function __construct(){
-        // $this->middleware(['authadmin', 'authsupervisor']);
+    protected function userGuard(){
+        if(in_array(Auth::user()->user_role, ['guest'])){
+            return redirect()->route('home');
+        }
     }
 
     /**
@@ -22,11 +25,11 @@ class PatientsController extends Controller
      */
     public function index()
     {
-        if(in_array(Auth::user()->user_role, ['guest'])){
-            return redirect()->route('home');
+        $this->userGuard();
+        if(Auth::user()->user_role === 'collector'){
+            return redirect(route('home'));
         }
         return view('pages.list_patient');
-
     }
 
     /**
@@ -36,9 +39,7 @@ class PatientsController extends Controller
      */
     public function create()
     {
-        if(in_array(Auth::user()->user_role, ['collector', 'guest'])){
-            return redirect()->route('home');
-        }
+        $this->userGuard();
         return view('patients.add_patient');
     }
 
@@ -50,13 +51,12 @@ class PatientsController extends Controller
      */
     public function store(Request $request)
     {
-        if(in_array(Auth::user()->user_role, ['collector', 'guest'])){
-            return redirect()->route('home');
-        }
+        $this->userGuard();
 
         $this->validate($request, [
             'name'          => 'required|min:5',
             'birthday'      => 'required',
+            'genre'         => 'required',
             'born_location' => 'required|min:2',
             'father_name'   => 'required|min:5',
             'mother_name'   => 'required|min:5',
@@ -67,17 +67,18 @@ class PatientsController extends Controller
         Patients::create([
             'full_name'     => $request->name,
             'birthday'      => $request->birthday,
+            'genre'         => $request->genre,
             'born_location' => $request->born_location,
             'name_father'   => $request->father_name,
             'name_mother'   => $request->mother_name,
             'name_mentor'   => $request->mentor_name,
             'helper_contact'=> $request->helper_contact,
-            'helper_email'  => $request->helper_email,
+            'helper_email'  => $request->helper_email !== null ? $request->helper_email : 'NP',
             'code_patient'  => Str::random(10),
             'user_id'       => Auth::user()->id
         ]);
         
-        return redirect(route('list_patient'));
+        return redirect(route('patient.index'));
     }
 
     /**
@@ -88,13 +89,18 @@ class PatientsController extends Controller
      */
     public function show($patients)
     {
-        if(in_array(Auth::user()->user_role, ['guest'])){
-            return redirect()->route('home');
-        }
+        $this->userGuard();
 
         $info = Patients::findOrFail($patients);
         $vaccination = Patient_vaccinate::where('patient_id', '=', $patients)->get();
+        
         // Code a revoir pour refactoring
+        // $vacinate_count[] = Patient_vaccinate::where(DB::raw("DATE_FORMAT(created_at, '%M')"), $value)->count();
+        
+        // $update = Vaccine_calendar::where(DB::raw('SELECT vaccine_calendar_id FROM patient_vaccinates WHERE WHERE patient_id = '.$patients))->get();
+
+        // dd($update);
+
         $vaccine_update = DB::select('SELECT * FROM vaccine_calendars WHERE id NOT IN (SELECT vaccine_calendar_id FROM patient_vaccinates WHERE patient_id = '.$patients.')');
 
         return view('patients.show_patient', ['infos' => $info, 'vaccinations' => $vaccination, 'vaccine_updates' => $vaccine_update]);
@@ -108,9 +114,7 @@ class PatientsController extends Controller
      */
     public function edit($patients)
     {
-        if(in_array(Auth::user()->user_role, ['collector', 'guest'])){
-            return redirect()->route('home');
-        }
+        $this->userGuard();
 
         $patient = Patients::findOrFail($patients);
         return view('patients.edit_patient', ['patient' => $patient]);
@@ -125,9 +129,7 @@ class PatientsController extends Controller
      */
     public function update(Request $request, $patients)
     {
-        if(in_array(Auth::user()->user_role, ['collector', 'guest'])){
-            return redirect()->route('home');
-        }
+        $this->userGuard();
 
         $this->validate($request, [
             'name'          => 'required|min:5',
@@ -143,6 +145,7 @@ class PatientsController extends Controller
         $patient->update([
             'full_name'     => $request->name,
             'birthday'      => $request->birthday,
+            'genre'         => $request->genre,
             'born_location' => $request->born_location,
             'name_father'   => $request->father_name,
             'name_mother'   => $request->mother_name,
@@ -151,6 +154,10 @@ class PatientsController extends Controller
             'helper_email'  => $request->helper_email,
             'user_id'       => Auth::user()->id
         ]);
+        
+        if(Auth::user()->user_role === 'collector'){
+            return redirect(route('home'));
+        }
         return redirect()->route('patient.index');
     }
 

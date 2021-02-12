@@ -1,15 +1,15 @@
-const DYNAMIC_CACHE = 'pwa-dynamic-v8';
+const DYNAMIC_CACHE = 'pwa-dynamic-v10';
 
 var filesToCache = [
     '/',
     '/offline',
     '/list_vacinate',
     '/vaccinate/create',
+    '/patient/create',
     '/css/app.css',
     '/css/all.css',
     '/css/sb-admin-2.min.css',
     '/styles_css/bootstrap.css',
-    '/js/bootstrap.bundle.js',
     '/js/app.js',
     '/js/jquery.min.js',
     '/js/bootstrap.js',

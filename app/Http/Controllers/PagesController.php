@@ -6,7 +6,6 @@ use App\Models\Patient_vaccinate;
 use App\Models\Patients;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 
 // use Illuminate\Http\Request;
@@ -14,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 class PagesController extends Controller{
     public function index(){
         $user = User::all();
+        $patients = Patients::orderBy('id')->get();
         
         $genre = ['M', 'F'];
         $genre_count = [];
@@ -24,21 +24,24 @@ class PagesController extends Controller{
         $months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         $vacinate_count = [];
         foreach ($months as $key => $value) {
-            $vacinate_count[] = Patient_vaccinate::where(DB::raw("DATE_FORMAT(created_at, '%M')"), $value)->count();
+            $vacinate_count[] = Patient_vaccinate::where(DB::raw("DATE_FORMAT(created_at, '%b')"), $value)->count();
         }
+
+        // dd($vacinate_count);
         
         return view('pages.home', [
                     'user_count'    => $user,
-                    'genre_count'   => $genre_count
-                ])->with('vacinate_count',json_encode($vacinate_count, JSON_NUMERIC_CHECK));
+                    'genre_count'   => $genre_count,
+                    'patients'      => $patients
+                ])->with('vacinate_count', json_encode($vacinate_count, JSON_NUMERIC_CHECK));
     }
     public function profile(){
         return view('profile.show');
     }
 
-    public function listPatient(){
-        return view('admin.patients');
-    }
+    // public function listPatient(){
+    //     return view('admin.patients');
+    // }
 
     public function offlineSubmission(){
         $submission = Patient_vaccinate::where('user_id', '=', Auth::id())->get();

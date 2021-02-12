@@ -27,6 +27,20 @@
                     </div>
                 </div>
 
+                <div class="form-group {{ $errors->has('genre') ? 'has-error' : '' }}">
+                    <label class="control-label" for="genre"> {{ __('Genre') }} </label>
+                    <select class="form-control custom-select" required name="genre" id="genre">
+                        <option value=""> Veuilez choisir le genre </option>
+                        <option value="M" {{ old('genre') == 'M' ? "selected" : "" }}> {{ __("Homme") }} </option>
+                        <option value="F" {{ old('genre') == 'F' ? "selected" : "" }}> {{ __("Femme") }} </option>                        
+                    </select>
+                    {!! $errors->first('genre', '<span class="text-danger">:message</span>') !!}
+
+                    <div class="invalid-feedback">
+                        Veuillez choisir le genre du patient
+                    </div>
+                </div>
+
                 <div class="form-group {{ $errors->has('born_location') ? 'has-error' : '' }}">
                     <label class="control-label" for="born_location"> {{ __('Lieu de naissance') }} </label>
                     <input type="text" class="form-control" name="born_location" id="born_location" required value="{{ old('born_location') ?? $patient->born_location }}" placeholder="Lieu de naissance">

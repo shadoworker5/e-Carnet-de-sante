@@ -52,7 +52,7 @@ class APIVacinatePatient extends Controller
             'path_capture'           => $request->image_path !== "" ? $request->image_path : null
             ]);
         return response()->json([
-            'success' => "Données sauvegarder avec succès"
+            'success' => "Données de vaccination sauvegarder avec succès"
         ]);
         // if(get_vacine_status_per_patient($patient_id) === "Pas à jour"){
         // }else{

@@ -23,7 +23,8 @@ request.onupgradeneeded = () => {
 request.onsuccess =  function showData() {
     db = request.result;
     if(navigator.onLine){
-        SendData()
+        SendVacinateData();
+        SavePatientData();
     }else{
         renderData();
     }
@@ -33,29 +34,6 @@ request.onblocked = () => {
     // code
 };
 
-function getVacineName(id){
-    let query = db.transaction([VACINE_CALENDAR]);
-    let store = query.objectStore(VACINE_CALENDAR);
-    let request = store.getAll();
-    const id_vacine = id;
-    
-    request.onsuccess = () => {
-        if (request.result) {
-            for (let i = 0; i <= request.result.length; i++) {
-                if(request.result[i].vacine_id === parseInt(id_vacine)){
-                    showNameVacine(request.result[i].vacine_name);
-                    break;
-                }
-            }
-        }        
-    }
-    return id;
-}
-
-function showNameVacine(name = ''){
-    console.log(name);
-}
-
 function renderData(){
     let query = db.transaction([VACINATE_PATIENT_DATA]);
     let store = query.objectStore(VACINATE_PATIENT_DATA);
@@ -63,16 +41,14 @@ function renderData(){
     let list_patient = document.querySelector("#list_patient")
     
     request.onsuccess = (event) => {
-        if (request.result) {
+        if (request.result && courant_page === '/list_vacinate') {
             for (let i = 0; i < request.result.length; i++) {
-                if(request.result[i].status === 'not save yet'){
+                if(request.result[i].status === '0'){
                     let html = `
-                    <tr class="${i % 2 == 0 ? 'bg-info text-white' : ''}">
-                        <td> ${i+1} </td>
-    
+                    <tr>
                         <td> ${request.result[i].code_patient} </td>
     
-                        <td> ${request.result[i].vaccine_name} </td>
+                        <td> ${btoa(request.result[i].vaccine_name)} </td>
     
                         <td> ${request.result[i].date_vaccinate} </td>
     
@@ -88,7 +64,7 @@ function renderData(){
                         
                         <td>
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                <a href="patient/${request.result[i].id}" class="btn btn-success">
+                                <a href="patient/${request.result[i].id}" data-bs-toggle="modal" data-bs-target="#edit_vacinate" class="btn btn-success btn_update" id="vacinate_ ${request.result[i].code_patient}">
                                     Modifier
                                 </a>
                             </div>
@@ -115,47 +91,155 @@ const getData = function() {
     .then(response => SaveData(response))
 }
 
-function SaveData(data_server){
-    let transaction = db.transaction([VACINE_CALENDAR], "readwrite");
-    let store = transaction.objectStore(VACINE_CALENDAR);
+// Send patient vacinate to server
+function SendVacinateData(){
+    let query = db.transaction([VACINATE_PATIENT_DATA], 'readwrite');
+    let store = query.objectStore(VACINATE_PATIENT_DATA);
+    let request = store.getAll();
+    let url = '/api/vacinate_patient';
+    
+    request.onsuccess = (event) => {
+        if (request.result) {
+            for(let i = 0; i < request.result.length; i++){
+                if(request.result[i].status === "0"){
+                    let vaccination = {
+                        user_id             : atob(request.result[i].user_id),
+                        vaccine_id          : request.result[i].vaccine_name,
+                        code_patient        : request.result[i].code_patient,
+                        date_vacination     : request.result[i].date_vaccinate,
+                        heure_vaicnation    : request.result[i].time_vaccinate,
+                        lot_number_vaccine  : request.result[i].lot_number_vaccine,
+                        rappelle            : request.result[i].rappelle,
+                        image_path          : request.result[i].image_path,
+                        doctor_name         : request.result[i].doctor_name,
+                        doctor_phone        : request.result[i].doctor_phone            
+                    };
+                    let options = {
+                        method: 'POST',
+                        body: JSON.stringify(vaccination),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                    fetch(url, options)
+                    .then(resulte => resulte.json())
+                    .then(resulte => console.log(resulte));
 
-    for(let i = 0; i < data_server.length; i++){
-        let vacine = {
-            vacine_id      : data_server[i].id,
-            vacine_name    : data_server[i].name_vaccine,
-            patient_age       : data_server[i].patient_age,
-            illness        : data_server[i].illness_against
-        };
-        store.put(vacine);
+                    // mise a jour
+                    request.result[i].status = '1'
+                    store.put(request.result[i]);
+                }
+            }
+        } 
     }
+}
 
-    // let transaction = db.transaction(["data_patient"], "readwrite");
-    // let store = transaction.objectStore("data_patient");
+// Send patient vacinate to server
+function SavePatientData(){
+    let query = db.transaction([PATIENT_DATA], 'readwrite');
+    let store = query.objectStore(PATIENT_DATA);
+    let request = store.getAll();
+    let url = '/api/patient';
+        
+    request.onsuccess = (event) => {
+        if (request.result) {
+            for(let i = 0; i < request.result.length; i++){
+                if(request.result[i].status === "0"){
+                    let vaccination = {
+                        user_id         : atob(request.result[i].user_id),
+                        name_patient    : request.result[i].name_patient,
+                        birthday        : request.result[i].birthday,
+                        genre           : request.result[i].genre,
+                        born_location   : request.result[i].born_location,
+                        father_name     : request.result[i].father_name,
+                        mother_name     : request.result[i].mother_name,
+                        mentor_name     : request.result[i].mentor_name,
+                        helper_contact  : request.result[i].helper_contact,
+                        helper_email    : request.result[i].helper_email
+                    };
+                    let options = {
+                        method: 'POST',
+                        body: JSON.stringify(vaccination),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                    fetch(url, options)
+                    .then(resulte => resulte.json())
+                    .then(resulte => console.log(resulte));
 
-    // for(let i = 0; i < data_server.length; i++){
-    //     let patient = {
-    //         patient_id      : data_server[i].id,
-    //         patient_code    : data_server[i].code_patient,
-    //         full_name       : data_server[i].full_name,
-    //         birthday        : data_server[i].birthday,
-    //         name_father     : data_server[i].name_father,
-    //         name_mother     : data_server[i].name_mother,
-    //         name_mentor     : data_server[i].name_mentor,
-    //         helper_contact  : data_server[i].helper_contact,
-    //         helper_email    : data_server[i].helper_email,
-    //         other_field     : data_server[i].other_field
-    //     };
-    //     store.put(patient);
-    // }
+                    // mise a jour
+                    request.result[i].status = '1'
+                    store.put(request.result[i]);
+                }
+            }
+        } 
+    }
 }
 
 // submit_vacinate_patient
 let courant_page = window.location.pathname;
 
-// btn_edit_vacinate
+let btn_edit_vacinate = document.getElementsByClassName("btn_update");
+Array.from(btn_edit_vacinate).forEach(function(element) {
+    element.addEventListener('click', getVacinateID);
+});
+
+function getVacinateID(event){
+    if(!navigator.onLine){
+        // event.preventDefault()
+        // updateVacinate(this.getAttribute('id').split('_')[1]);
+    }else{
+        // console.log("Online");
+    }
+}
+
+function updateVacinate(patient_id){
+    console.log(patient_id);
+    let base;
+    let form = document.getElementById('form_edit_vacinate');
+    let open_db = indexedDB.open(DB_Name, DB_VERSION);
+    
+    // open_db.onsuccess =  () => {
+    //     base = open_db.result;
+    //     let query = base.transaction([VACINATE_PATIENT_DATA], 'readwrite');
+    //     let store = query.objectStore(VACINATE_PATIENT_DATA);
+    //     let request = store.getAll()
+    
+    //     request.onsuccess =  () => {
+    //         if (request.result) {
+    //             console.log(request.result);
+    //         }
+    //     };
+    
+    //     request.onerror = (err) => {
+    //         console.log("Erreur: "+err)
+    //     };
+    // };
+}
+
+function setStorage(patient_id){
+    localStorage.setItem('patient_id', patient_id);
+}
+
+function getStorage(){
+    return localStorage.getItem('patient_id');
+}
+
+const codeAutoGenerate = (longueur = 10) => {
+    //cette partie permet de generer de facon aleatoire 
+    let lettre = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let mot = "";
+    let taille = lettre.length;
+    
+    for(let i=0; i < longueur; i++){
+        mot += lettre[Math.floor(Math.random() * taille)];
+    }
+    return mot;
+}
 
 let btn_send_vacinate = document.getElementById("submit_vacinate_patient");
-if(courant_page === "/vaccinate/create"){
+if(courant_page === "/vaccinate/create" || courant_page.startsWith('/add_vacinate/')){
     btn_send_vacinate.addEventListener("click", event => {
         if(!navigator.onLine){
             event.preventDefault();        
@@ -178,13 +262,11 @@ if(courant_page === "/vaccinate/create"){
                 lot_number_vaccine  : vacinate_data.lot_number_vaccine.value,
                 rappelle            : vacinate_data.rappelle.value,
                 image_path          : vacinate_data.image_path.value,
-                status              : 'not save yet'
+                status              : '0'
             };
     
             let request = store.add(data_vacinate);
             request.onsuccess = function(e){
-                window.location.href = '/list_vacinate';
-    
                 vacinate_data.patient_code.value        = '';
                 vacinate_data.vaccine_name.value        = '';
                 vacinate_data.date_vaccinate.value      = '';
@@ -194,6 +276,8 @@ if(courant_page === "/vaccinate/create"){
                 vacinate_data.lot_number_vaccine.value  = '';
                 vacinate_data.rappelle.value            = '';
                 vacinate_data.image_path.value          = '';
+                
+                window.location.href = '/list_vacinate';
             }
     
             request.onerror = function(e){
@@ -208,55 +292,50 @@ if(courant_page === "/patient/create"){
     btn_add_patient.addEventListener('click', event => {
         if(!navigator.onLine){
             event.preventDefault();
-            // Recuperation des donnees du formulaires    
+            // Recuperation du formulaires
+            let form_add_patient = document.querySelector('#form_add_patient');
+
+            // Recuperation des donnees du formulaires
+            let user_id = document.querySelector("a[data-user]").getAttribute('data-user');
+            const data_patient = {
+                user_id         : user_id,
+                name_patient    : form_add_patient.name.value,
+                birthday        : form_add_patient.birthday.value,
+                born_location   : form_add_patient.born_location.value,
+                father_name     : form_add_patient.father_name.value,
+                mother_name     : form_add_patient.mother_name.value,
+                mentor_name     : form_add_patient.mentor_name.value,
+                helper_contact  : form_add_patient.helper_contact.value,
+                helper_email    : form_add_patient.helper_email.value,
+                genre           : form_add_patient.genre.value,
+                status          : '0'
+            };
+
+            let transaction = db.transaction([PATIENT_DATA], "readwrite");
+            let store = transaction.objectStore(PATIENT_DATA);
+
+            console.log(data_patient);
+
+            let request = store.add(data_patient);
+            request.onsuccess = function(e){
+                form_add_patient.name.value             = '';
+                form_add_patient.birthday.value         = '';
+                form_add_patient.born_location.value    = '';
+                form_add_patient.father_name.value      = '';
+                form_add_patient.mother_name.value      = '';
+                form_add_patient.mentor_name.value      = '';
+                form_add_patient.helper_contact.value   = '';
+                form_add_patient.helper_email.value     = '';
+                form_add_patient.helper_email.value     = '';
+                
+                window.location.href = '/home';
+            }
+    
+            request.onerror = function(e){
+                // code
+            }
         }
     });
-}
-
-// show into the patient vacinate
-
-function SendData(){
-    let query = db.transaction([VACINATE_PATIENT_DATA], 'readwrite');
-    let store = query.objectStore(VACINATE_PATIENT_DATA);
-    let request = store.getAll();
-    
-    request.onsuccess = (event) => {
-        let url = '/api/vacinate_patient';
-        
-        if (request.result) {
-            for(let i = 0; i < request.result.length; i++){
-                if(request.result[i].status === "not save yet"){
-                    let vaccination = {
-                        user_id             : atob(request.result[i].user_id),
-                        vaccine_id          : request.result[i].vaccine_name,
-                        code_patient        : request.result[i].code_patient,
-                        date_vacination     : request.result[i].date_vaccinate,
-                        heure_vaicnation    : request.result[i].time_vaccinate,
-                        lot_number_vaccine  : request.result[i].lot_number_vaccine,
-                        rappelle            : request.result[i].lot_number_vaccine,
-                        image_path          : request.result[i].image_path,
-                        doctor_name         : request.result[i].doctor_name,
-                        doctor_phone        : request.result[i].doctor_phone            
-                    };
-                    let options = {
-                        method: 'POST',
-                        body: JSON.stringify(vaccination),
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    }
-                    fetch(url, options)
-                    .then(resulte => resulte.json())
-                    .then(resulte => console.log(resulte));
-
-                    // mise a jour
-                    console.log("Sending: "+request.result[i].rappelle);
-                    request.result[i].status = 'update'
-                    store.put(request.result[i]);
-                }
-            }
-        } 
-    }
 }
 
 // affichage des notifications push

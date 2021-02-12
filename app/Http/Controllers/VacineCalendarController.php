@@ -12,15 +12,19 @@ class VacineCalendarController extends Controller
         // $this->middleware(['authadmin', 'authsupervisor']);
     }
 
+    protected function userGuard(){
+        if(in_array(Auth::user()->user_role, ['guest'])){
+            return redirect()->route('home');
+        }
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        if(in_array(Auth::user()->user_role, ['collector', 'guest'])){
-            return redirect()->route('home');
-        }
+        $this->userGuard();
 
         return view('pages.calendar', ['vacines' => Vaccine_calendar::paginate(10)]);
     }
@@ -32,9 +36,7 @@ class VacineCalendarController extends Controller
      */
     public function create()
     {
-        if(in_array(Auth::user()->user_role, ['collector', 'guest'])){
-            return redirect()->route('home');
-        }
+        $this->userGuard();
 
         return view('vaccines.vacine_calendar');
     }

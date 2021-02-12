@@ -12,6 +12,8 @@ class PatientVacinateController extends Controller
 {
     public function __construct(){
         // $this->middleware(['authadmin', 'authsupervisor']);
+        // $this->middleware('log')->only('index');
+        // $this->middleware('subscribed')->except('store');
     }
 
     /**
@@ -24,6 +26,12 @@ class PatientVacinateController extends Controller
         //
     }
 
+    protected function userGuard(){
+        if(in_array(Auth::user()->user_role, ['guest'])){
+            return redirect()->route('home');
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -31,10 +39,7 @@ class PatientVacinateController extends Controller
      */
     public function create()
     {
-        if(in_array(Auth::user()->user_role, ['guest'])){
-            return redirect()->route('home');
-        }
-
+        $this->userGuard();
         $vaccines = Vaccine_calendar::all();
         return view('vaccines.vacinate_patient', ['vaccines' => $vaccines]);
     }
@@ -47,9 +52,7 @@ class PatientVacinateController extends Controller
      */
     public function store(Request $request)
     {
-        if(in_array(Auth::user()->user_role, ['guest'])){
-            return redirect()->route('home');
-        }
+        $this->userGuard();
 
         $this->validate($request, [
             'patient_code'          => 'required|min:8',
@@ -92,9 +95,7 @@ class PatientVacinateController extends Controller
      */
     public function show($patient_vaccinates)
     {
-        if(in_array(Auth::user()->user_role, ['guest'])){
-            return redirect()->route('home');
-        }
+        $this->userGuard();
 
         $vaccine_info = Patient_vaccinate::findOrFail($patient_vaccinates);
         $code_patient = Patients::findOrFail($vaccine_info->patient_id);
@@ -110,9 +111,7 @@ class PatientVacinateController extends Controller
      */
     public function edit($patient_vaccinates)
     {
-        if(in_array(Auth::user()->user_role, ['guest'])){
-            return redirect()->route('home');
-        }
+        $this->userGuard();
 
         $vaccines = Vaccine_calendar::all();
         $vaccine_info = Patient_vaccinate::findOrFail($patient_vaccinates);
@@ -130,9 +129,7 @@ class PatientVacinateController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if(in_array(Auth::user()->user_role, ['guest'])){
-            return redirect()->route('home');
-        }
+        $this->userGuard();
 
         $this->validate($request, [
             'patient_code'          => 'required|min:8',
@@ -172,5 +169,13 @@ class PatientVacinateController extends Controller
     public function destroy(Patient_vaccinate $patient_vaccinates)
     {
         //
+    }
+
+    public function addVacinate($patient_code){
+        $this->userGuard();
+        
+        $vaccines = Vaccine_calendar::all();
+
+        return view('vaccines.vacinate_patient', ['vaccines' =>$vaccines, 'patient_code' => $patient_code]);
     }
 }

@@ -1,12 +1,10 @@
-// 'use strict'
-
 if ('serviceWorker' in navigator) {
-    // navigator.serviceWorker.register('sw.js')
-    //     .then((reg) => {
-    //         // code
-    //     }).catch((err) => {
-    //         // code d'erreur
-    //     })
+    navigator.serviceWorker.register('sw.js')
+        .then((reg) => {
+            // code
+        }).catch((err) => {
+            // code d'erreur
+        })
 }
 
 // Cheack connexion and send to database
@@ -20,14 +18,33 @@ let timer = () => {
 }
 
 const check = () => {
-    let banner = document.getElementById("offline_banner");
-    
+    let error_network = document.getElementById("error_network");
+    let btn_close = document.createElement('button');
+    btn_close.className = "btn-close";
+    btn_close.type = "button"
+    btn_close.setAttribute('data-bs-dismiss', 'alert');
+    btn_close.setAttribute('aria-label', 'Close');
+
+    let banner = document.createElement('div');
+    banner.id = "offline_banner";
+    banner.className = "alert alert-warning alert-dismissible text-center fade show mt-5";
+    banner.textContent = "Vous êtes hors ligne maintenant"
+    banner.style.zIndex = 1000;
+    banner.style.position = 'fixed';
+    banner.style.top = 0;
+    banner.style.width = '100%'
+    banner.appendChild(btn_close);
+
     if(!navigator.onLine){
-        banner.classList.add('show');
+        if(!error_network.hasChildNodes()){
+            error_network.appendChild(banner);
+        }
         clearInterval(id_timer_show);
         id_timer_hidden = timer();
     }else{
-        banner.classList.remove('show');
+        if(error_network.hasChildNodes() === true){
+            document.getElementById("offline_banner").remove();
+        }
         clearInterval(id_timer_hidden);
         id_timer_show = timer();
     }

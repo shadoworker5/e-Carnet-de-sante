@@ -55,7 +55,9 @@
                             <td> {{ __("Action: ") }} </td>
                             <td>
                                 <div class="btn-group" role="group">
-                                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#info_delete"> {{ __("Supprimer") }} </button>
+                                    @if(Auth::user()->user_role !== 'collector')
+                                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#info_delete"> {{ __("Supprimer") }} </button>
+                                    @endif                
                                     <a href="{{ route('patient.edit', $infos) }}" class="btn btn-primary"> {{ __("Modifier") }} </a>
                                 </div>
                             </td>
@@ -65,7 +67,7 @@
             </table>
             
             @if(Auth::user()->user_role !== 'guest')
-                <a href="{{ route('vaccinate.create') }}" id="vacine_patient" data-code="{{ $infos->code_patient }}" class="btn btn-success">
+                <a href="{{ route('add_vacination', $infos->code_patient) }}" id="vacine_patient" data-code="{{ $infos->code_patient }}" class="btn btn-success">
                     Ajouter une vaccination
                 </a>
             @endif

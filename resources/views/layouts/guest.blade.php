@@ -12,16 +12,25 @@
 
         <!-- Styles -->
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/all.css') }}">
         <link rel="stylesheet" href="{{ asset('styles_css/bootstrap.css') }}">
 
         <!-- Scripts -->
         <script src="{{ mix('js/app.js') }}" defer></script>
     </head>
-    <body >
+    <body>
+        <header>
+            @include('layouts.partials.menu_top')
+        </header>
         <!-- <div class="container-fluid">
             <div class="row col-md-3 offset-md-4"> -->
                 {{ $slot }}
             <!-- </div>
         </div> -->
+        <div>
+            @include('layouts.partials.footer')
+        </div>
+
+        <script src="{{ asset('js/bootstrap.js') }}"></script>
     </body>
 </html>

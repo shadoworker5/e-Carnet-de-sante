@@ -107,8 +107,7 @@
                             {{ $patient->name_father.', '.$patient->name_mother }}
                         </td>
 
-                        <td>
-                            {{ get_vacine_status_per_patient($patient->id) }}
+                        <td> {!! get_vacine_status_per_patient($patient->id) ? '<div class="text-center text-danger"> <i class="fa fa-times fa-2x"></i> </div>' : '<div class="text-center text-success"> <i class="fa fa-check"></i> </div>' !!}
                         </td>
                         
                         <td>

@@ -5,7 +5,7 @@
         <div class="col-md-6 offset-md-3 mb-2">
             <h2 class="text-center"> {{ __('Formulaire patient') }}</h2>
 
-            <form action="{{ route('patient.store') }}" class="needs-validation" novalidate method="post">
+            <form action="{{ route('patient.store') }}" id="form_add_patient" class="needs-validation" novalidate method="post">
                 @csrf
 
                 <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
@@ -23,6 +23,20 @@
                     {!! $errors->first('birthday', '<span class="text-danger">:message</span>') !!}
                     <div class="invalid-feedback">
                         Veuillez choisir la date de naissance
+                    </div>
+                </div>
+
+                <div class="form-group {{ $errors->has('genre') ? 'has-error' : '' }}">
+                    <label class="control-label" for="genre"> {{ __('Genre') }} </label>
+                    <select class="form-control custom-select" required name="genre" id="genre">
+                        <option value=""> Veuilez choisir le genre </option>
+                        <option value="M" {{ old('genre') == 'M' ? "selected" : "" }}> {{ __("Homme") }} </option>
+                        <option value="F" {{ old('genre') == 'F' ? "selected" : "" }}> {{ __("Femme") }} </option>                        
+                    </select>
+                    {!! $errors->first('genre', '<span class="text-danger">:message</span>') !!}
+
+                    <div class="invalid-feedback">
+                        Veuillez choisir le genre du patient
                     </div>
                 </div>
 

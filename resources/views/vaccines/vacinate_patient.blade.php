@@ -10,7 +10,7 @@
 
                 <div class="form-group {{ $errors->has('patient_code') ? 'has-error' : '' }}">
                     <label class="control-label" for="patient_code"> {{ __('Code du patient') }} </label>
-                    <input type="text" class="form-control" name="patient_code" required id="patient_code" value="{{ old('patient_code') }}" placeholder="Code du patient">
+                    <input type="text" class="form-control" name="patient_code" required id="patient_code" value="{{ old('patient_code') ?? ($patient_code ?? '') }}" @if(isset($patient_code)){{ 'readonly' }} @endif placeholder="Code du patient">
                     {!! $errors->first('patient_code', '<span class="text-danger">:message</span>') !!}
 
                     <div class="invalid-feedback">

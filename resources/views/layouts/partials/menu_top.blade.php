@@ -12,11 +12,11 @@
 			@auth
 				@if(in_array(Auth::user()->user_role, ['root', 'admin']))
 					<li class="nav-item">
-						<a class="nav-link active text-white" aria-current="page" href="{{ route('dashboard') }}"> {{ __('Dashboard') }} </a>
+						<a class="nav-link text-white" aria-current="page" href="{{ route('dashboard') }}"> {{ __('Dashboard') }} </a>
 					</li>
 				@else
 					<li class="nav-item">
-						<a class="nav-link active text-white" aria-current="page" href="{{ route('profile') }}"> {{ __('Mon compte') }} </a>
+						<a class="nav-link text-white" aria-current="page" href="{{ route('profile') }}"> {{ __('Mon compte') }} </a>
 					</li>
 				@endif
 				
@@ -30,7 +30,7 @@
 					</li>
 				@endif
 
-				@if(in_array(Auth::user()->user_role, ['root', 'admin','collector', 'supervisor']))
+				@if(in_array(Auth::user()->user_role, ['root', 'admin', 'supervisor']))
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 							Patients
