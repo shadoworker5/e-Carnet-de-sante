@@ -277,6 +277,7 @@ if(courant_page === "/vaccinate/create" || courant_page.startsWith('/add_vacinat
                 vacinate_data.rappelle.value            = '';
                 vacinate_data.image_path.value          = '';
                 
+                subscribe('Vaccination enregistré avec succès.');
                 window.location.href = '/list_vacinate';
             }
     
@@ -328,6 +329,7 @@ if(courant_page === "/patient/create"){
                 form_add_patient.helper_email.value     = '';
                 form_add_patient.helper_email.value     = '';
                 
+                subscribe('Patient enregistré avec succès.');
                 window.location.href = '/home';
             }
     
@@ -339,9 +341,9 @@ if(courant_page === "/patient/create"){
 }
 
 // affichage des notifications push
-function subscribe(patient_code) {
+function subscribe(notification_content){
     const options = {
-        body: `Vaccination du patient ${patient_code} enregistré avec succèss.`,
+        body: notification_content,
         icon: "/images/icon-72x72.png",
         vibrate: [100, 50, 100],
         data: {
@@ -356,13 +358,24 @@ function subscribe(patient_code) {
 
     if (Notification.permission !== "granted") {
         if (Notification.requestPermission() === "denied") {
-            console.warn("L'utilisateur n'a pas autorisé les notifications");
+            // console.warn("L'utilisateur n'a pas autorisé les notifications");
             return null;
         }
     }
     if (Notification.permission == "granted") {
         navigator.serviceWorker.getRegistration().then(reg => {
             reg.showNotification('Nouvelle notification', options)
-        });
+        }).catch(err => console.log(err));
     }
 }
+
+const enable_notification = () => {
+    if (Notification.permission !== "granted") {
+        if (Notification.requestPermission() === "denied") {
+            console.warn("L'utilisateur n'a pas autorisé les notifications");
+            return null;
+        }
+    }
+}
+
+enable_notification();

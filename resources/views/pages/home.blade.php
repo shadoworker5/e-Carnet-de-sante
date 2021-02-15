@@ -18,7 +18,7 @@
                             <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                                 aria-labelledby="dropdownMenuLink1">
                                 <div class="dropdown-header"> {{ __("Options") }} </div>
-                                <a class="dropdown-item" href="#"> {{ __("Actualiser") }} </a>
+                                <a class="dropdown-item" href="#" onclick="window.location.reload();"> {{ __("Actualiser") }} </a>
                             </div>
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                             <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                                 aria-labelledby="dropdownMenuLink">
                                 <div class="dropdown-header"> {{ __("Options") }} </div>
-                                <a class="dropdown-item" href="#"> {{ __("Actualiser") }} </a>
+                                <a class="dropdown-item" href="#" onclick="window.location.reload();"> {{ __("Actualiser") }} </a>
                             </div>
                         </div>
                     </div>
@@ -65,9 +65,9 @@
                     </div>
                 </div>
             </div>
-            
+            <!-- <button onclick="subscribe('Test')"> Click </button> -->
         @elseif(in_array(Auth::user()->user_role, ['collector']))
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <div class="accordion" id="accordionExample">
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingOne">
@@ -92,7 +92,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-10">
+            <div class="col-md-9">
                 <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold"> {{ __("Liste des patients") }} </h6>

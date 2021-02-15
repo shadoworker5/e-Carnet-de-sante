@@ -27,14 +27,13 @@ class PagesController extends Controller{
             $vacinate_count[] = Patient_vaccinate::where(DB::raw("DATE_FORMAT(created_at, '%b')"), $value)->count();
         }
 
-        // dd($vacinate_count);
-        
         return view('pages.home', [
                     'user_count'    => $user,
                     'genre_count'   => $genre_count,
                     'patients'      => $patients
                 ])->with('vacinate_count', json_encode($vacinate_count, JSON_NUMERIC_CHECK));
     }
+    
     public function profile(){
         return view('profile.show');
     }

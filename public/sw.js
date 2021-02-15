@@ -1,9 +1,10 @@
-const DYNAMIC_CACHE = 'pwa-dynamic-v10';
+const DYNAMIC_CACHE = 'pwa-dynamic-v20';
 
 var filesToCache = [
     '/',
     '/offline',
     '/list_vacinate',
+    'calendar',
     '/vaccinate/create',
     '/patient/create',
     '/css/app.css',
@@ -41,27 +42,52 @@ self.addEventListener('activate', event => {
 self.addEventListener("fetch", event => {
     event.respondWith(
         caches.match(event.request).then(cacheResponse => {
-            if(cacheResponse){
-                event.waitUntil(fetch(event.request).then(response => {
-                    caches.open(DYNAMIC_CACHE).then(cache => {
-                        cache.put(event.request, response)
-                    })
-                }));
-                return cacheResponse;
-            }else{
-                return fetch(event.request).then(fetchResponse => {
-                    return caches.open(DYNAMIC_CACHE).then(cache => {
-                        cache.put(event.request.url, fetchResponse.clone());
-                        limitCacheSize(DYNAMIC_CACHE, 250);
-                        return fetchResponse;
-                    })
-                });
-            }
-        }).catch(() => {
-            return caches.match('/offline');
+            return fetch(event.request).then(fetchResponse => {
+                return caches.open(DYNAMIC_CACHE).then(cache => {
+                    cache.put(event.request.url, fetchResponse.clone());
+                    limitCacheSize(DYNAMIC_CACHE, 350);
+                    return fetchResponse;
+                })
+            });
+        }).catch((response) => {
+            return caches.match(event.request)
+            .then((response) => {
+                if (response === undefined) { 
+                    return caches.match('/offline');
+                }
+                return response;
+            });
         })
     );
 });
+
+
+
+// Serve from Cache
+// self.addEventListener("fetch", event => {
+//     event.respondWith(
+//         caches.match(event.request).then(cacheResponse => {
+//             if(cacheResponse){
+//                 event.waitUntil(fetch(event.request).then(response => {
+//                     caches.open(DYNAMIC_CACHE).then(cache => {
+//                         cache.put(event.request, response.clone())
+//                     })
+//                 }));
+//                 return cacheResponse;
+//             }else{
+//                 return fetch(event.request).then(fetchResponse => {
+//                     return caches.open(DYNAMIC_CACHE).then(cache => {
+//                         cache.put(event.request.url, fetchResponse.clone());
+//                         limitCacheSize(DYNAMIC_CACHE, 350);
+//                         return fetchResponse;
+//                     })
+//                 });
+//             }
+//         }).catch(() => {
+//             return caches.match('/offline');
+//         })
+//     );
+// });
 
 // Cache size limit function
 const limitCacheSize = (name, size) => {

@@ -33,7 +33,6 @@ const check = () => {
     banner.style.position = 'fixed';
     banner.style.top = 0;
     banner.style.width = '100%'
-    banner.appendChild(btn_close);
 
     if(!navigator.onLine){
         if(!error_network.hasChildNodes()){

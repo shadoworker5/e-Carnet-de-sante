@@ -3,29 +3,29 @@
     
     <div class="row mt-4">
         <div class="row">
-            <div class="form-floating col-md-2">
-                <input type="text" class="form-control" wire:model.defer.defer="user_name" placeholder="Nom de l'utilisateur" id="user_name" name="user_name">
-                <label for="user_name"> {{ __("Nom de l'utilisateur") }} </label>
-            </div>
-            
-            <div class="form-floating col-md-2">
-                <input type="text" class="form-control" wire:model.defer="user_mail" placeholder="Address e-mail" id="floatingFather" name="user_mail">
-                <label for="floatingFather"> {{ __("Address e-mail") }} </label>
+            <div class="col-md-3">
+                <select class="form-control" wire:model.lazy="per_page" name="choose" id="choose">
+                    @for($i = 5; $i <= 100; $i += 5)
+                        <option value="{{ $i }}"> {{ $i }} <option>
+                    @endfor
+                </select>
+                {{-- <label for="per_page"> {{ __('par page') }} </label> --}}
             </div>
 
-            <button class="btn btn-primary mt-2 col-md-2" wire:click="searchUser">
+            <div class="form-floating col-md-3">
+                <input type="text" class="form-control" wire:model.defer.defer="user_name" placeholder="Nom de l'utilisateur" id="user_name" name="user_name">
+                {{-- <label for="user_name"> {{ __("Nom de l'utilisateur") }} </label> --}}
+            </div>
+            
+            <div class="form-floating col-md-3">
+                <input type="text" class="form-control" wire:model.defer="user_mail" placeholder="Address e-mail" id="floatingFather" name="user_mail">
+                {{-- <label for="floatingFather"> {{ __("Address e-mail") }} </label> --}}
+            </div>
+
+            <button class="btn btn-primary col-md-3" wire:click="searchUser">
                 <i class="fa fa-search"></i>
                 {{ __("Rechercher") }}
             </button>
-
-        </div>
-        <div>
-            <select class="form-control mt-2" wire:model.lazy="per_page" name="choose" id="choose">
-                @for($i = 5; $i <= 100; $i += 5)
-                    <option value="{{ $i }}"> {{ $i }} <option>
-                @endfor
-            </select>
-            <label for="per_page"> {{ __('par page') }} </label>
         </div>
 
     </div>
@@ -63,23 +63,15 @@
             <tbody>
                 @forelse($users as $user)
                     <tr class="{{ $loop->index % 2 == 0 ? 'bg-info text-white' : '' }}">
-                        <td>
-                            {{ ++$loop->index }}
-                        </td>
+                        <td> {{ ++$loop->index }} </td>
 
-                        <td>
-                            {{ $user->name }}
-                        </td>
+                        <td> {{ $user->name }} </td>
 
-                        <td>
-                            {{ $user->email }}
-                        </td>
+                        <td> {{ $user->email }} </td>
                         
-                        <td>
-                            {{ $user->user_role }}
-                        </td>
+                        <td> {{ $user->user_role }} </td>
                         
-                        <td>
+                        <td class="text-center">
                             {!! $user->email_verified_at !== null ? '<i class="fa fa-check"></i>' : '<i class="fa fa-times text-danger"></i>' !!}
                         </td>
                         

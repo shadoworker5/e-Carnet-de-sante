@@ -2,7 +2,7 @@
 
 @section('main_content')
     <div class="row">
-        <div class="offset-md-2">
+        <div class="text-center mb-3 mt-5">
             <h3> Vous devez être connecter pour consulter cette page </h3>
             <a href="#" onclick="javascript:history.back();" class="btn btn-primary"> Revenir en arrière </a>
         </div>
