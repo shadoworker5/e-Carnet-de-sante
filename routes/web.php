@@ -35,13 +35,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 Route::middleware(['auth:sanctum', 'verified', 'authadmin'])->group(function(){
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
     Route::get('/list_user', [AdminController::class, 'listUser'])->name('list_user');
+    Route::get('/seting', [AdminController::class, 'setings'])->name('setings');
 });
 
 
 Route::resource('patient', PatientsController ::class)->middleware(['auth']);
 Route::resource('vaccinate', PatientVacinateController::class)->middleware('auth');
 Route::resource('calendar', VacineCalendarController::class)->middleware(['auth']);
-
-
 
 Route::get('/add_vacinate/{id}', [PatientVacinateController::class, 'addVacinate'])->middleware('auth')->name('add_vacination');

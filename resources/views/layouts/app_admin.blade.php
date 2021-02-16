@@ -85,7 +85,7 @@
                 <hr class="sidebar-divider">
     
                 <div class="sidebar-heading">
-                    {{ __("Autres") }} 
+                    {{ __("Paramètres") }} 
                 </div>
     
                 <li class="nav-item">
@@ -97,10 +97,17 @@
                     <div id="collapseVacine" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header"> {{ __("Options") }} </h6>
-                            <a class="collapse-item" href="#"> {{ __("Calendrier des vaccinations") }} </a>
-                            <a class="collapse-item" href="#"> {{ __("Ajouter un vaccin") }} </a>
+                            <a class="collapse-item" href="{{ route('calendar.index') }}"> {{ __("Calendrier des vaccinations") }} </a>
+                            <a class="collapse-item" href="{{ route('calendar.create') }}"> {{ __("Ajouter un vaccin") }} </a>
                         </div>
                     </div>
+                </li>
+
+                <li class="nav-item {{ $title == 'Réglages' ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('setings') }}">
+                        <i class="fas fa-tools"></i>
+                        <span> {{ __("Réglages") }} </span>
+                    </a>
                 </li>
     
                 <hr class="sidebar-divider d-none d-md-block">
@@ -293,6 +300,8 @@
                         </ul>
     
                     </nav>
+                    
+                    <div id="error_network"></div>
                    
                     <div class="container-fluid">
                         @yield('main_content')

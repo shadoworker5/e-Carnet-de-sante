@@ -39,4 +39,8 @@ class AdminController extends Controller{
     public function listUser(){
         return view('admin.users');
     }
+
+    public function setings(){
+        return view('admin.setings');
+    }
 }

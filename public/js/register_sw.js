@@ -1,10 +1,10 @@
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js')
-        .then((reg) => {
-            // code
-        }).catch((err) => {
-            // code d'erreur
-        })
+    // navigator.serviceWorker.register('sw.js')
+    //     .then((reg) => {
+    //         // code
+    //     }).catch((err) => {
+    //         // code d'erreur
+    //     })
 }
 
 // Cheack connexion and send to database
@@ -41,7 +41,7 @@ const check = () => {
         clearInterval(id_timer_show);
         id_timer_hidden = timer();
     }else{
-        if(error_network.hasChildNodes() === true){
+        if(error_network.hasChildNodes()){
             document.getElementById("offline_banner").remove();
         }
         clearInterval(id_timer_hidden);

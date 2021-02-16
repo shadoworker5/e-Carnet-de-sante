@@ -54,33 +54,19 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>
-                        {{ __('Code') }}
-                    </th>
+                    <th> {{ __('Code') }} </th>
 
-                    <th>
-                        {{ __('Nom') }}
-                    </th>
+                    <th> {{ __('Nom') }} </th>
 
-                    <th>
-                        {{ __('Date de naissance') }}
-                    </th>
+                    <th> {{ __('Date de naissance') }} </th>
                     
-                    <th>
-                        {{ __('Lieu de naissance') }}
-                    </th>
+                    <th> {{ __('Lieu de naissance') }} </th>
                     
-                    <th>
-                        {{ __('Nom des parents') }}
-                    </th>
+                    <th> {{ __('Nom des parents') }} </th>
 
-                    <th>
-                        {{ __('Etat de vaccination') }}
-                    </th>
+                    <th> {{ __('Etat de vaccination') }} </th>
 
-                    <th>
-                        {{ __('Action') }}
-                    </th>
+                    <th> {{ __('Action') }} </th>
                 </tr>
             </thead>
 
@@ -116,19 +102,19 @@
                                     Afficher
                                 </a>
 
-                                <a href="#" class="btn btn-success">
-                                    Vacciner
+                                <a href="#" class="btn btn-warning">
+                                    Ajouter vacciner
                                 </a>
                             </div>
                         </td>
                     </tr>
-                    @empty
-                        <tr>
-                            <td colspan="7">
-                                <center><p class="text-danger"> Aucune ligne trouvée</p></center>
-                            </td>
-                        </tr>
-                    @endforelse
+                @empty
+                    <tr>
+                        <td colspan="7">
+                            <center><p class="text-danger"> Aucune ligne trouvée</p></center>
+                        </td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
     </div>
