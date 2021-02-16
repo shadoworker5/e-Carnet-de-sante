@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Provinces extends Model
 {
     use HasFactory;
+    protected $fillable = ['user_id', 'region_id', 'title', 'desciption' ];
 }

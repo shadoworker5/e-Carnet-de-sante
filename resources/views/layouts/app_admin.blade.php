@@ -16,6 +16,17 @@
         @livewireStyles
         <!-- Scripts -->
         <script src="{{ mix('js/app.js') }}" defer></script>
+
+        <style>
+            .scrool:hover{
+                overflow: auto;
+                overflow-x: hidden;
+            }
+
+            .scrool{
+                overflow: hidden;
+            }
+        </style>
     </head>
 
     <body id="page-top">
@@ -323,8 +334,7 @@
             <i class="fas fa-angle-up"></i>
         </a>
 
-        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">

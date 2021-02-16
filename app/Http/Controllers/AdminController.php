@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Patient_vaccinate;
 use App\Models\Patients;
+use App\Models\Regions;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,6 +42,6 @@ class AdminController extends Controller{
     }
 
     public function setings(){
-        return view('admin.setings');
+        return view('admin.setings', ['list_regions' => Regions::where('contries_id', '=', Auth::user()->contrie_id)->get()]);
     }
 }

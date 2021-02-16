@@ -9,11 +9,19 @@ use Livewire\Component;
 
 class Seting extends Component
 {
-    public $contry_id, $region_id;
+    public $contry_id, $region_id, $region_name, $province_name;
 
 
     public function showRegion($id){
         $this->region_id = $id;
+    }
+
+    public function editRegion($id){
+        $this->region_name = Regions::findOrFail($id);
+    }
+
+    public function editProvince($id){
+        $this->province_name = Provinces::findOrFail($id);
     }
 
     public function updatingContry_id(){

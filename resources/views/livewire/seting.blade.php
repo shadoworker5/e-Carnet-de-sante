@@ -45,10 +45,10 @@
                                     <td> {{ __( $region['title'] ) }} </td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">
-                                            <a href="#" class="btn btn-warning">
+                                            <a href="#" class="btn btn-warning" wire:click="editRegion({{ $region['id'] }})" data-toggle="modal" data-target="#edit_region">
                                                 {{ __("Modifier") }}
                                             </a>
-
+                                            
                                             <button wire:click="showRegion({{ $region['id'] }})" class="btn btn-success">
                                                 {{ __("Afficher") }}
                                             </button>
@@ -88,7 +88,7 @@
             </div>
             
             <div class="card-body">
-                <div class="chart-area">
+                <div class="chart-area scrool">
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -109,7 +109,7 @@
                                                 {{ __("Supprimer") }}
                                             </a>
 
-                                            <a href="#" class="btn btn-primary">
+                                            <a href="#" class="btn btn-primary" wire:click="editProvince({{ $province['id'] }})" data-toggle="modal" data-target="#edit_province">
                                                 {{ __("Modifier") }}
                                             </a>
                                         </div>
@@ -124,6 +124,73 @@
                             @endforelse
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de modification -->
+    <div class="modal fade" id="edit_region" tabindex="-1" aria-labelledby="exampleModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"> Modifier la région </h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                
+                <div class="modal-body">
+                    <form action="#" novalidate method="POST">
+                        @csrf()
+                        {{ method_field('PUT') }}
+                        
+                        <label for="region"> Nom de la région </label>
+                        <input type="text" class="form-control mb-2" value="{{ isset($region_name) ? $region_name->title : '' }}" id="region" minlength="2" required name="region" placeholder="Nom de la région">
+                        <div class="invalid-feedback">
+                            Veuillez le nom de la région
+                        </div>                     
+                        
+                        <div>
+                            <button type="submit" class="btn btn-primary mt-2 pull-right"> Submit </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="edit_province" tabindex="-1" aria-labelledby="example" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"> Confirmer </h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('provinces.update', 1) }}" novalidate method="POST">
+                        @csrf()
+                        {{ method_field('PUT') }}
+                        
+                        <label for="province"> Nom de la province </label>
+                        <input type="text" class="form-control mb-2" value="{{ isset($province_name) ? $province_name->title : '' }}" id="province" minlength="2" required name="province" placeholder="Nom de la province">
+                        <div class="invalid-feedback">
+                            Veuillez le nom de la région
+                        </div>                     
+                        
+                        <div>
+                            <button type="submit" class="btn btn-primary mt-2 pull-right"> Submit </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
         </div>

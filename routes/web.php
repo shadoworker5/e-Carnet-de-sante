@@ -4,6 +4,8 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\PatientsController;
 use App\Http\Controllers\PatientVacinateController;
+use App\Http\Controllers\ProvinceController;
+use App\Http\Controllers\RegionsController;
 use App\Http\Controllers\VacineCalendarController;
 use Illuminate\Support\Facades\Route;
 
@@ -42,5 +44,7 @@ Route::middleware(['auth:sanctum', 'verified', 'authadmin'])->group(function(){
 Route::resource('patient', PatientsController ::class)->middleware(['auth']);
 Route::resource('vaccinate', PatientVacinateController::class)->middleware('auth');
 Route::resource('calendar', VacineCalendarController::class)->middleware(['auth']);
+Route::resource('regions', RegionsController::class)->middleware(['auth']);
+Route::resource('provinces', ProvinceController::class)->middleware(['auth']);
 
 Route::get('/add_vacinate/{id}', [PatientVacinateController::class, 'addVacinate'])->middleware('auth')->name('add_vacination');
