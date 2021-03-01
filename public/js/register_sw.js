@@ -1,10 +1,10 @@
 if ('serviceWorker' in navigator) {
-    // navigator.serviceWorker.register('sw.js')
-    //     .then((reg) => {
-    //         // code
-    //     }).catch((err) => {
-    //         // code d'erreur
-    //     })
+    navigator.serviceWorker.register('sw.js')
+        .then((reg) => {
+            // code
+        }).catch((err) => {
+            // code d'erreur
+        })
 }
 
 // Cheack connexion and send to database

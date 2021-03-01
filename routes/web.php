@@ -28,6 +28,8 @@ Route::get('/offline', function(){
     return view('offlines.offline');
 });
 Route::get('/list_vacinate', [PagesController::class, 'offlineSubmission'])->middleware('auth')->name('offline_submission');
+Route::get('/offline_vacinate', [PagesController::class, 'offlineForm'])->middleware('auth')->name('offline_form');
+Route::get('/offline_show', [PagesController::class, 'offlineShow'])->middleware('auth')->name('offline_show_patient');
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::get('/home', [PagesController::class, 'index'])->name('home');
@@ -41,7 +43,7 @@ Route::middleware(['auth:sanctum', 'verified', 'authadmin'])->group(function(){
 });
 
 
-Route::resource('patient', PatientsController ::class)->middleware(['auth']);
+Route::resource('patient', PatientsController::class)->middleware(['auth']);
 Route::resource('vaccinate', PatientVacinateController::class)->middleware('auth');
 Route::resource('calendar', VacineCalendarController::class)->middleware(['auth']);
 Route::resource('regions', RegionsController::class)->middleware(['auth']);

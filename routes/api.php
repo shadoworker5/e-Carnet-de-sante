@@ -21,6 +21,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/get_patient_list/{province_id}', [APIPatientController::class, 'getPatientList']);
+
 Route::apiResources(['patient' => APIPatientController::class]);
 Route::apiResources(['vacine_calendar' => APIVacineCalendarController::class]);
 Route::apiResources(['vacinate_patient' => APIVacinatePatient::class]);

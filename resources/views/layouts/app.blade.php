@@ -39,7 +39,7 @@
         <script src="{{ asset('js/jquery.min.js') }}"></script>
         <script src="{{ asset('js/bootstrap.js') }}"></script>
         <script src="{{ asset('js/bootstrap.bundle.js') }}"></script>
-        <script src="{{ asset('js/indexdDB.js') }}"></script>
+        <script src="{{ asset('js/indexdDB.js') }}" async></script>
         <script src="{{ asset('js/Chart.min.js') }}"></script>
         <script src="{{ asset('js/register_sw.js') }}"></script>
         

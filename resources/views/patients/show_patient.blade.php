@@ -74,130 +74,89 @@
         </div>
 
         <div class="col-md-8">
-            <div class="table-responsive-sm">
-                <div>
-                    <h1 class="text-center"> {{ __("Tableau des vaccinations à jour") }} </h1>
-                    <table class="table table-striped">
-                        <thead class="justify-between">
-                            <tr>
-                                <th>
-                                    {{ __('Date de vaccination') }}
-                                </th>
+            <h1 class="text-center"> {{ __("Tableau des vaccinations à jour") }} </h1>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead class="justify-between">
+                        <tr>
+                            <th> {{ __('Date de vaccination') }} </th>
 
-                                <th>
-                                    {{ __('Vaccin') }}
-                                </th>
+                            <th> {{ __('Vaccin') }} </th>
+                            
+                            <th> {{ __('Etat') }} </th>
+
+                            <th> {{ __('Rappel du vaccin') }} </th>
+
+                            <th> {{ __('Validité') }} </th>
+
+                            <th> {{ __('Action') }} </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @forelse($vaccinations as $vacine)
+                            <tr class="{{ $loop->index % 2 == 0 ? 'bg-info text-white' : '' }}">
+                                <td> {{ $vacine->date_vacination }} </td>
+
+                                <td> {{ get_vaccine_name($vacine->vaccine_calendar_id) }} </td>
+
+                                <td> {{ $vacine->vacine_status ? 'A jour' : 'Pas à jour' }} </td>
+
+                                <td> {{ $vacine->rappelle !== null ? $vacine->rappelle : 'NP' }} </td>
                                 
-                                <th>
-                                    {{ __('Etat') }}
-                                </th>
+                                <td> {!! date('Y-m-d') > $vacine->validity_vacine ? '<i class="fa fa-check"></i>' : '<i class="fa fa-times text-danger"></i>' !!} </td>
+                                
+                                <td>
+                                    <a href="{{ route('vaccinate.show', $vacine->id) }}" class="btn btn-success">
+                                        Détail
+                                    </a>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6">
+                                    <p class="text-danger text-center"> Aucune ligne trouvée</p>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
 
-                                <th>
-                                    {{ __('Rappel du vaccin') }}
-                                </th>
+            @if(count($vaccine_updates) !== 0)
+                <h1 class="text-center"> {{ __("Tableau des vaccinations non à jour") }} </h1>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th> {{ __('Age') }} </th>
 
-                                <th>
-                                    {{ __('Validité') }}
-                                </th>
+                                <th> {{ __('Vaccin') }} </th>
+                                
+                                <th> {{ __('Description') }} </th>
 
-                                <th>
-                                    {{ __('Action') }}
-                                </th>
+                                <th> {{ __('Validité') }} </th>
                             </tr>
                         </thead>
 
-                        <tbody>
-                            @forelse($vaccinations as $vacine)
+                        <tbody class="bg-gray-200">
+                            @forelse($vaccine_updates as $update)
                                 <tr class="{{ $loop->index % 2 == 0 ? 'bg-info text-white' : '' }}">
-                                    <td>
-                                        {{ $vacine->date_vacination }}
-                                    </td>
+                                    <td> {{ $update->patient_age }} </td>
 
-                                    <td>
-                                        {{ get_vaccine_name($vacine->vaccine_calendar_id) }}
-                                    </td>
+                                    <td> {{ $update->name_vaccine }} </td>
 
-                                    <td>
-                                        {{ $vacine->vacine_status ? 'A jour' : 'Pas à jour' }}
-                                    </td>
-
-                                    <td>
-                                        {{ $vacine->rappelle !== null ? $vacine->rappelle : 'NP' }}
-                                    </td>
+                                    <td> {{ $update->illness_against }} </td>
                                     
-                                    <td>
-                                        {!! date('Y-m-d') > $vacine->validity_vacine ? '<i class="fa fa-check"></i>' : '<i class="fa fa-times text-danger"></i>' !!}
-                                    </td>
-                                    
-                                    <td>
-                                        <a href="{{ route('vaccinate.show', $vacine->id) }}" class="btn btn-success">
-                                            Détail
-                                        </a>
-                                    </td>
+                                    <td> {{ $update->status ? 'Valide' : 'Invalide' }} </td> 
                                 </tr>
                             @empty
-                            <tr>
-                                <td colspan="6">
-                                    <center><p class="text-danger"> Aucune ligne trouvée</p></center>
-                                </td>
-                            </tr>
+                                <p class="text-danger text-center"> Aucune ligne trouvée</p>
                             @endforelse
                         </tbody>
                     </table>
                 </div>
-
-                <div>
-                    @if(count($vaccine_updates) !== 0)
-                        <h1 class="text-center"> {{ __("Tableau des vaccinations non à jour") }} </h1>
-
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        {{ __('Age') }}
-                                    </th>
-
-                                    <th>
-                                        {{ __('Vaccin') }}
-                                    </th>
-                                    
-                                    <th>
-                                        {{ __('Description') }}
-                                    </th>
-
-                                    <th>
-                                        {{ __('Validité') }}
-                                    </th>
-                                </tr>
-                            </thead>
-
-                            <tbody class="bg-gray-200">
-                                @forelse($vaccine_updates as $update)
-                                    <tr class="{{ $loop->index % 2 == 0 ? 'bg-info text-white' : '' }}">
-                                        <td>
-                                            {{ $update->patient_age }}
-                                        </td>
-
-                                        <td>
-                                            {{ $update->name_vaccine }}
-                                        </td>
-
-                                        <td>
-                                            {{ $update->illness_against }}
-                                        </td>
-                                        
-                                        <td>
-                                            {{ $update->status ? 'Valide' : 'Invalide' }} 
-                                        </td> 
-                                    </tr>
-                                @empty
-                                    <center><p class="text-danger"> Aucune ligne trouvée</p></center>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    @endif
-                </div>
-            </div>
+            @endif
         </div>
     </div>
 

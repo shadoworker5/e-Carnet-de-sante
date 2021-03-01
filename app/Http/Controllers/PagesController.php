@@ -38,13 +38,17 @@ class PagesController extends Controller{
         return view('profile.show');
     }
 
-    // public function listPatient(){
-    //     return view('admin.patients');
-    // }
+    public function offlineForm(){
+        return view('offlines.offline_vacinate');
+    }
 
     public function offlineSubmission(){
         $submission = Patient_vaccinate::where('user_id', '=', Auth::id())->get();
         
         return view('offlines.list_vacinate', ['submissions' => $submission]);
+    }
+
+    public function offlineShow(){
+        return view('offlines.offline_show');
     }
 }

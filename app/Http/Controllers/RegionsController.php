@@ -37,7 +37,7 @@ class RegionsController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-
+        
         for($i = 1; $i < count($request->all()); $i++){
             Regions::create([
                 'user_id'       => Auth::id(),
@@ -68,7 +68,7 @@ class RegionsController extends Controller
      */
     public function edit($id)
     {
-        //
+        
     }
 
     /**
@@ -80,7 +80,16 @@ class RegionsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        dd($id);
+        $this->validate($request, [
+            'region' => 'required|min:2'
+        ]);
+
+        $region = Regions::findOrFail($id);
+        $region->update([
+            'title' => $request->region
+        ]);
+
+        return redirect()->route('setings');
     }
 
     /**

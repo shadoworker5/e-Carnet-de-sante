@@ -37,6 +37,7 @@ class ProvinceController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
+        dd($data);
         
         for($i = 1; $i < count($request->all()); $i++){
             Provinces::create([
@@ -80,7 +81,18 @@ class ProvinceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'province'  => 'required|min:2',
+            'region_id' => 'required'
+        ]);
+
+        $province = Provinces::findOrFail($id);
+        $province->update([
+            'title' => $request->province,
+            'region_id' => $request->region_id
+        ]);
+
+        return redirect()->route('setings');
     }
 
     /**

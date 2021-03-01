@@ -102,7 +102,7 @@
                                     Afficher
                                 </a>
 
-                                <a href="#" class="btn btn-warning">
+                                <a href="{{ route('add_vacination', $patient->code_patient) }}" class="btn btn-warning">
                                     Ajouter vacciner
                                 </a>
                             </div>

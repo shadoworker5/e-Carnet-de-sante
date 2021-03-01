@@ -40,12 +40,14 @@
                     </div>
                 </div>
 
+                @livewire('choose-region')
+
                 <div class="form-group {{ $errors->has('born_location') ? 'has-error' : '' }}">
                     <label class="control-label" for="born_location"> {{ __('Lieu de naissance') }} </label>
                     <input type="text" class="form-control" name="born_location" id="born_location" required value="{{ old('born_location') }}" placeholder="Lieu de naissance">
                     {!! $errors->first('born_location', '<span class="text-danger">:message</span>') !!}
                     <div class="invalid-feedback">
-                        Veuillez saisir le ieu de naissance
+                        Veuillez choisir une province
                     </div>
                 </div>
 

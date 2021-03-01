@@ -6,7 +6,7 @@
         </div>
     @endif
     <div class="form-floating">
-        <input type="text" class="form-control" wire:model.defer.defer="code_patient" required placeholder="Veuillez saisir votre code" id="code_patient" name="code_patient">
+        <input type="text" class="form-control" wire:model.defer="code_patient" required placeholder="Veuillez saisir votre code" id="code_patient" name="code_patient">
         <label for="code_patient"> {{ __("Veuillez saisir votre code") }} </label>
         <div class="invalid-feedback">
             Veuillez saisir votre code patient

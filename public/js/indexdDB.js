@@ -1,9 +1,12 @@
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 const DB_Name = 'esante_db';
 const PATIENT_DATA = 'data_patient';
 const VACINATE_PATIENT_DATA = 'data_vacinate_patient';
 const VACINE_CALENDAR = 'data_vacinate_calendar'
-var request, db; 
+var request, db;
+
+let courant_page = window.location.pathname;
+// console.log(courant_page);
 
 request = indexedDB.open(DB_Name, DB_VERSION);
 
@@ -24,7 +27,7 @@ request.onsuccess =  function showData() {
     db = request.result;
     if(navigator.onLine){
         SendVacinateData();
-        SavePatientData();
+        // SavePatientData();
     }else{
         renderData();
     }
@@ -78,7 +81,7 @@ function renderData(){
     }
 
     request.onerror = (err) => {
-        console.log("Erreur: "+err);
+        // console.log("Erreur: "+err);
     }
 }
 
@@ -86,9 +89,129 @@ function renderData(){
 const getData = function() {
     const url = '/api/vacine_calendar';
     
-    fetch(url, { method: "GET" })
-    .then(resulte => resulte.json())
-    .then(response => SaveData(response))
+    // fetch(url, { method: "GET" })
+    // .then(resulte => resulte.json())
+    // .then(response => SaveData(response))
+}
+
+function getDataPerLocation(){
+    let form_load_data = document.getElementById('form_load_data');
+    form_load_data.onsubmit = () => {
+        // let progress = document.createElement('progress');
+        // progress.className = "progress";
+        // progress.style.width = "auto";
+        // progress.max = "100";
+        // progress.value = "0"
+    
+        // let progress_bar = document.getElementById('progress_bar');
+        // progress_bar.appendChild(progress)
+        // if(progress.value === 100){
+            // alert(event)
+        // }
+        
+        const province_id = form_load_data.province_id.value;
+        if(!province_id){
+            return
+        }
+        const url = '/api/get_patient_list/'+province_id;
+
+        fetch(url, { method: "GET" })
+        .then(resulte => resulte.json())
+        .then(response => patientData(response))
+        
+        return false;
+    }
+}
+
+// Save patient data per location into local DB
+const show_modal_btn = () => {
+    // document.getElementById('open_modal').remove();
+}
+
+const renderPatientData = () => {
+    let open_db = indexedDB.open(DB_Name, DB_VERSION);
+
+    open_db.onsuccess =  () => {
+        let query = db.transaction([PATIENT_DATA]);
+        let store = query.objectStore(PATIENT_DATA);
+        let request = store.getAll()
+        let patient_data = document.querySelector("#patient_data");
+        
+        request.onsuccess = (event) => {
+            if(request.result.length > 0 && document.querySelector("#open_modal")){
+                document.querySelector("#open_modal").remove();
+            }
+
+            if (request.result && document.querySelector("#patient_data")){
+                for (let i = 0; i < request.result.length; i++) {
+                    let html = `
+                    <tr>
+                        <td> ${request.result[i].code_patient} </td>
+    
+                        <td> ${request.result[i].full_name} </td>
+    
+                        <td> ${request.result[i].birthday} </td>
+    
+                        <td> ${request.result[i].born_location} </td>
+                        
+                        <td> ${request.result[i].name_father, request.result[i].name_mother} </td>
+    
+                        <td> Neant </td>   
+                        
+                        <td>
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <a href="#" class="btn btn-success" onclick="showPatient('${request.result[i].id}')">
+                                    Afficher
+                                </a>
+                                <a href="#" data-code="${request.result[i].code_patient}" class="btn btn-warning" onclick="redirectForm('${request.result[i].code_patient}')">
+                                    Ajouter une vaccination
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    `;
+                    patient_data.innerHTML += html
+                }
+            } 
+        }
+    }
+}
+renderPatientData();
+
+function patientData(data = new Object){
+    let open_db = indexedDB.open(DB_Name, DB_VERSION);
+    let state_message = document.getElementById('error_message');
+
+    if(data.length == 0){
+        state_message.setAttribute('class', "mt-3 text-center h5 text-danger")
+        state_message.innerHTML = "Données indisponible. Veuillez réessayer svp!";
+    }else{
+        document.getElementById('btn_load_data').remove();
+        state_message.setAttribute('class', "mt-3 text-center h5 text-success")
+        state_message.innerHTML = "Données chargé avec succès.";
+
+        open_db.onsuccess =  () => {
+            base = open_db.result;
+            let query = base.transaction([PATIENT_DATA], 'readwrite');
+            let store = query.objectStore(PATIENT_DATA);
+            let request;
+            
+            data.forEach(item => {
+                request = store.add(item);
+            });
+            
+            request.onsuccess =  () => {
+                document.getElementById('open_modal').remove();
+                subscribe('Données chargé avec succès.');
+                renderPatientData();
+            };
+        
+            request.onerror = (err) => {
+                // console.log("Erreur: "+err)
+            };
+        };
+    }
+
 }
 
 // Send patient vacinate to server
@@ -123,7 +246,7 @@ function SendVacinateData(){
                     }
                     fetch(url, options)
                     .then(resulte => resulte.json())
-                    .then(resulte => console.log(resulte));
+                    .then(resulte => subscribe(resulte));
 
                     // mise a jour
                     request.result[i].status = '1'
@@ -177,22 +300,10 @@ function SavePatientData(){
     }
 }
 
-// submit_vacinate_patient
-let courant_page = window.location.pathname;
-
 let btn_edit_vacinate = document.getElementsByClassName("btn_update");
 Array.from(btn_edit_vacinate).forEach(function(element) {
     element.addEventListener('click', getVacinateID);
 });
-
-function getVacinateID(event){
-    if(!navigator.onLine){
-        // event.preventDefault()
-        // updateVacinate(this.getAttribute('id').split('_')[1]);
-    }else{
-        // console.log("Online");
-    }
-}
 
 function updateVacinate(patient_id){
     console.log(patient_id);
@@ -218,14 +329,6 @@ function updateVacinate(patient_id){
     // };
 }
 
-function setStorage(patient_id){
-    localStorage.setItem('patient_id', patient_id);
-}
-
-function getStorage(){
-    return localStorage.getItem('patient_id');
-}
-
 const codeAutoGenerate = (longueur = 10) => {
     //cette partie permet de generer de facon aleatoire 
     let lettre = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -239,15 +342,15 @@ const codeAutoGenerate = (longueur = 10) => {
 }
 
 let btn_send_vacinate = document.getElementById("submit_vacinate_patient");
-if(courant_page === "/vaccinate/create" || courant_page.startsWith('/add_vacinate/')){
+if(courant_page === "/vaccinate/create" || courant_page.startsWith('/add_vacinate/') || courant_page === "/offline_vacinate"){
     btn_send_vacinate.addEventListener("click", event => {
         if(!navigator.onLine){
             event.preventDefault();        
             // Recuperation du formulaires
             let vacinate_data = document.querySelector('#form_vacinate');
     
-            let transaction = db.transaction(["data_vacinate_patient"], "readwrite");
-            let store = transaction.objectStore("data_vacinate_patient");
+            let transaction = db.transaction([VACINATE_PATIENT_DATA], "readwrite");
+            let store = transaction.objectStore(VACINATE_PATIENT_DATA);
     
             // Recuperation des donnees du formulaires
             let user_id = document.querySelector("a[data-user]").getAttribute('data-user')
@@ -279,10 +382,6 @@ if(courant_page === "/vaccinate/create" || courant_page.startsWith('/add_vacinat
                 
                 subscribe('Vaccination enregistré avec succès.');
                 window.location.href = '/list_vacinate';
-            }
-    
-            request.onerror = function(e){
-                // code
             }
         }
     });
@@ -340,6 +439,100 @@ if(courant_page === "/patient/create"){
     });
 }
 
+// Ce code permet d'afficher les informations sur un patient
+function showPatient(patient_id){
+    if(!navigator.onLine){
+        showPatientData(patient_id);
+        window.location.href = '/offline_show';
+    }else{
+        showPatientData(patient_id);
+        // window.location.href = '/offline_show';
+        window.location.href = '/patient/'+patient_id;
+    }
+}
+
+function showPatientData(patient_id){
+    let open_db = indexedDB.open(DB_Name, DB_VERSION);
+
+    open_db.onsuccess =  () => {
+        let query = db.transaction([PATIENT_DATA]);
+        let store = query.objectStore(PATIENT_DATA);
+        // let index_query = store.index('id')
+        let request =  store.getAll();     //index_query.get(`"${patient_id}"`);
+
+        request.onsuccess = (event) => {
+            if(request.result){
+                for(let i = 0; i < request.result.length; i++){
+                    if(request.result[i].id == parseInt(patient_id)){
+                        renderPatient(request.result[i].code_patient, request.result[i].full_name, request.result[i].birthday, request.result[i].name_father, request.result[i].name_mother, request.result[i].name_mentor, request.result[i].helper_contact, request.result[i].helper_email);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+}
+
+function renderPatient(code, name, naissance, name_father, name_mother, name_helper, contact, email){
+    localStorage.setItem('code', code);
+    localStorage.setItem('name', name);
+    localStorage.setItem('naissance', naissance);
+    localStorage.setItem('name_father', name_father);
+    localStorage.setItem('name_father', name_father);
+    localStorage.setItem('name_mother', name_mother);
+    localStorage.setItem('name_helper', name_helper);
+    localStorage.setItem('contact', contact);
+    localStorage.setItem('email', email);
+}
+
+if(courant_page === '/offline_show'){
+    document.getElementById('code').textContent = localStorage.getItem('code');
+    document.getElementById('name').textContent = localStorage.getItem('name');
+    document.getElementById('naissance').textContent = localStorage.getItem('naissance');
+    document.getElementById('name_father').textContent = localStorage.getItem('name_father');
+    document.getElementById('name_mother').textContent = localStorage.getItem('name_mother');
+    document.getElementById('name_helper').textContent = localStorage.getItem('name_helper');
+    document.getElementById('contact').textContent = localStorage.getItem('contact');
+    document.getElementById('email').textContent = localStorage.getItem('email');
+    // document.getElementById('vacine_patient').setAttribute('data-code', localStorage.getItem('code'))
+}
+
+// Code du bouton qui permet de redigier vers le formulaire hos ligne
+function redirectForm(patient_code){
+    if(!navigator.onLine){
+        setPatientCode(patient_code);
+        window.location.href = '/vaccinate/create';
+    }else{
+        window.location.href = '/add_vacinate/'+patient_code;
+    }
+}
+
+function setPatientCode(code){
+    localStorage.setItem("patient_code", code);
+}
+
+function getPatientCode(){
+    return localStorage.getItem("patient_code");
+}
+
+function emptyPatientCode(){
+    localStorage.setItem("patient_code", "");
+}
+
+if(courant_page === '/vaccinate/create'){
+    let field_code = document.querySelector('#patient_code');
+    field_code.value = getPatientCode();
+    field_code.setAttribute('readonly', true);
+}
+
+function emptyAllData(){
+    // Suppression des valeurs du localStorage
+    localStorage.clear()
+
+    // Suppression de la base de données
+    indexedDB.deleteDatabase(DB_Name);
+}
+
 // affichage des notifications push
 function subscribe(notification_content){
     const options = {
@@ -377,5 +570,4 @@ const enable_notification = () => {
         }
     }
 }
-
 enable_notification();

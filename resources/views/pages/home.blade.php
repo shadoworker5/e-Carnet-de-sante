@@ -92,8 +92,51 @@
                     </div>
                 </div>
             </div>
+            
             <div class="col-md-9">
                 <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold"> {{ __("Liste des patients") }} </h6>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="table-responsive" id="data_patient">
+                            <table class="table table-bordered" id="dataTable">
+                                <thead>
+                                    <tr>
+                                        <th> {{ __('Code') }} </th>
+
+                                        <th> {{ __('Nom') }} </th>
+
+                                        <th> {{ __('Date de naissance') }} </th>
+                                        
+                                        <th> {{ __('Lieu de naissance') }} </th>
+                                        
+                                        <th> {{ __('Nom des parents') }} </th>
+
+                                        <th> {{ __('Etat de vaccination') }} </th>
+
+                                        <th> {{ __('Action') }} </th>
+                                    </tr>
+                                </thead>
+                                
+                                <tbody id="patient_data"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-2 text-center">
+                    <button class="btn btn-primary" id="open_modal" data-bs-toggle="modal" data-bs-target="#load_data">
+                        <i class="fa fa-download"></i>
+                        Charger les données
+                    </button>
+                </div>
+            </div>
+            
+            {{--
+                <div class="col-md-9">
+                    <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold"> {{ __("Liste des patients") }} </h6>
                         </div>
@@ -173,27 +216,64 @@
                             </div>
                         </div>
                     </div>
-            </div>
+                </div>
+            --}}
         @elseif(in_array(Auth::user()->user_role, ['guest']))
             <div class="mt-5 mb-2" style="height:379px">
                 <div class="col-md-6 offset-md-3">
-                    <h3 class="text-center"> {{ __("Afficher mon carnet") }} </h3>
+                    <h3 class="text-center"> {{ __("Afficher mon carnet de santé") }} </h3>
                     @livewire('find-patients')
                 </div>
             </div>
         @endif
     </div>
+
+    {{-- Modal pour charger les données --}}
+    <div class="modal fade" id="load_data" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="example" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"> Charger les données </h5>
+                    <button class="close" type="button" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form id="form_load_data" novalidate>
+                        
+                        @livewire('choose-region')
+                        
+                        <button type="submit" id="btn_load_data" onclick="getDataPerLocation()" class="btn btn-primary mt-2 pull-right">
+                            <i class="fa fa-download"></i>
+                            Charger
+                        </button>
+                    </form>
+                    
+                    <div class="" id="error_message"> </div>
+                    <div class="mt-3" id="progress_bar"></div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" type="button" data-bs-dismiss="modal"> Fermer </button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script_js')
-    <script src="{{ asset('js/jquery.dataTables.js') }}"></script>
-    <script src="{{ asset('js/dataTables.bootstrap4.js') }}"></script>
-    <script src="{{ asset('js/form_validate.js') }}"></script>
-    <script >
-        $(document).ready(function() {
-        $('#dataTable').DataTable();
-        });
-    </script>
+    @if(in_array(Auth::user()->user_role, ['collector']))
+        <script src="{{ asset('js/jquery.dataTables.js') }}"></script>
+        <script src="{{ asset('js/dataTables.bootstrap4.js') }}"></script>
+        <script src="{{ asset('js/form_validate.js') }}"></script>
+        <script src="{{ asset('js/load_data.js') }}"></script>
+        <script>
+            $(document).ready(function() {
+                $('#dataTable').DataTable();
+            });
+        </script>
+        
+    @endif
     
     @if(in_array(Auth::user()->user_role, ['root', 'admin', 'supervisor']))
         <script>
@@ -258,91 +338,90 @@
 
             var ctx = document.getElementById("myAreaChart");
             var myLineChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: months,
-                datasets: [{
-                label: "Nombre",
-                lineTension: 0.3,
-                backgroundColor: "rgba(78, 115, 223, 0.05)",
-                borderColor: "rgba(78, 115, 223, 1)",
-                pointRadius: 3,
-                pointBackgroundColor: "rgba(78, 115, 223, 1)",
-                pointBorderColor: "rgba(78, 115, 223, 1)",
-                pointHoverRadius: 3,
-                pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
-                pointHoverBorderColor: "rgba(78, 115, 223, 1)",
-                pointHitRadius: 10,
-                pointBorderWidth: 2,
-                data: vacinate_count,
-                }],
-            },
-            options: {
-                maintainAspectRatio: false,
-                layout: {
-                padding: {
-                    left: 10,
-                    right: 25,
-                    top: 25,
-                    bottom: 0
-                }
+                type: 'line',
+                data: {
+                    labels: months,
+                    datasets: [{
+                    label: "Nombre",
+                    lineTension: 0.3,
+                    backgroundColor: "rgba(78, 115, 223, 0.05)",
+                    borderColor: "rgba(78, 115, 223, 1)",
+                    pointRadius: 3,
+                    pointBackgroundColor: "rgba(78, 115, 223, 1)",
+                    pointBorderColor: "rgba(78, 115, 223, 1)",
+                    pointHoverRadius: 3,
+                    pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+                    pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+                    pointHitRadius: 10,
+                    pointBorderWidth: 2,
+                    data: vacinate_count,
+                    }],
                 },
-                scales: {
-                xAxes: [{
-                    time: {
-                    unit: 'date'
+                options: {
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            left: 10,
+                            right: 25,
+                            top: 25,
+                            bottom: 0
+                        }
                     },
-                    gridLines: {
-                    display: false,
-                    drawBorder: false
+                    scales: {
+                    xAxes: [{
+                        time: {
+                            unit: 'date'
+                        },
+                        gridLines: {
+                            display: false,
+                            drawBorder: false
+                        },
+                        ticks: {
+                            maxTicksLimit: 7
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            maxTicksLimit: 5,
+                            padding: 10,
+                            callback: function(value, index, values) {
+                                return number_format(value);
+                            }
+                        },
+                        gridLines: {
+                            color: "rgb(234, 236, 244)",
+                            zeroLineColor: "rgb(234, 236, 244)",
+                            drawBorder: false,
+                            borderDash: [2],
+                            zeroLineBorderDash: [2]
+                        }
+                    }],
                     },
-                    ticks: {
-                    maxTicksLimit: 7
-                    }
-                }],
-                yAxes: [{
-                    ticks: {
-                    maxTicksLimit: 5,
-                    padding: 10,
-                    // Include a dollar sign in the ticks
-                    callback: function(value, index, values) {
-                        return number_format(value);
-                    }
+                    legend: {
+                        display: false
                     },
-                    gridLines: {
-                    color: "rgb(234, 236, 244)",
-                    zeroLineColor: "rgb(234, 236, 244)",
-                    drawBorder: false,
-                    borderDash: [2],
-                    zeroLineBorderDash: [2]
-                    }
-                }],
-                },
-                legend: {
-                display: false
-                },
-                tooltips: {
-                backgroundColor: "rgb(255,255,255)",
-                bodyFontColor: "#858796",
-                titleMarginBottom: 10,
-                titleFontColor: '#6e707e',
-                titleFontSize: 14,
-                borderColor: '#dddfeb',
-                borderWidth: 1,
-                xPadding: 15,
-                yPadding: 15,
-                displayColors: false,
-                intersect: false,
-                mode: 'index',
-                caretPadding: 10,
-                callbacks: {
-                    label: function(tooltipItem, chart) {
-                    var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-                    return datasetLabel + ': ' + number_format(tooltipItem.yLabel);
+                    tooltips: {
+                        backgroundColor: "rgb(255,255,255)",
+                        bodyFontColor: "#858796",
+                        titleMarginBottom: 10,
+                        titleFontColor: '#6e707e',
+                        titleFontSize: 14,
+                        borderColor: '#dddfeb',
+                        borderWidth: 1,
+                        xPadding: 15,
+                        yPadding: 15,
+                        displayColors: false,
+                        intersect: false,
+                        mode: 'index',
+                        caretPadding: 10,
+                        callbacks: {
+                            label: function(tooltipItem, chart) {
+                            var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                            return datasetLabel + ': ' + number_format(tooltipItem.yLabel);
+                            }
+                        }
                     }
                 }
-                }
-            }
             });
         </script>
     @endif

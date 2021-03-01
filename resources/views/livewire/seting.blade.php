@@ -28,7 +28,9 @@
             </div>
             
             <div class="card-body">
-                <div class="chart-area">
+                <div class="chart-area scrool">
+                    {{ isset($region_name) ? $region_name->title : '' }}
+
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -44,10 +46,10 @@
                                     <td> {{ ++$loop->index }} </td>
                                     <td> {{ __( $region['title'] ) }} </td>
                                     <td>
-                                        <div class="btn-group" role="group" aria-label="Basic example">
-                                            <a href="#" class="btn btn-warning" wire:click="editRegion({{ $region['id'] }})" data-toggle="modal" data-target="#edit_region">
+                                        <div class="btn-group" role="group" aria-label="Basic example">                                            
+                                            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit_region" onclick="setRegion('{{$region['id']}}','{{$region['title']}}')">
                                                 {{ __("Modifier") }}
-                                            </a>
+                                            </button>
                                             
                                             <button wire:click="showRegion({{ $region['id'] }})" class="btn btn-success">
                                                 {{ __("Afficher") }}
@@ -109,7 +111,7 @@
                                                 {{ __("Supprimer") }}
                                             </a>
 
-                                            <a href="#" class="btn btn-primary" wire:click="editProvince({{ $province['id'] }})" data-toggle="modal" data-target="#edit_province">
+                                            <a href="#" class="btn btn-primary" onclick="setProvince('{{$province['id']}}','{{$province['title']}}')" data-bs-toggle="modal" data-bs-target="#edit_province">
                                                 {{ __("Modifier") }}
                                             </a>
                                         </div>
@@ -130,12 +132,12 @@
     </div>
 
     <!-- Modal de modification -->
-    <div class="modal fade" id="edit_region" tabindex="-1" aria-labelledby="exampleModal" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    {{-- <div class="modal fade" id="edit_region" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel"> Modifier la région </h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <button class="close" type="button" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
@@ -158,13 +160,13 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
-    <div class="modal fade" id="edit_province" tabindex="-1" aria-labelledby="example" aria-hidden="true">
+    {{--<div class="modal fade" id="edit_province" tabindex="-1" aria-labelledby="example" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -194,5 +196,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>--}}
 </div>

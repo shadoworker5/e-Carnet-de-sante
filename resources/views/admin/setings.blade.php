@@ -43,6 +43,11 @@
                 
                 <div class="card-body">
                     <div class="chart-area">
+                        @php
+                            use App\Models\Regions;
+                            $list_regions = Regions::where('contries_id', '=', Auth::user()->contrie_id)->get();
+                        @endphp
+
                         <form action="{{ route('provinces.store') }}" novalidate method="POST">
                             @csrf()
 
@@ -74,16 +79,99 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal de modification -->
+    <div class="modal fade" id="edit_region" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"> Modifier la région </h5>
+                    <button class="close" type="button" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                
+                <div class="modal-body">
+                    <form action="" id="form_edit_region" novalidate method="POST">
+                        @csrf()
+                        {{ method_field('PUT') }}
+                        
+                        <label for="region"> Nom de la région </label>
+                        <input type="text" class="form-control mb-2"  id="region" minlength="2" required name="region" placeholder="Nom de la région">
+                        <div class="invalid-feedback">
+                            Veuillez le nom de la région
+                        </div>                     
+                        
+                        <div>
+                            <button type="submit" class="btn btn-primary mt-2 pull-right"> Submit </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="edit_province" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="example" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"> Modifier la province </h5>
+                    <button class="close" type="button" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="" id="form_edit_province" novalidate method="POST">
+                        @csrf()
+                        {{ method_field('PUT') }}
+                        
+                        <label for="region_id"> Nom de la région </label>
+                        <select name="region_id" required id="region_id_for_province" class="form-control mb-3">
+                            <option value=""> Choisir une région </option>
+                            @foreach($list_regions as $region)
+                                <option value="{{ $region['id'] }}"> {{ $region['title'] }}</option>
+                            @endforeach
+                        </select>
+
+                        <label for="province"> Nom de la province </label>
+                        <input type="text" class="form-control mb-2" id="province" minlength="2" required name="province" placeholder="Nom de la province">
+                        <div class="invalid-feedback">
+                            Veuillez le nom de la région
+                        </div>                     
+                        
+                        <div>
+                            <button type="submit" class="btn btn-primary mt-2 pull-right"> Submit </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
     <script src="{{ asset('js/form_validate.js') }}"></script>
     <script>
+        function setRegion(region_id, region_name){
+            document.getElementById('region').value = region_name;
+            document.getElementById('form_edit_region').setAttribute('action', 'regions/'+region_id);
+        }
+
+        function setProvince(province_id, province_name){
+            document.getElementById('province').value = province_name;
+            document.getElementById('form_edit_province').setAttribute('action', 'provinces/'+province_id);
+        }
+
         let count_child = 1
-        let add_field = document.getElementById('add_field');
-        add_field.addEventListener('click', event => {
+        document.getElementById('add_field').addEventListener('click', event => {
             let parent_field = document.getElementById('field_list');
-            count_child += 1;
             let field = document.createElement('input');
             field.type = "text";
             field.placeholder = "Nom de la région"
@@ -94,14 +182,13 @@
             field.className = "form-control";
             field.style.marginBottom = "10px";
 
-            if(count_child <= 5){
+            if(count_child < 5){
+                count_child += 1;
                 parent_field.appendChild(field);
             }
-            console.log("Child: "+count_child);
         });
 
-        let remove_field = document.getElementById('remove_field');
-        remove_field.addEventListener('click', event => {
+        document.getElementById('remove_field').addEventListener('click', event => {
             let parent_field = document.getElementById('field_list');
             
             if(count_child > 1){
@@ -111,28 +198,26 @@
         });
 
         // Gestion du formulaire des provinces
-        let count_field = 1
-        let add_province = document.getElementById('add_province');
+        let count_field = 2
         let parent_field = document.getElementById('province_list');
-        add_province.addEventListener('click', event => {
-            count_field += 1;
+        document.getElementById('add_province').addEventListener('click', event => {
             let field = document.createElement('input');
             field.type = "text";
             field.placeholder = "Nom de la province"
-            field.name = "region_"+count_field;
-            field.id = "region_"+count_field;
+            field.name = "province_"+count_field;
+            field.id = "province_"+count_field;
             field.required = true
             field.minLength = 2
             field.className = "form-control";
             field.style.marginBottom = "10px";
 
-            if(count_field <= 5){
+            if(count_field < 5){
+                count_field += 1;
                 parent_field.appendChild(field);
             }
         });
 
-        let remove_province = document.getElementById('remove_province');
-        remove_province.addEventListener('click', event => {
+        document.getElementById('remove_province').addEventListener('click', event => {
             if(count_field > 1){
                 count_field -= 1;
                 parent_field.removeChild(parent_field.lastChild)

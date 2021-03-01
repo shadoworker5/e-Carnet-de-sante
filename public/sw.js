@@ -1,8 +1,10 @@
-const DYNAMIC_CACHE = 'pwa-dynamic-v20';
+const DYNAMIC_CACHE = 'pwa-dynamic-v23';
 
 var filesToCache = [
     '/',
     '/offline',
+    '/offline_show',
+    '/offline_vacinate',
     '/list_vacinate',
     'calendar',
     '/vaccinate/create',
@@ -60,8 +62,6 @@ self.addEventListener("fetch", event => {
         })
     );
 });
-
-
 
 // Serve from Cache
 // self.addEventListener("fetch", event => {

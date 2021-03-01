@@ -54,6 +54,7 @@ class PatientsController extends Controller
         $this->userGuard();
 
         $this->validate($request, [
+            'province_id'   => 'required',
             'name'          => 'required|min:5',
             'birthday'      => 'required',
             'genre'         => 'required',
@@ -65,6 +66,7 @@ class PatientsController extends Controller
         ]);
 
         Patients::create([
+            'province_id'   => $request->province_id,
             'full_name'     => $request->name,
             'birthday'      => $request->birthday,
             'genre'         => $request->genre,

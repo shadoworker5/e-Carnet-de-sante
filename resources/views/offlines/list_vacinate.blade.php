@@ -68,45 +68,6 @@
                             </td>
                         </tr>
                     @endforelse
-                    {{-- <tr class="{{ $loop->index % 2 == 0 ? 'bg-info text-white' : '' }}">
-                        <td>
-                            {{ $loop->index + 1 }}
-                        </td>
-
-                        <td>
-                            {{ $patient->code_patient }}
-                        </td>
-
-                        <td>
-                            {{ $patient->full_name }}
-                        </td>
-
-                        <td>
-                            {{ $patient->birthday }}
-                        </td>
-                        
-                        <td>
-                            {{ $patient->name_father.', '.$patient->name_mother }}
-                        </td>
-
-                        <td>
-                            {{ get_vacine_status_per_patient($patient->id) }}
-                        </td>
-                        
-                        <td>
-                            <div class="btn-group" role="group" aria-label="Basic example">
-                                <a href="{{ route('patient.show', $patient) }}" class="btn btn-success">
-                                    Afficher
-                                </a>
-
-                                @if(get_vacine_status_per_patient($patient->id) !== 'A jour')
-                                    <a href="{{ route('vaccinate.create') }}" class="btn btn-warning">
-                                        Vacciner
-                                    </a>
-                                @endif
-                            </div>
-                        </td>
-                    </tr> --}}
                 </tbody>
             </table>
         </div>

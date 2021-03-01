@@ -42,6 +42,6 @@ class AdminController extends Controller{
     }
 
     public function setings(){
-        return view('admin.setings', ['list_regions' => Regions::where('contries_id', '=', Auth::user()->contrie_id)->get()]);
+        return view('admin.setings');
     }
 }
