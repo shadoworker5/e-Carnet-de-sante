@@ -67,9 +67,11 @@
             </table>
             
             @if(Auth::user()->user_role !== 'guest')
-                <a href="{{ route('add_vacination', $infos->code_patient) }}" id="vacine_patient" data-code="{{ $infos->code_patient }}" class="btn btn-success">
-                    Ajouter une vaccination
-                </a>
+                @if(get_vacine_status_per_patient($infos->id, $infos->birthday))
+                    <a href="{{ route('add_vacination', $infos->code_patient) }}" id="vacine_patient" data-code="{{ $infos->code_patient }}" class="btn btn-success">
+                        Ajouter une vaccination
+                    </a>                    
+                @endif
             @endif
         </div>
 
@@ -123,7 +125,7 @@
                 </table>
             </div>
 
-            @if(count($vaccine_updates) !== 0)
+            @if(get_vacine_status_per_patient($infos->id, $infos->birthday))
                 <h1 class="text-center"> {{ __("Tableau des vaccinations non à jour") }} </h1>
                 <div class="table-responsive">
                     <table class="table table-striped">

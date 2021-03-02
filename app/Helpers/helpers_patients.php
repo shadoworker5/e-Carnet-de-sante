@@ -1,7 +1,10 @@
 <?php
 
+use App\Models\Patient_vaccinate;
 use App\Models\Patients;
 use App\Models\Vaccine_calendar;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 
 if(!function_exists('get_all_patients')){
@@ -60,11 +63,37 @@ if(!function_exists('get_status_vacinate_per_patient')){
     }
 }
 
-if(!function_exists('get_vacine_status_per_patient')){
-    function get_vacine_status_per_patient($patient_id){
-        $query = (bool)DB::select('SELECT id FROM vaccine_calendars WHERE id NOT IN (SELECT vaccine_calendar_id FROM patient_vaccinates WHERE patient_id = '.$patient_id.')');
+if(!function_exists('get_patient_age')){
+    function get_patient_age($date_naissance){
+        $date_now = new DateTime('now');
+        $date_naissance = new DateTime($date_naissance);
+        $patient_age = $date_now->diff($date_naissance);
+        
+        return  $patient_age->y*12 + $patient_age->m;
+        // $date_now = Carbon::now()->isoFormat('Y-M-d');
+        // $date_naissance = Carbon::createFromDate($date_naissance)->age;
+        // // $date_naissance = Carbon::parse($date_naissance)->diff(Carbon::now())->format("y*12 years, %m ");
+        // return $date_naissance;
+    }
+}
 
-        return $query;
+if(!function_exists('get_vacine_status_per_patient')){
+    function get_vacine_status_per_patient($patient_id, $patient_birthday){
+        $age = get_patient_age($patient_birthday);
+        $result_calendar = [];
+        $response = [];
+
+        $query = Vaccine_calendar::all()->toArray();
+        for($i = 0; $i < count($query); $i++){
+            if(explode(' ', $query[$i]['patient_age'])[0] <= $age){
+                $result_calendar[] = $query[$i]['id'];
+            }
+        }
+
+        foreach($result_calendar as $key => $value){
+            $response[] = (bool) Patient_vaccinate::wherePatient_idAndVaccine_calendar_id($patient_id, $value)->get()->toArray();
+        }
+        return in_array(false, $response);
     } 
 }
 

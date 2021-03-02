@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Patient_vaccinate;
 use App\Models\Patients;
-use App\Models\Vaccine_calendar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -26,10 +25,11 @@ class PatientsController extends Controller
     public function index()
     {
         $this->userGuard();
-        if(Auth::user()->user_role === 'collector'){
-            return redirect(route('home'));
-        }
-        return view('pages.list_patient');
+        // if(Auth::user()->user_role === 'collector'){
+        //     return redirect(route('home'));
+        // }
+        $patients = Patients::paginate(15);
+        return view('pages.list_patient', ['patients' => $patients]);
     }
 
     /**
@@ -96,13 +96,6 @@ class PatientsController extends Controller
         $info = Patients::findOrFail($patients);
         $vaccination = Patient_vaccinate::where('patient_id', '=', $patients)->get();
         
-        // Code a revoir pour refactoring
-        // $vacinate_count[] = Patient_vaccinate::where(DB::raw("DATE_FORMAT(created_at, '%M')"), $value)->count();
-        
-        // $update = Vaccine_calendar::where(DB::raw('SELECT vaccine_calendar_id FROM patient_vaccinates WHERE WHERE patient_id = '.$patients))->get();
-
-        // dd($update);
-
         $vaccine_update = DB::select('SELECT * FROM vaccine_calendars WHERE id NOT IN (SELECT vaccine_calendar_id FROM patient_vaccinates WHERE patient_id = '.$patients.')');
 
         return view('patients.show_patient', ['infos' => $info, 'vaccinations' => $vaccination, 'vaccine_updates' => $vaccine_update]);
@@ -172,5 +165,9 @@ class PatientsController extends Controller
     public function destroy(Patients $patients)
     {
         //
+    }
+
+    function getUserByinfo(){
+        
     }
 }
