@@ -92,6 +92,6 @@ class APIPatientController extends Controller
     }
 
     public function getPatientList($province_id){
-        return  Patients::where('province_id', '=', $province_id)->get();        //view('vaccines.vacinate_patient');
+        return  Patients::where('province_id', '=', $province_id)->get();
     }
 }

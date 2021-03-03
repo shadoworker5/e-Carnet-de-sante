@@ -22,14 +22,12 @@ class PatientsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index(){
         $this->userGuard();
         // if(Auth::user()->user_role === 'collector'){
         //     return redirect(route('home'));
         // }
-        $patients = Patients::paginate(15);
-        return view('pages.list_patient', ['patients' => $patients]);
+        return view('pages.list_patient');
     }
 
     /**
@@ -167,7 +165,29 @@ class PatientsController extends Controller
         //
     }
 
-    function getUserByinfo(){
+    function getUserByinfo($per_page = 15, $code_patient = null, $birthday = null, $born_location = null, $father = null, $mother = null, $helper_contact = null){
+        // if($code_patient !== null){
+        //     $liste = Patients::where('full_name', 'like', '%'.$code_patient.'%')->OrWhere('code_patient', 'like', '%'.$code_patient.'%')->paginate($per_page);
+        // }else if($birthday !== null){
+        //     $liste = $this->getInfoPatient('birthday', $birthday, $per_page);
+        // }else if($born_location !== null){
+        //     $liste = $this->getInfoPatient('born_location', $born_location, $per_page);
+        // }else if($father !== null){
+        //     $liste = $this->getInfoPatient('name_father', $father, $per_page);
+        // }else if($mother !== null){
+        //     $liste = $this->getInfoPatient('name_mother', $mother, $per_page);
+        // }else if($helper_contact !== null){
+        //     $liste = $this->getInfoPatient('helper_contact', $helper_contact, $per_page);
+        // }else if($code_patient !== null && $helper_contact !== null){
+        //     // $liste = getInfoPatient('')
+        // }else{
+        //     $liste = Patients::paginate($per_page);
+        // }
         
+        // return view('pages.list_patient', ['patients' => $liste]);
+    }
+
+    function getInfoPatient($field, $value, $count_item){
+        // return Patients::where($field, 'like', '%'.$value.'%')->paginate($count_item);
     }
 }

@@ -2,23 +2,36 @@
 
 use App\Models\Patient_vaccinate;
 use App\Models\Patients;
+use App\Models\Provinces;
+use App\Models\Regions;
 use App\Models\Vaccine_calendar;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 if(!function_exists('get_all_patients')){
     function get_all_patients($per_page, $code_patient = null, $birthday = null, $born_location = null, $father = null, $mother = null, $helper_contact = null){
-        // else if($code_patient !== null && $birthday !== null){
-        //     $liste = Patients::where('full_name', 'like', '%'.$code_patient.'%')
-        //                         ->OrWhere('code_patient', 'like', '%'.$code_patient.'%')
-        //                         ->AndWhere('birthday', 'like', '%'.$birthday.'%')->OrWhere('birthday', '=', 'null')
-        //                         ->AndWhere('name_father', 'like', '%'.$father.'%')->OrWhere('name_father', '=', 'null')
-        //                         ->AndWhere('name_mother', 'like', '%'.$mother.'%')->OrWhere('name_mother', '=', 'null')
-        //                         ->AndWhere('helper_contact', 'like', '%'.$helper_contact.'%')->OrWhere('helper_contact', '=', 'null')
-        //                         ->AndWhere('born_location', 'like', '%'.$born_location.'%')->OrWhere('born_location', '=', 'null')
-        //                         ->paginate($per_page);
+        $region = Regions::whereContries_id(Auth::user()->contrie_id)->get()->toArray();
+        $list_region = [];
+        $list_province = [];
         
+        
+        for($i = 0; $i < count($region); $i++){
+            $list_region[] = $region[$i]['id'];
+        }
+        
+        
+        // // Patients::where('province_id', '=', $province_id)->get();
+        
+        
+        foreach($list_region as $key => $value){
+            // $response[] = (bool) Patient_vaccinate::wherePatient_idAndVaccine_calendar_id($patient_id, $value)->get()->toArray();
+            // $province = Provinces::whereRegion_id($value)->get()->toArray();
+            $province = DB::select("SELECT * FROM patients WHERE province_id IN(SELECT id FROM provinces WHERE region_id = $value)");
+        }
+        // print_r($province);
+        
+        // echo "<br/>";
+
         if($code_patient !== null){
             $liste = Patients::where('full_name', 'like', '%'.$code_patient.'%')->OrWhere('code_patient', 'like', '%'.$code_patient.'%')->paginate($per_page);
         }else if($birthday !== null){
@@ -34,6 +47,7 @@ if(!function_exists('get_all_patients')){
         }else if($code_patient !== null && $helper_contact !== null){
             // $liste = getInfoPatient('')
         }else{
+            $liste = DB::select("SELECT * FROM patients ");
             $liste = Patients::paginate($per_page);
         }
         return $liste;
@@ -70,10 +84,6 @@ if(!function_exists('get_patient_age')){
         $patient_age = $date_now->diff($date_naissance);
         
         return  $patient_age->y*12 + $patient_age->m;
-        // $date_now = Carbon::now()->isoFormat('Y-M-d');
-        // $date_naissance = Carbon::createFromDate($date_naissance)->age;
-        // // $date_naissance = Carbon::parse($date_naissance)->diff(Carbon::now())->format("y*12 years, %m ");
-        // return $date_naissance;
     }
 }
 
@@ -94,7 +104,7 @@ if(!function_exists('get_vacine_status_per_patient')){
             $response[] = (bool) Patient_vaccinate::wherePatient_idAndVaccine_calendar_id($patient_id, $value)->get()->toArray();
         }
         return in_array(false, $response);
-    } 
+    }
 }
 
 if(!function_exists('getPatientName')){

@@ -1,4 +1,4 @@
-const DYNAMIC_CACHE = 'pwa-dynamic-v23';
+const DYNAMIC_CACHE = 'pwa-dynamic-v1';
 
 var filesToCache = [
     '/',

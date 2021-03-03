@@ -32,20 +32,19 @@
                 <input type="text" class="form-control" wire:model.defer="helper_contact" placeholder="Contact" id="floatingContact" name="helper_contact">
                 <label for="floatingContact"> {{ __("Contact") }} </label>
             </div>
-
-            <button class="btn btn-primary mt-2 col-md-2" wire:click="searchPatient">
+        </div>
+        
+        <div class="row mb-2 mt-2">
+            <select class="form-control col-md-6 custom-select" wire:model.lazy="per_page" name="choose" id="choose">
+                @for($i = 5; $i <= 100; $i += 5)
+                <option value="{{ $i }}"> {{ $i }} <option>
+                    @endfor
+            </select>
+            
+            <button class="btn btn-primary col-md-4 offset-2" wire:click="searchPatient">
                 <i class="fa fa-search"></i>
                 {{ __("Rechercher") }}
             </button>
-
-        </div>
-        <div>
-            <select class="form-control mt-2" wire:model.lazy="per_page" name="choose" id="choose">
-                @for($i = 5; $i <= 100; $i += 5)
-                    <option value="{{ $i }}"> {{ $i }} <option>
-                @endfor
-            </select>
-            <label for="per_page"> {{ __('par page') }} </label>
         </div>
 
     </div>
@@ -93,7 +92,8 @@
                             {{ $patient->name_father.', '.$patient->name_mother }}
                         </td>
 
-                        <td> {!! get_vacine_status_per_patient($patient->id) ? '<div class="text-center text-danger"> <i class="fa fa-times fa-2x"></i> </div>' : '<div class="text-center text-success"> <i class="fa fa-check"></i> </div>' !!}
+                        <td>
+                            {!! get_vacine_status_per_patient($patient->id, $patient->birthday) ? '<div class="text-center text-danger"> <i class="fa fa-times fa-2x"></i> </div>' : '<div class="text-center text-success"> <i class="fa fa-check"></i> </div>' !!}
                         </td>
                         
                         <td>
@@ -102,16 +102,18 @@
                                     Afficher
                                 </a>
 
-                                <a href="{{ route('add_vacination', $patient->code_patient) }}" class="btn btn-warning">
-                                    Ajouter vacciner
-                                </a>
+                                @if(get_vacine_status_per_patient($patient->id, $patient->birthday)) 
+                                    <a href="{{ route('add_vacination', $patient->code_patient) }}" class="btn btn-warning">
+                                        Ajouter vacciner
+                                    </a>
+                                @endif
                             </div>
                         </td>
                     </tr>
                 @empty
                     <tr>
                         <td colspan="7">
-                            <center><p class="text-danger"> Aucune ligne trouvée</p></center>
+                            <p class="text-danger text-center"> Aucune ligne trouvée</p>
                         </td>
                     </tr>
                 @endforelse
