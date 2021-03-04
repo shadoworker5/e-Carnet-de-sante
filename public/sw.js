@@ -1,14 +1,15 @@
-const DYNAMIC_CACHE = 'pwa-dynamic-v1';
+const DYNAMIC_CACHE = 'pwa-dynamic-v9';
+
 
 var filesToCache = [
-    '/',
+    '/home',
     '/offline',
     '/offline_show',
     '/offline_vacinate',
     '/list_vacinate',
     'calendar',
     '/vaccinate/create',
-    '/patient/create',
+    '/patient/create',    
     '/css/app.css',
     '/css/all.css',
     '/css/sb-admin-2.min.css',
@@ -53,17 +54,16 @@ self.addEventListener("fetch", event => {
             });
         }).catch((response) => {
             return caches.match(event.request)
-            .then((response) => {
-                if (response === undefined) { 
+            .then((result) => {
+                if (result === undefined) { 
                     return caches.match('/offline');
                 }
-                return response;
+                return result;
             });
         })
     );
 });
 
-// Serve from Cache
 // self.addEventListener("fetch", event => {
 //     event.respondWith(
 //         caches.match(event.request).then(cacheResponse => {
