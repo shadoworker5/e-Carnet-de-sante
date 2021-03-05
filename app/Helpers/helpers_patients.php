@@ -10,27 +10,15 @@ use Illuminate\Support\Facades\DB;
 
 if(!function_exists('get_all_patients')){
     function get_all_patients($per_page, $code_patient = null, $birthday = null, $born_location = null, $father = null, $mother = null, $helper_contact = null){
-        $region = Regions::whereContries_id(Auth::user()->contrie_id)->get()->toArray();
-        $list_region = [];
-        $list_province = [];
+        // $region = Regions::whereContries_id(Auth::user()->contrie_id)->get()->toArray();
+        // $list_region_id = [];
+        // $list_province_id = [];
         
-        
-        for($i = 0; $i < count($region); $i++){
-            $list_region[] = $region[$i]['id'];
-        }
-        
-        
-        // // Patients::where('province_id', '=', $province_id)->get();
-        
-        
-        foreach($list_region as $key => $value){
-            // $response[] = (bool) Patient_vaccinate::wherePatient_idAndVaccine_calendar_id($patient_id, $value)->get()->toArray();
-            // $province = Provinces::whereRegion_id($value)->get()->toArray();
-            $province = DB::select("SELECT * FROM patients WHERE province_id IN(SELECT id FROM provinces WHERE region_id = $value)");
-        }
-        // print_r($province);
-        
-        // echo "<br/>";
+        // foreach($list_region_id as $key => $value){
+        //     // $response[] = (bool) Patient_vaccinate::wherePatient_idAndVaccine_calendar_id($patient_id, $value)->get()->toArray();
+        //     // $list_province_id[] = DB::select("SELECT id FROM provinces WHERE region_id = $value");
+        //     $list_province_id[] = Provinces::whereRegion_id($value)->get()->toArray();
+        // }
 
         if($code_patient !== null){
             $liste = Patients::where('full_name', 'like', '%'.$code_patient.'%')->OrWhere('code_patient', 'like', '%'.$code_patient.'%')->paginate($per_page);
@@ -47,8 +35,9 @@ if(!function_exists('get_all_patients')){
         }else if($code_patient !== null && $helper_contact !== null){
             // $liste = getInfoPatient('')
         }else{
-            $liste = DB::select("SELECT * FROM patients ");
-            $liste = Patients::paginate($per_page);
+            $liste = DB::select("SELECT * FROM patients WHERE province_id IN (SELECT id FROM provinces WHERE region_id IN (SELECT id FROM regions WHERE contries_id = ".Auth::user()->contrie_id."))");
+            // ->paginate($per_page);
+            // $liste = Patients::paginate($per_page);
         }
         return $liste;
     }
@@ -56,7 +45,8 @@ if(!function_exists('get_all_patients')){
 
 if(!function_exists('getInfoPatient')){
     function getInfoPatient($field, $value, $count_item){
-        return Patients::where($field, 'like', '%'.$value.'%')->paginate($count_item);
+        // return Patients::where($field, 'like', '%'.$value.'%')->paginate($count_item);
+        return DB::select("SELECT * FROM patients WHERE $field, 'like', '%'.$value.'%' AND province_id IN (SELECT id FROM provinces WHERE region_id IN (SELECT id FROM regions WHERE contries_id = ".Auth::user()->contrie_id."))");
     }
 }
 

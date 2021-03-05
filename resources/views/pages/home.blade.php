@@ -94,7 +94,7 @@
             </div>
             
             <div class="col-md-9">
-                <div class="card shadow mb-4">
+                <div class="card shadow mb-4" id="show_patient_liste">
                     <div class="card-header py-3">
                         <h6 class="m-0 font-weight-bold"> {{ __("Liste des patients") }} </h6>
                     </div>
@@ -126,7 +126,7 @@
                     </div>
                 </div>
 
-                <div class="mb-2 text-center">
+                <div class="mb-2 mt-5 text-center">
                     <button class="btn btn-primary" id="open_modal" data-bs-toggle="modal" data-bs-target="#load_data">
                         <i class="fa fa-download"></i>
                         Charger les données

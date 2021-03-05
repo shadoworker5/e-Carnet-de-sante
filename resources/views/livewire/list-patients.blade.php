@@ -35,11 +35,11 @@
         </div>
         
         <div class="row mb-2 mt-2">
-            <select class="form-control col-md-6 custom-select" wire:model.lazy="per_page" name="choose" id="choose">
+            {{-- <select class="form-control col-md-6 custom-select" wire:model.lazy="per_page" name="choose" id="choose">
                 @for($i = 5; $i <= 100; $i += 5)
                 <option value="{{ $i }}"> {{ $i }} <option>
                     @endfor
-            </select>
+            </select> --}}
             
             <button class="btn btn-primary col-md-4 offset-2" wire:click="searchPatient">
                 <i class="fa fa-search"></i>
@@ -70,27 +70,17 @@
             </thead>
 
             <tbody>
-                @forelse($patients as $patient)
+                @foreach($patients as $patient )
                     <tr class="{{ $loop->index % 2 == 0 ? 'bg-info text-white' : '' }}">
-                        <td>
-                            {{ $patient->code_patient }}
-                        </td>
+                        <td> {{ $patient->code_patient }} </td>
 
-                        <td>
-                            {{ $patient->full_name }}
-                        </td>
+                        <td> {{ $patient->full_name }} </td>
 
-                        <td>
-                            {{ $patient->birthday }}
-                        </td>
+                        <td> {{ $patient->birthday }} </td>
                         
-                        <td>
-                            {{ $patient->born_location }}
-                        </td>
+                        <td> {{ $patient->born_location }} </td>
                         
-                        <td>
-                            {{ $patient->name_father.', '.$patient->name_mother }}
-                        </td>
+                        <td> {{ $patient->name_father.', '.$patient->name_mother }} </td>
 
                         <td>
                             {!! get_vacine_status_per_patient($patient->id, $patient->birthday) ? '<div class="text-center text-danger"> <i class="fa fa-times fa-2x"></i> </div>' : '<div class="text-center text-success"> <i class="fa fa-check"></i> </div>' !!}
@@ -98,7 +88,7 @@
                         
                         <td>
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                <a href="{{ route('patient.show', $patient) }}" class="btn btn-success">
+                                <a href="{{ route('patient.show', $patient->id) }}" class="btn btn-success">
                                     Afficher
                                 </a>
 
@@ -110,18 +100,18 @@
                             </div>
                         </td>
                     </tr>
-                @empty
+                {{-- @empty
                     <tr>
                         <td colspan="7">
                             <p class="text-danger text-center"> Aucune ligne trouvée</p>
                         </td>
-                    </tr>
-                @endforelse
+                    </tr> --}}
+                @endforeach
             </tbody>
         </table>
     </div>
     
     <div class="offset-md-5">
-        {{ $patients->links() }}
+        {{-- {{ $patients->links() }} --}}
     </div>
 </div>

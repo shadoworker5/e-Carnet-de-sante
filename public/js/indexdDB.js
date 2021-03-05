@@ -141,6 +141,9 @@ const renderPatientData = () => {
             if(request.result.length > 0 && document.querySelector("#open_modal")){
                 document.querySelector("#open_modal").remove();
             }
+            if(request.result.length === 0){
+                document.querySelector("#show_patient_liste").setAttribute('class', 'd-none');
+            }
 
             if (request.result && document.querySelector("#patient_data")){
                 for (let i = 0; i < request.result.length; i++) {
@@ -474,26 +477,26 @@ function showPatientData(patient_id){
 }
 
 function renderPatient(code, name, naissance, name_father, name_mother, name_helper, contact, email){
-    localStorage.setItem('code', code);
-    localStorage.setItem('name', name);
-    localStorage.setItem('naissance', naissance);
-    localStorage.setItem('name_father', name_father);
-    localStorage.setItem('name_father', name_father);
-    localStorage.setItem('name_mother', name_mother);
-    localStorage.setItem('name_helper', name_helper);
-    localStorage.setItem('contact', contact);
-    localStorage.setItem('email', email);
+    // localStorage.setItem('code', code);
+    // localStorage.setItem('name', name);
+    // localStorage.setItem('naissance', naissance);
+    // localStorage.setItem('name_father', name_father);
+    // localStorage.setItem('name_father', name_father);
+    // localStorage.setItem('name_mother', name_mother);
+    // localStorage.setItem('name_helper', name_helper);
+    // localStorage.setItem('contact', contact);
+    // localStorage.setItem('email', email);
 }
 
 if(courant_page === '/offline_show'){
-    document.getElementById('code').textContent = localStorage.getItem('code');
-    document.getElementById('name').textContent = localStorage.getItem('name');
-    document.getElementById('naissance').textContent = localStorage.getItem('naissance');
-    document.getElementById('name_father').textContent = localStorage.getItem('name_father');
-    document.getElementById('name_mother').textContent = localStorage.getItem('name_mother');
-    document.getElementById('name_helper').textContent = localStorage.getItem('name_helper');
-    document.getElementById('contact').textContent = localStorage.getItem('contact');
-    document.getElementById('email').textContent = localStorage.getItem('email');
+    // document.getElementById('code').textContent = localStorage.getItem('code');
+    // document.getElementById('name').textContent = localStorage.getItem('name');
+    // document.getElementById('naissance').textContent = localStorage.getItem('naissance');
+    // document.getElementById('name_father').textContent = localStorage.getItem('name_father');
+    // document.getElementById('name_mother').textContent = localStorage.getItem('name_mother');
+    // document.getElementById('name_helper').textContent = localStorage.getItem('name_helper');
+    // document.getElementById('contact').textContent = localStorage.getItem('contact');
+    // document.getElementById('email').textContent = localStorage.getItem('email');
     // document.getElementById('vacine_patient').setAttribute('data-code', localStorage.getItem('code'))
 }
 
