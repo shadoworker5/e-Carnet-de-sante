@@ -4,6 +4,7 @@ const PATIENT_DATA = 'data_patient';
 const VACINATE_PATIENT_DATA = 'data_vacinate_patient';
 const VACINE_CALENDAR = 'data_vacinate_calendar'
 var request, db;
+let data_show = []
 
 let courant_page = window.location.pathname;
 // console.log(courant_page);
@@ -138,44 +139,35 @@ const renderPatientData = () => {
         let patient_data = document.querySelector("#patient_data");
         
         request.onsuccess = (event) => {
+            for (let i = 0; i < request.result.length; i++) {
+                data_show.push(request.result[i]);            
+            }
+
+            if(courant_page === '/home' && document.querySelector("#patient_data")){
+                $('#dataTable').DataTable({
+                    data: data_show,
+                    columns: [
+                        { data: 'code_patient', "sWidth": "auto" },
+                        { data: 'full_name', "sWidth": "auto" },
+                        { data: 'birthday', "sWidth": "auto" },
+                        { data: 'born_location', "sWidth": "auto" },
+                        { data: 'name_father', "sWidth": "auto" },
+                        { data: 'name_mother', "sWidth": "auto" },
+                        { data: function(e){
+                            return '<a href="#" data-code="'+e["code_patient"]+'" onclick="redirectForm(\''+e["code_patient"]+'\')" class="btn btn-warning"> Ajouter une vaccination </a>'
+                        } },
+                    ]
+                });
+            }
+            
+
             if(request.result.length > 0 && document.querySelector("#open_modal")){
                 document.querySelector("#open_modal").remove();
             }
-            if(request.result.length === 0){
+
+            if(request.result.length === 0 && document.querySelector("#show_patient_liste")){
                 document.querySelector("#show_patient_liste").setAttribute('class', 'd-none');
             }
-
-            if (request.result && document.querySelector("#patient_data")){
-                for (let i = 0; i < request.result.length; i++) {
-                    let html = `
-                    <tr>
-                        <td> ${request.result[i].code_patient} </td>
-    
-                        <td> ${request.result[i].full_name} </td>
-    
-                        <td> ${request.result[i].birthday} </td>
-    
-                        <td> ${request.result[i].born_location} </td>
-                        
-                        <td> ${request.result[i].name_father, request.result[i].name_mother} </td>
-    
-                        <td> Neant </td>   
-                        
-                        <td>
-                            <div class="btn-group" role="group" aria-label="Basic example">
-                                <a href="#" class="btn btn-success" onclick="showPatient('${request.result[i].id}')">
-                                    Afficher
-                                </a>
-                                <a href="#" data-code="${request.result[i].code_patient}" class="btn btn-warning" onclick="redirectForm('${request.result[i].code_patient}')">
-                                    Ajouter une vaccination
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                    `;
-                    patient_data.innerHTML += html
-                }
-            } 
         }
     }
 }
@@ -525,7 +517,7 @@ function emptyPatientCode(){
 if(courant_page === '/vaccinate/create'){
     let field_code = document.querySelector('#patient_code');
     field_code.value = getPatientCode();
-    field_code.setAttribute('readonly', true);
+    getPatientCode() !== null ? field_code.setAttribute('readonly', true) : "";
 }
 
 function emptyAllData(){

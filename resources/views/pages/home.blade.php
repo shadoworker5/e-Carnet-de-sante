@@ -112,9 +112,9 @@
                                         
                                         <th> {{ __('Lieu de naissance') }} </th>
                                         
-                                        <th> {{ __('Nom des parents') }} </th>
+                                        <th> {{ __('Nom du père') }} </th>
 
-                                        <th> {{ __('Etat de vaccination') }} </th>
+                                        <th> {{ __('Nom de la mère') }} </th>
 
                                         <th> {{ __('Action') }} </th>
                                     </tr>
@@ -254,7 +254,7 @@
                     <div class="mt-3" id="progress_bar"></div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-danger" type="button" data-bs-dismiss="modal"> Fermer </button>
+                    <button class="btn btn-danger" type="button" data-bs-dismiss="modal" onclick="window.location.reload();"> Fermer </button>
                 </div>
             </div>
         </div>
@@ -268,9 +268,10 @@
         <script src="{{ asset('js/form_validate.js') }}"></script>
         <script src="{{ asset('js/load_data.js') }}"></script>
         <script>
-            $(document).ready(function() {
-                $('#dataTable').DataTable();
-            });
+            // console.log(data_show);
+            // $(document).ready(function() {
+                // $('#dataTable').DataTable();
+            // });
         </script>
         
     @endif
