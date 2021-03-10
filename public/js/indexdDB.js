@@ -241,7 +241,7 @@ function SendVacinateData(){
                     }
                     fetch(url, options)
                     .then(resulte => resulte.json())
-                    .then(resulte => subscribe(resulte));
+                    .then(resulte => subscribe(resulte['response']));
 
                     // mise a jour
                     request.result[i].status = '1'
@@ -376,7 +376,7 @@ if(courant_page === "/vaccinate/create" || courant_page.startsWith('/add_vacinat
                 vacinate_data.image_path.value          = '';
                 
                 subscribe('Vaccination enregistré avec succès.');
-                window.location.href = '/list_vacinate';
+                window.location.href = '/home';
             }
         }
     });

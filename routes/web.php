@@ -50,4 +50,3 @@ Route::resource('regions', RegionsController::class)->middleware(['auth']);
 Route::resource('provinces', ProvinceController::class)->middleware(['auth']);
 
 Route::get('/add_vacinate/{id}', [PatientVacinateController::class, 'addVacinate'])->middleware('auth')->name('add_vacination');
-// Route::get('/get_patient', [PatientsController::class, 'getUserByinfo'])->middleware('auth')->name('getUserByinfo');

@@ -53,11 +53,11 @@ class APIVacinatePatient extends Controller
                 'path_capture'           => $request->image_path !== "" ? $request->image_path : null
             ]);
             return response()->json([
-                'success' => "Données de vaccination sauvegarder avec succès"
+                'response' => "Données de vaccination sauvegarder avec succès"
             ]);
         }else{
             return response()->json([
-                'error' => "Ce patient est à jours des vaccination"
+                'response' => "Le patient $request->code_patient est à jours des vaccination"
             ]);
         }
     }
