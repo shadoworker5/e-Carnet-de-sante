@@ -65,7 +65,6 @@
                     </div>
                 </div>
             </div>
-            <!-- <button onclick="subscribe('Test')"> Click </button> -->
         @elseif(in_array(Auth::user()->user_role, ['collector']))
             <div class="col-md-3">
                 <div class="accordion" id="accordionExample">

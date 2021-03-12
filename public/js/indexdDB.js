@@ -142,8 +142,16 @@ const renderPatientData = () => {
             for (let i = 0; i < request.result.length; i++) {
                 data_show.push(request.result[i]);            
             }
+            
+            if(request.result.length > 0 && document.querySelector("#open_modal")){
+                document.querySelector("#open_modal").remove();
+            }
 
-            if(courant_page === '/home' && document.querySelector("#patient_data")){
+            if(request.result.length === 0 && document.querySelector("#show_patient_liste")){
+                document.querySelector("#show_patient_liste").setAttribute('class', 'd-none');
+            }
+
+            if(courant_page === '/home' && document.querySelector("#patient_data") && request.result.length > 0){
                 $('#dataTable').DataTable({
                     data: data_show,
                     columns: [
@@ -158,15 +166,6 @@ const renderPatientData = () => {
                         } },
                     ]
                 });
-            }
-            
-
-            if(request.result.length > 0 && document.querySelector("#open_modal")){
-                document.querySelector("#open_modal").remove();
-            }
-
-            if(request.result.length === 0 && document.querySelector("#show_patient_liste")){
-                document.querySelector("#show_patient_liste").setAttribute('class', 'd-none');
             }
         }
     }

@@ -1,11 +1,11 @@
-const DYNAMIC_CACHE = 'pwa-dynamic-v9';
+const DYNAMIC_CACHE = 'pwa-dynamic-v10';
 
+//'/offline_vacinate',
 
 var filesToCache = [
     '/home',
     '/offline',
     '/offline_show',
-    '/offline_vacinate',
     '/list_vacinate',
     'calendar',
     '/vaccinate/create',
