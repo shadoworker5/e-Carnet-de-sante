@@ -375,7 +375,7 @@ if(courant_page === "/vaccinate/create" || courant_page.startsWith('/add_vacinat
                 vacinate_data.image_path.value          = '';
                 
                 subscribe('Vaccination enregistré avec succès.');
-                window.location.href = '/list_vacinate';
+                window.location.href = '/home';
             }
         }
     });

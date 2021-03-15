@@ -30,7 +30,6 @@ class AdminController extends Controller{
                 $vacinate_count[] = Patient_vaccinate::where(DB::raw("DATE_FORMAT(created_at, '%b')"), $value)->count();
             }
 
-            // }
             return view('admin.dashboard', [
                         'user_count'    => $user,
                         'genre_count'   => $genre_count

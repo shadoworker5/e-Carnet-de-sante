@@ -34,29 +34,17 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>
-                        {{ __('#indice') }}
-                    </th>
+                    <th> {{ __('#indice') }} </th>
 
-                    <th>
-                        {{ __('Nom') }}
-                    </th>
+                    <th> {{ __('Nom') }} </th>
 
-                    <th>
-                        {{ __('E-mail') }}
-                    </th>
+                    <th> {{ __('E-mail') }} </th>
                     
-                    <th>
-                        {{ __('Type d\'utilisateur') }}
-                    </th>
+                    <th> {{ __('Type d\'utilisateur') }} </th>
 
-                    <th>
-                        {{ __('Status du compte') }}
-                    </th>
+                    <th> {{ __('Status du compte') }} </th>
                     
-                    <th>
-                        {{ __('Action') }}
-                    </th>
+                    <th> {{ __('Action') }} </th>
                 </tr>
             </thead>
 
@@ -77,8 +65,10 @@
                         
                         <td>
                             <div class="btn-group" role="group">
-                                {{-- <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete_user"> {{ __("Supprimer") }} </button> --}}
-                                <a href="#" class="btn btn-primary"> {{ __("Modifier") }} </a>
+                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete_user"> {{ __("Supprimer") }} </button>
+                                <a href="#" href="#" data-toggle="modal" data-target="#edit_user_modal" class="btn btn-primary" onclick="setUser('{{$user->id}}', '{{$user->name}}', '{{$user->email}}', '{{$user->user_role}}')">
+                                    {{ __("Modifier") }}
+                                </a>
                             </div>
                         </td>
                     </tr>

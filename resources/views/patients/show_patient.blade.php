@@ -126,7 +126,7 @@
             </div>
 
             @if(get_vacine_status_per_patient($infos->id, $infos->birthday))
-                <h1 class="text-center"> {{ __("Tableau des vaccinations non à jour") }} </h1>
+                <h1 class="text-center"> {{ __("Tableau des vaccinations à venir") }} </h1>
                 <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>
