@@ -11,10 +11,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller{
-    public function __construct(){
-        // code
-    }
-
     public function index(){
             $user = User::all();
             

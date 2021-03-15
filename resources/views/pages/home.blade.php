@@ -132,91 +132,6 @@
                     </button>
                 </div>
             </div>
-            
-            {{--
-                <div class="col-md-9">
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold"> {{ __("Liste des patients") }} </h6>
-                        </div>
-
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" >
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                {{ __('Code') }}
-                                            </th>
-
-                                            <th>
-                                                {{ __('Nom') }}
-                                            </th>
-
-                                            <th>
-                                                {{ __('Date de naissance') }}
-                                            </th>
-                                            
-                                            <th>
-                                                {{ __('Lieu de naissance') }}
-                                            </th>
-                                            
-                                            <th>
-                                                {{ __('Nom des parents') }}
-                                            </th>
-
-                                            <th>
-                                                {{ __('Etat de vaccination') }}
-                                            </th>
-
-                                            <th>
-                                                {{ __('Action') }}
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    
-                                    <tbody>
-                                        @forelse($patients as $patient)
-                                            <tr>
-                                                <td> {{ $patient->code_patient }} </td>
-
-                                                <td> {{ $patient->full_name }} </td>
-
-                                                <td> {{ $patient->birthday }} </td>
-                                                
-                                                <td> {{ $patient->born_location }} </td>
-                                                
-                                                <td> {{ $patient->name_father.', '.$patient->name_mother }} </td>
-
-                                                <td> {!! get_vacine_status_per_patient($patient->id) ? '<div class="text-center text-danger"> <i class="fa fa-times fa-2x"></i> </div>' : '<div class="text-center text-success"> <i class="fa fa-check"></i> </div>' !!} </td>
-                                                
-                                                <td>
-                                                    <div class="btn-group" role="group" aria-label="Basic example">
-                                                        <a href="{{ route('patient.show', $patient) }}" class="btn btn-success">
-                                                            {{ __("Afficher") }}
-                                                        </a>
-
-                                                        
-                                                        <a href="{{ route('add_vacination', $patient->code_patient) }}" class="btn btn-warning">
-                                                            {{ __("Ajouter une vacination") }}
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="7">
-                                                    <p class="text-danger text-center"> Aucune ligne trouvée</p>
-                                                </td>
-                                            </tr>
-                                        @endforelse
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            --}}
         @elseif(in_array(Auth::user()->user_role, ['guest']))
             <div class="mt-5 mb-2" style="height:379px">
                 <div class="col-md-6 offset-md-3">
@@ -265,14 +180,7 @@
         <script src="{{ asset('js/jquery.dataTables.js') }}"></script>
         <script src="{{ asset('js/dataTables.bootstrap4.js') }}"></script>
         <script src="{{ asset('js/form_validate.js') }}"></script>
-        <script src="{{ asset('js/load_data.js') }}"></script>
-        <script>
-            // console.log(data_show);
-            // $(document).ready(function() {
-                // $('#dataTable').DataTable();
-            // });
-        </script>
-        
+        <script src="{{ asset('js/load_data.js') }}"></script>        
     @endif
     
     @if(in_array(Auth::user()->user_role, ['root', 'admin', 'supervisor']))
