@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\PatientsController;
 use App\Http\Controllers\PatientVacinateController;
@@ -40,6 +41,7 @@ Route::middleware(['auth:sanctum', 'verified', 'authadmin'])->group(function(){
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
     Route::get('/list_user', [AdminController::class, 'listUser'])->name('list_user');
     Route::get('/seting', [AdminController::class, 'setings'])->name('setings');
+    Route::resource('update_user', UserController::class);
 });
 
 

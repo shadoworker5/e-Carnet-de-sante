@@ -88,7 +88,7 @@
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header"> {{ __("Options") }} </h6>
                             <a class="collapse-item" href="{{ route('list_user') }}"> {{ __("Liste des utilisateurs") }} </a>
-                            <a class="collapse-item" href="#"> {{ __("Ajouter un utilisateur") }} </a>
+                            {{-- <a class="collapse-item" href="#"> {{ __("Ajouter un utilisateur") }} </a> --}}
                         </div>
                     </div>
                 </li>

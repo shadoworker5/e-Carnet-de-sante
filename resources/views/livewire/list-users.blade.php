@@ -60,15 +60,23 @@
                         <td> {{ $user->user_role }} </td>
                         
                         <td class="text-center">
-                            {!! $user->email_verified_at !== null ? '<i class="fa fa-check"></i>' : '<i class="fa fa-times text-danger"></i>' !!}
+                            {!! $user->account_status === '1' ? '<i class="fa fa-check"></i>' : '<i class="fa fa-times text-danger"></i>' !!}
                         </td>
                         
                         <td>
                             <div class="btn-group" role="group">
-                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete_user"> {{ __("Supprimer") }} </button>
-                                <a href="#" href="#" data-toggle="modal" data-target="#edit_user_modal" class="btn btn-primary" onclick="setUser('{{$user->id}}', '{{$user->name}}', '{{$user->email}}', '{{$user->user_role}}')">
+                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete_user" onclick="delUser('{{ $user->id }}')">
+                                    {{ __("Supprimer") }}
+                                </button>
+
+                                <a href="#" href="#" data-bs-toggle="modal" data-bs-target="#edit_user_modal" class="btn btn-primary" onclick="setUser('{{$user->id}}', '{{$user->name}}', '{{$user->email}}', '{{$user->user_role}}')">
                                     {{ __("Modifier") }}
                                 </a>
+                                
+								<form id="del_user" action="" method="POST" style="display: none;">
+									@csrf
+                                    {{ method_field('DELETE') }}
+								</form>
                             </div>
                         </td>
                     </tr>
@@ -88,21 +96,25 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="delete_user" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+    <div class="modal fade" id="delete_user" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel"> {{ __("Confirmer la suppression") }} </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
                 </div>
 
                 <div class="modal-body text-center">
-                    {{ __("Etes-vous sûr de vouloir supprimer") }}
+                    {{ __("Etes-vous sûr de vouloir supprimer cet utilisateur?") }}
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> {{ __("Fermer") }} </button>
-                    <a href="#" class="btn btn-danger"> {{ __("Supprimer") }} </a>
+                    <a href="#" class="btn btn-danger"onclick="document.getElementById('del_user').submit();">
+                        {{ __("Supprimer") }}
+                    </a>
                 </div>
             </div>
         </div>

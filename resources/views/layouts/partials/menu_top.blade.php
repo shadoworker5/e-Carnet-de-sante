@@ -71,7 +71,7 @@
 	
 						<ul class="dropdown-menu bg-primary" aria-labelledby="Dropdown_user">
 							<li>
-								<a class="dropdown-item text-white" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit(); emptyAllData();">
+								<a class="dropdown-item text-white" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
 									{{ __('Deconnexion') }}
 								</a>
 	
