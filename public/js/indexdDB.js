@@ -97,19 +97,7 @@ const getData = function() {
 
 function getDataPerLocation(){
     let form_load_data = document.getElementById('form_load_data');
-    form_load_data.onsubmit = () => {
-        // let progress = document.createElement('progress');
-        // progress.className = "progress";
-        // progress.style.width = "auto";
-        // progress.max = "100";
-        // progress.value = "0"
-    
-        // let progress_bar = document.getElementById('progress_bar');
-        // progress_bar.appendChild(progress)
-        // if(progress.value === 100){
-            // alert(event)
-        // }
-        
+    form_load_data.onsubmit = () => {        
         const province_id = form_load_data.province_id.value;
         if(!province_id){
             return
@@ -125,10 +113,6 @@ function getDataPerLocation(){
 }
 
 // Save patient data per location into local DB
-const show_modal_btn = () => {
-    // document.getElementById('open_modal').remove();
-}
-
 const renderPatientData = () => {
     let open_db = indexedDB.open(DB_Name, DB_VERSION);
 
@@ -136,7 +120,7 @@ const renderPatientData = () => {
         let query = db.transaction([PATIENT_DATA]);
         let store = query.objectStore(PATIENT_DATA);
         let request = store.getAll()
-        let patient_data = document.querySelector("#patient_data");
+        // let patient_data = document.querySelector("#patient_data");
         
         request.onsuccess = (event) => {
             for (let i = 0; i < request.result.length; i++) {
@@ -205,7 +189,6 @@ function patientData(data = new Object){
             };
         };
     }
-
 }
 
 // Send patient vacinate to server

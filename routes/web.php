@@ -25,6 +25,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+Route::get('/verify-status', function () {
+    return view('verify-status');
+})->name('verify_status');
+
 Route::get('/offline', function(){
     return view('offlines.offline');
 });

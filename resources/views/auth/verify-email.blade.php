@@ -5,12 +5,12 @@
         </x-slot>
 
         <div class="mb-4 text-sm text-gray-600">
-            {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
+            {{ __('Vous devez cliquer sur le lien que nous vous avons envoyé par mail pour vérifier vos e-mail avant de pouvoir vous connecter.') }}
         </div>
 
         @if (session('status') == 'verification-link-sent')
             <div class="mb-4 font-medium text-sm text-green-600">
-                {{ __('A new verification link has been sent to the email address you provided during registration.') }}
+                {{ __('Un nouveau mail vous a été envoyé. Veuillez consulter vos mails et utiliser le lien pour vous connecter.') }}
             </div>
         @endif
 
@@ -20,7 +20,7 @@
 
                 <div>
                     <x-jet-button type="submit">
-                        {{ __('Resend Verification Email') }}
+                        {{ __('Réevoyer l\'e-mail de vérification') }}
                     </x-jet-button>
                 </div>
             </form>
@@ -29,7 +29,7 @@
                 @csrf
 
                 <button type="submit" class="underline text-sm text-gray-600 hover:text-gray-900">
-                    {{ __('Logout') }}
+                    {{ __('Déconnexion') }}
                 </button>
             </form>
         </div>

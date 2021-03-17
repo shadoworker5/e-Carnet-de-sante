@@ -1,5 +1,7 @@
 @extends('layouts.app', ['title' => 'Home'])
+
 @section('head_file')
+    <link rel="stylesheet" href="{{ asset('css/sb-admin-2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap4.min.css') }}">
 @endsection
 
@@ -71,7 +73,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingOne">
                             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                Menu déroulant
+                                Menu
                             </button>
                         </h2>
 
@@ -83,7 +85,7 @@
                                     </li>
                                     
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('calendar.index') }}"> {{ __('Liste des vaccins') }} </a>
+                                        <a class="nav-link" href="{{ route('calendar.index') }}"> {{ __('Calendrier des vaccinations') }} </a>
                                     </li>
                                 </ul>
                             </div>

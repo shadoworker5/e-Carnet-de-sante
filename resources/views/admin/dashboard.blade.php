@@ -156,7 +156,7 @@
             </div>
         </div>
 
-        <div class="col-xl-8 col-lg-7">
+        {{-- <div class="col-xl-8 col-lg-7">
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary"> {{ __('Répartition des patients par régions') }} </h6>
@@ -204,17 +204,10 @@
                         <canvas id="vaccination_percent"></canvas>
                     </div>
                     <div class="mt-4 text-center small">
-                        {{-- <span class="mr-2">
-                            <i class="fas fa-circle text-success"></i> {{ __("Femme") }}
-                        </span>
-
-                        <span class="mr-2">
-                            <i class="fas fa-circle text-primary"></i> {{ __("Homme") }}
-                        </span> --}}
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
 @endsection
 

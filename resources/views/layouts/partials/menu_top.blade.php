@@ -55,7 +55,7 @@
 				@endif		
 				@if(in_array(Auth::user()->user_role, ['root', 'admin', 'collector']))
 					<li class="nav-item">
-						<a class="nav-link text-white" href="{{ route('offline_submission') }}"> {{ __("Mes soumissions") }} </a>
+						<a class="nav-link text-white" href="{{ route('offline_submission') }}"> {{ __("Mon activité") }} </a>
 					</li>
 				@endif		
 			@endauth
@@ -71,7 +71,7 @@
 	
 						<ul class="dropdown-menu bg-primary" aria-labelledby="Dropdown_user">
 							<li>
-								<a class="dropdown-item text-white" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+								<a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
 									{{ __('Deconnexion') }}
 								</a>
 	
@@ -83,11 +83,11 @@
 					</li>
 				@else
 					<li class="nav-item">
-						<a class="nav-link active text-white" aria-current="page" href="{{ route('login') }}"> {{ __('Login') }} </a>
+						<a class="nav-link active text-white" aria-current="page" href="{{ route('login') }}"> {{ __("S'authentifier") }} </a>
 					</li>
 					
 					<li class="nav-item">
-						<a class="nav-link active text-white" aria-current="page" href="{{ route('register') }}"> {{ __('Register' )}} </a>
+						<a class="nav-link active text-white" aria-current="page" href="{{ route('register') }}"> {{ __("S'inscrire") }} </a>
 					</li>
 				@endauth
 			</ul>

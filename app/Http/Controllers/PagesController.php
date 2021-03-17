@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+// use App\Http\Traits\VerifyStatus;
 use App\Models\Patient_vaccinate;
 use App\Models\Patients;
 use App\Models\User;

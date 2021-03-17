@@ -3,6 +3,8 @@
 @section('main_content')
     <div class="row">
         <h1 class="text-center"> Calendrier de vaccination au Burkina Faso </h1>
+
+        {{Auth::user()->user_right}}
         
         <div class="table-responsive-sm">
             <table class="table table-striped">
@@ -16,7 +18,7 @@
                         
                         <th> {{ __('Validité') }} </th>
                         
-                        @if(!in_array(Auth::user()->user_right, ['collector', 'guest']))
+                        @if(!in_array(Auth::user()->user_role, ['collector', 'guest']))
                             <th> {{ __('Action') }} </th>                            
                         @endif
                     </tr>
@@ -33,7 +35,7 @@
 
                             <td> {{ $vacine->status === '1'? 'En cours' : 'Interdit' }} </td>
                             
-                            @if(!in_array(Auth::user()->user_right, ['collector', 'guest']))
+                            @if(!in_array(Auth::user()->user_role, ['collector', 'guest']))
                                 <td>
                                     <a href="{{ route('calendar.edit', $vacine) }}" class="btn btn-success">
                                         {{ __('Modifier') }}

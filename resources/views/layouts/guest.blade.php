@@ -22,11 +22,7 @@
         <header>
             @include('layouts.partials.menu_top')
         </header>
-        <!-- <div class="container-fluid">
-            <div class="row col-md-3 offset-md-4"> -->
-                {{ $slot }}
-            <!-- </div>
-        </div> -->
+            {{ $slot }}
         <div>
             @include('layouts.partials.footer')
         </div>

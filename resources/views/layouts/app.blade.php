@@ -9,7 +9,6 @@
 
         <link rel="stylesheet" href="{{ asset('styles_css/bootstrap.css') }}">
         <link rel="stylesheet" href="{{ asset('css/all.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/sb-admin-2.min.css') }}">
         
         @yield('head_file')
 

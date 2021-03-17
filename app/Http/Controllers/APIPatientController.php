@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Patients;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class APIPatientController extends Controller
@@ -16,7 +15,7 @@ class APIPatientController extends Controller
      */
     public function index()
     {
-        return Patients::orderBy('id')->get();
+        // return Patients::orderBy('id')->get();
     }
 
     /**
@@ -92,6 +91,24 @@ class APIPatientController extends Controller
     }
 
     public function getPatientList($province_id){
-        return  Patients::where('province_id', '=', $province_id)->get();
+        $patient = Patients::where('province_id', '=', $province_id)->get();
+        $list_patient = [];
+        for($i = 0; $i < count($patient); $i++){
+            if(get_vacine_status_per_patient($patient[$i]['id'], $patient[$i]['birthday'])){
+                $list_patient[] = [
+                    "code_patient"      => $patient[$i]['code_patient'],
+                    "full_name"         => $patient[$i]['full_name'],
+                    "birthday"          => $patient[$i]['birthday'],
+                    "born_location"     => $patient[$i]['born_location'],
+                    "name_father"       => $patient[$i]['name_father'],
+                    "name_mother"       => $patient[$i]['name_mother'],
+                    "genre"             => $patient[$i]['genre'],
+                    "name_mentor"       => $patient[$i]['name_mentor'],
+                    "helper_contact"    => $patient[$i]['helper_contact'],
+                    "helper_email"      => $patient[$i]['helper_email'],
+                ];
+            }
+        }
+        return $list_patient;
     }
 }

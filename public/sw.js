@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 const DYNAMIC_CACHE = 'pwa-dynamic-v10';
-=======
 const DYNAMIC_CACHE = 'pwa-dynamic-v11';
->>>>>>> 889bce79373575ed2e1c8ca8f67a0d3e3e43edfa
-
-//'/offline_vacinate',
 
 var filesToCache = [
     '/home',
