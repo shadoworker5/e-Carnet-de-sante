@@ -177,7 +177,9 @@ return [
         App\Providers\FortifyServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,
         
+        // Added by me
         jeremykenedy\LaravelRoles\RolesServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
     ],
 
     /*
@@ -230,6 +232,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+        // Added by me
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ],
 
 ];

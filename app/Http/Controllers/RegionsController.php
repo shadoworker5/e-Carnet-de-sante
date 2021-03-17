@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\RegionImport;
 use App\Models\Regions;
 use Illuminate\Http\Request;
+use Excel;
 use Illuminate\Support\Facades\Auth;
 
 class RegionsController extends Controller
@@ -34,17 +36,18 @@ class RegionsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        $data = $request->all();
+    public function store(Request $request){
+        // $data = $request->all();
         
-        for($i = 1; $i < count($request->all()); $i++){
-            Regions::create([
-                'user_id'       => Auth::id(),
-                'contries_id'   => Auth::user()->contrie_id,
-                'title'         => $data["region_$i"],
-            ]);
-        }
+        // for($i = 1; $i < count($request->all()); $i++){
+        //     Regions::create([
+        //         'user_id'       => Auth::id(),
+        //         'contries_id'   => Auth::user()->contrie_id,
+        //         'title'         => $data["region_$i"],
+        //     ]);
+        // }
+
+        Excel::import(new RegionImport, $request->list_region);
 
         return redirect()->route('setings');
     }
@@ -101,5 +104,9 @@ class RegionsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function importForm(){
+        # code...
     }
 }
