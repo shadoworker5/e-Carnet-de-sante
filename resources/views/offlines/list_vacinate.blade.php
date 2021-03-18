@@ -55,7 +55,7 @@
                             
                             <td>
                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                    <a href="{{ route('vaccinate.edit', $submission) }}" data-bs-toggle="modal" data-bs-target="#edit_vacinate" id="vacinate_{{++$loop->index}}" class="btn btn-success btn_update">
+                                    <a href="{{ route('vaccinate.edit', $submission) }}" id="vacinate_{{++$loop->index}}" class="btn btn-success btn_update">
                                         {{ __("Modifier") }}
                                     </a>
                                 </div>
@@ -64,7 +64,7 @@
                     @empty
                         <tr>
                             <td colspan="7">
-                                <center><p class="text-danger"> Aucune ligne trouvée</p></center>
+                                <p class="text-danger text-center"> Aucune ligne trouvée</p>
                             </td>
                         </tr>
                     @endforelse

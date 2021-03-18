@@ -8,6 +8,7 @@
         <title> {{ get_title($title ?? '') }} </title>
 
         <link rel="stylesheet" href="{{ asset('css/all.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/style.css') }}">
         <link rel="stylesheet" href="{{ asset('css/sb-admin-2.min.css') }}">
         
         <!-- Section PWA -->
@@ -16,22 +17,11 @@
         @livewireStyles
         <!-- Scripts -->
         <script src="{{ mix('js/app.js') }}" defer></script>
-
-        <style>
-            .scrool:hover{
-                overflow: auto;
-                overflow-x: hidden;
-            }
-
-            .scrool{
-                overflow: hidden;
-            }
-        </style>
     </head>
 
     <body id="page-top">
         <div id="wrapper">
-            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+            <ul class="navbar-nav bg_color sidebar sidebar-dark accordion" id="accordionSidebar">
                 <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
                     <div class="sidebar-brand-icon rotate-n-15">
                         <img class="img-profile rounded-circle" src="images/icon-72x72.png" alt="logo">
@@ -296,14 +286,14 @@
                                     aria-labelledby="userDropdown">
                                     <a class="dropdown-item" href="{{ route('profile') }}">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        {{ __("Profile") }}
+                                        {{ __("Mon profile") }}
                                     </a>
                                     
                                     <div class="dropdown-divider"></div>
 
                                     <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">
                                         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        {{ __("Logout") }}
+                                        {{ __("Déconnexion") }}
                                     </a>
                                 </div>
                             </li>
@@ -334,21 +324,21 @@
             <i class="fas fa-angle-up"></i>
         </a>
 
-        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+        <div class="modal fade" id="logoutModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel"> Confirmer </h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <button class="close" type="button" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
                     <div class="modal-body text-center"> Etes vous sûr de vouloir vous deconnecter? </div>
                     <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cancel</button>
                         
-                        <a class="btn btn-primary" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            {{ __('Deconnexion') }}
+                        <a class="btn btn-danger" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            {{ __('Déconnexion') }}
                         </a>
 
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

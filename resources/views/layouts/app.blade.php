@@ -9,6 +9,7 @@
 
         <link rel="stylesheet" href="{{ asset('styles_css/bootstrap.css') }}">
         <link rel="stylesheet" href="{{ asset('css/all.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/style.css') }}">
         
         @yield('head_file')
 

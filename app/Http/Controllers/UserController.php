@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
@@ -61,7 +62,7 @@ class UserController extends Controller
             'email'             => $request->email,
             'account_status'    => $request->statu,
             'user_role'         => $request->user_right,
-            'password'          => $password
+            'password'          => Hash::make($password)
         ]);
         
         Mail::to($request->email)->send(new Contact($msg, $request->email, $password));

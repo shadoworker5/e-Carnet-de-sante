@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light fixed-top bg-primary">
+<nav class="navbar navbar-expand-lg navbar-light fixed-top bg_color">
 	<a class="navbar-brand text-white" href="/"> 
 		<i class="fa fa-home"></i>
 	</a>
@@ -69,10 +69,10 @@
 							{{ Auth::user()->name }}
 						</a>
 	
-						<ul class="dropdown-menu bg-primary" aria-labelledby="Dropdown_user">
+						<ul class="dropdown-menu bg_color" aria-labelledby="Dropdown_user">
 							<li>
 								<a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-									{{ __('Deconnexion') }}
+									{{ __('Déconnexion') }}
 								</a>
 	
 								<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

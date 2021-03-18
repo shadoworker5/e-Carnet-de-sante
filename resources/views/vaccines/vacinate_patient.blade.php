@@ -8,7 +8,7 @@
             <form action="{{ route('vaccinate.store') }}" id="form_vacinate" class="needs-validation" novalidate method="post">
                 @csrf
 
-                <div class="form-group {{ $errors->has('patient_code') ? 'has-error' : '' }}">
+                <div class="form-group">
                     <label class="control-label" for="patient_code"> {{ __('Code du patient') }} </label>
                     <input type="text" class="form-control" name="patient_code" required id="patient_code" value="{{ old('patient_code') ?? ($patient_code ?? '') }}" @if(isset($patient_code)){{ 'readonly' }} @endif placeholder="Code du patient">
                     {!! $errors->first('patient_code', '<span class="text-danger">:message</span>') !!}
@@ -17,7 +17,12 @@
                         Veuillez saisir le code du patient
                     </div>
                 </div>
-
+                
+                <div class="form-group d-none" id="patient_name">
+                    <label class="control-label" for="patient_info"> {{ __('Nom complet du patient') }} </label>
+                    <input type="text" name="patient_info" class="form-control" id="patient_info" readonly>
+                </div>                    
+            
                 <div class="form-group {{ $errors->has('vaccine_name') ? 'has-error' : '' }}">
                     <label class="control-label" for="vaccine_name"> {{ __('Nom du vaccin') }} </label>
                     <select class="form-control custom-select" required name="vaccine_name" id="vaccine_name">

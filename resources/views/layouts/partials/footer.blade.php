@@ -1,4 +1,4 @@
-<div class="container-fluid bg-primary text-white">
+<div class="container-fluid bg_color text-white">
     <div class="row">
         <div class="col-md-4 text-center mt-3">
             <h4> Address </h4>

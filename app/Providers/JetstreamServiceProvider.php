@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use App\Actions\Jetstream\DeleteUser;
-use App\Http\Traits\VerifyStatus;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -13,9 +12,6 @@ use Laravel\Jetstream\Jetstream;
 
 class JetstreamServiceProvider extends ServiceProvider
 {
-    //  && $user->account_status !== '1'
-    // use VerifyStatus;
-
     /**
      * Register any application services.
      *
@@ -39,7 +35,7 @@ class JetstreamServiceProvider extends ServiceProvider
         Fortify::authenticateUsing(function (Request $request) {
             $user = User::where('email', $request->email)->first();
     
-            if ($user && $user->account_status !== '1' && Hash::check($request->password, $user->password)) {
+            if ($user && $user->account_status === '1' && Hash::check($request->password, $user->password)) {
                 return $user;
             }
         });

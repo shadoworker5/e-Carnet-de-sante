@@ -1,0 +1,12 @@
+.scrool:hover{
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+.scrool{
+    overflow: hidden;
+}
+
+.bg_color{
+    background-color: #00ade9;
+}
