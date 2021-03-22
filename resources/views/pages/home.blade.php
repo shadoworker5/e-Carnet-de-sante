@@ -87,6 +87,20 @@
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('calendar.index') }}"> {{ __('Calendrier des vaccinations') }} </a>
                                     </li>
+                                    
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#load_data">
+                                            <i class="fa fa-download"></i>
+                                            {{ __("Charger les données") }}
+                                        </a>
+                                    </li>
+                                    
+                                    <li class="nav-item">
+                                        <a class="nav-link text-danger" href="#" onclick="emptyAllData()">
+                                            <i class="fa fa-download"></i>
+                                            {{ __("Supprimer les données") }}
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>

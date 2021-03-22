@@ -37,17 +37,11 @@ class RegionsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
-        // $data = $request->all();
-        
-        // for($i = 1; $i < count($request->all()); $i++){
-        //     Regions::create([
-        //         'user_id'       => Auth::id(),
-        //         'contries_id'   => Auth::user()->contrie_id,
-        //         'title'         => $data["region_$i"],
-        //     ]);
-        // }
-
-        Excel::import(new RegionImport, $request->list_region);
+        if($request->contries_id !== null){
+            session(['contry_id' => "$request->contries_id"]);
+            Excel::import(new RegionImport, $request->list_region);
+        }
+        session()->forget('contry_id');
 
         return redirect()->route('setings');
     }

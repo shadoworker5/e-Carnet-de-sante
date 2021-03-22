@@ -52,31 +52,8 @@
             document.getElementById('form_edit_province').setAttribute('action', 'provinces/'+province_id);
         }
 
-        // Gestion du formulaire des provinces
-        let count_field = 2
-        let parent_field = document.getElementById('province_list');
-        document.getElementById('add_province').addEventListener('click', event => {
-            let field = document.createElement('input');
-            field.type = "text";
-            field.placeholder = "Nom de la province"
-            field.name = "province_"+count_field;
-            field.id = "province_"+count_field;
-            field.required = true
-            field.minLength = 2
-            field.className = "form-control";
-            field.style.marginBottom = "10px";
-
-            if(count_field < 5){
-                count_field += 1;
-                parent_field.appendChild(field);
-            }
-        });
-
-        document.getElementById('remove_province').addEventListener('click', event => {
-            if(count_field > 1){
-                count_field -= 1;
-                parent_field.removeChild(parent_field.lastChild)
-            }
-        });
+        function setContryID(event){
+            document.getElementById('contries_id').value = event.value;
+        }
     </script>
 @endsection

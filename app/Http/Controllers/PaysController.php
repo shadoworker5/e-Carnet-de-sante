@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Imports\ProvinceImport;
-use App\Models\Provinces;
+use App\Models\Contries;
 use Illuminate\Http\Request;
-use Excel;
+use Illuminate\Support\Facades\Auth;
 
-class ProvinceController extends Controller
+class PaysController extends Controller
 {
+    protected function userGuard(){
+        if(in_array(Auth::user()->user_role, ['guest', 'collector'])){
+            return redirect()->route('home');
+        }
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -37,13 +42,17 @@ class ProvinceController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->region_id !== null){
-            session(['region_id' => "$request->region_id"]);
-            Excel::import(new ProvinceImport, $request->list_province);
-        }
-        session()->forget('region_id');
+        $this->userGuard();
+        $this->validate($request, [
+            'name_pays'   => 'required|min:2'
+        ]);
 
-        return redirect()->route('setings');
+        Contries::create([
+            'nom_fr'    => $request->name_pays,
+            'nom_en'    => $request->name_pays,            
+        ]);
+        
+        return redirect(route('setings'));
     }
 
     /**
@@ -77,18 +86,7 @@ class ProvinceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'province'  => 'required|min:2',
-            'region_id' => 'required'
-        ]);
-
-        $province = Provinces::findOrFail($id);
-        $province->update([
-            'title' => $request->province,
-            'region_id' => $request->region_id
-        ]);
-
-        return redirect()->route('setings');
+        //
     }
 
     /**

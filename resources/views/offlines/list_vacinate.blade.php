@@ -24,7 +24,7 @@
                         
                         <th> {{ __('Numéro du vaccin') }} </th>
                         
-                        <th> {{ __('Rappelle') }} </th>
+                        <th> {{ __('Rappel') }} </th>
 
                         <th> {{ __('Nom de l\'agent') }} </th>
                         
@@ -43,7 +43,7 @@
                             
                             <td> {{ $submission->date_vacination }} </td>
                             
-                            <td> {{ $submission->time_vacination }} </td>
+                            <td> {{ format_vaccinate_time($submission->time_vacination) }} </td>
 
                             <td> {{ $submission->lot_number_vacine }} </td>
 

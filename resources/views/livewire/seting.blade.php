@@ -1,6 +1,6 @@
 <div class="row">
     @if(in_array(Auth::user()->user_role, ['root', 'admin']))
-        <select name="contry_id" id="contry_id" wire:model.lazy="contry_id" class="form-control mb-3">
+        <select name="contry_id" id="contry_id" wire:model.lazy="contry_id" class="form-control mb-3" onchange="setContryID(this)">
             <option value=""> Choisir un pays </option>
             @foreach($contries as $contry)
                 <option value="{{ $contry->id }}"> {{ $contry->nom_fr }}</option>
@@ -72,7 +72,7 @@
     <div class="col-xl-6 col-lg-6">
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary"> {{ __("Liste des provinces de votre pays") }} </h6>
+                <h6 class="m-0 font-weight-bold text-primary"> {{ __("Liste des provinces par région") }} </h6>
                 <div class="dropdown no-arrow">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -129,7 +129,7 @@
         </div>
     </div>
 
-    {{-- Formulaire d'ajout de region et de province --}}
+    {{-- Formulaire d'ajout de pays, de region et de province --}}
     <div class="col-xl-6 col-lg-6">
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -138,24 +138,11 @@
             
             <div class="card-body">
                 <div class="chart-area">
-                    @php
-                        $list_contries = App\Models\Contries::all()->toArray();
-                    @endphp
-
                     <form action="{{ route('regions.store') }}" enctype="multipart/form-data" novalidate method="POST">
                         @csrf()
-
-                        {{-- <div class="form-group">
-                            <label for="contry"> {{ __("Veuillez choisir un pays") }} </label>
-                            <select name="contry" required id="contry" class="form-control mb-3">
-                                <option value=""> {{ __("Veuillez choisir un pays") }} </option>
-                                @for($i = 0; $i < count($list_contries); $i++)
-                                    <option value=""> {{ __("Veuillez choisir un pays $contry[$loop->index]") }} </option>
-                                    <option value='{{ $list_contries["$i"]["id"] }}'> {{ $list_contries[$i]['nom_fr'] }}</option>
-                                @endfor
-                            </select>
-                        </div> --}}
                         
+                        <input type="text" class="d-none" name="contries_id" id="contries_id">
+
                         <div class="form-group">
                             <label for="list_region">
                                 {{ __("Veuillez choisir un fichier excel ou csv") }}
@@ -164,13 +151,14 @@
                                 </a>
                             </label>
                             <input type="file" class="form-control" id="list_region" accept=".xlsx,.csv" required name="list_region">
+                            {!! $errors->first('list_region', '<span class="text-danger">:message</span>') !!}
                             <div class="invalid-feedback">
                                 Veuillez choisir un bon fichier
                             </div>                     
                         </div>
 
                         <div>
-                            <button type="submit" class="btn btn-primary mt-2"> Submit </button>
+                            <button type="submit" class="btn btn-primary mt-2"> {{ __("Envoyé") }} </button>
                         </div>
                     </form>
                 </div>
@@ -186,30 +174,68 @@
             
             <div class="card-body">
                 <div class="chart-area">
-                    <form action="{{ route('provinces.store') }}" novalidate method="POST">
+                    <form action="{{ route('provinces.store') }}" enctype="multipart/form-data" novalidate method="POST">
                         @csrf()
 
-                        <select name="region_id" required id="region_id" class="form-control mb-3">
-                            <option value=""> Choisir une région </option>
-                            @foreach($list_regions as $region)
-                                <option value="{{ $region['id'] }}"> {{ $region['title'] }}</option>
-                            @endforeach
-                        </select>
-
-                        <div id="province_list" >
-                            <input type="text" class="form-control mb-2" id="province_1" minlength="2" required name="province_1" placeholder="Nom de la province">
+                        <div class="form-group">
+                            <label for="region_id"> {{ __("Veuillez choisir une région") }} </label>
+                            <select name="region_id" required id="region_id" class="form-control mb-3">
+                                <option value=""> Choisir une région </option>
+                                @foreach($list_regions as $region)
+                                    <option value="{{ $region['id'] }}"> {{ $region['title'] }}</option>
+                                @endforeach
+                            </select>
+                            {!! $errors->first('region_id', '<span class="text-danger">:message</span>') !!}
                             <div class="invalid-feedback">
-                                Veuillez le nom de la province
+                                Veuillez choisir une région
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="list_region">
+                                {{ __("Veuillez choisir un fichier excel ou csv") }}
+                                <a href="{{ asset('files/description.xlsx') }}" download="files/description.xlsx" class="text-primary">
+                                    <i class="fa fa-question-circle" title="Télécharger un exemplaire de fichier"></i>
+                                </a>
+                            </label>
+                            <input type="file" class="form-control" id="list_province" accept=".xlsx,.csv" required name="list_province">
+                            {!! $errors->first('list_province', '<span class="text-danger">:message</span>') !!}
+                            <div class="invalid-feedback">
+                                Veuillez choisir un fichier excel ou csv
                             </div>                     
                         </div>
 
-                        <div class="btn-group" role="group" aria-label="Basic example">
-                            <button type="button" id="remove_province" class="btn btn-danger mt-2"> - </button>
-                            <button type="button" id="add_province" class="btn btn-primary mt-2"> + </button>
+                        <div>
+                            <button type="submit" class="btn btn-primary mt-2"> {{ __("Envoyé") }} </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-6 col-lg-6">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary"> {{ __('Ajouter un pays') }} </h6>
+            </div>
+            
+            <div class="card-body">
+                <div class="chart-area">
+                    <form action="{{ route('pays.store') }}" novalidate method="POST">
+                        @csrf()
+
+                        <div class="form-group">
+                            <label for="name_pays"> {{ __("Nom du pays") }} </label>
+                            <input type="text" class="form-control mb-2" id="name_pays" required name="name_pays" placeholder="Nom du pays">
+                            {!! $errors->first('name_pays', '<span class="text-danger">:message</span>') !!}
+                            <div class="invalid-feedback">
+                                Veuillez le nom du pays
+                            </div>
                         </div>
 
                         <div>
-                            <button type="submit" class="btn btn-primary mt-2"> Submit </button>
+                            <button type="submit" class="btn btn-primary mt-2"> {{ __("Envoyé") }} </button>
                         </div>
                     </form>
                 </div>

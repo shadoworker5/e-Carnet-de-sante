@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Contries extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['nom_fr', 'nom_en'];
 }

@@ -115,6 +115,7 @@ function getDataPerLocation(){
         if(!province_id){
             return
         }
+
         const url = '/api/get_patient_list/'+province_id;
 
         fetch(url, { method: "GET" })
@@ -128,6 +129,7 @@ function getDataPerLocation(){
 // Save patient data per location into local DB
 const renderPatientData = () => {
     let open_db = indexedDB.open(DB_Name, DB_VERSION);
+    // && document.querySelector("#patient_data")
 
     open_db.onsuccess =  () => {
         db = open_db.result;
@@ -148,7 +150,7 @@ const renderPatientData = () => {
                 document.querySelector("#show_patient_liste").setAttribute('class', 'd-none');
             }
 
-            if(courant_page === '/home' && document.querySelector("#patient_data") && request.result.length > 0){
+            if(courant_page === '/home' && request.result.length > 0){
                 $('#dataTable').DataTable({
                     data: data_show,
                     columns: [
@@ -185,16 +187,19 @@ function patientData(data = new Object){
             base = open_db.result;
             let query = base.transaction([PATIENT_DATA], 'readwrite');
             let store = query.objectStore(PATIENT_DATA);
+            // let data_available = store.getAll()
             let request;
             
             data.forEach(item => {
+                // code update or save
+                // console.log(item.code_patient)                
                 request = store.add(item);
             });
             
             request.onsuccess =  () => {
-                document.getElementById('open_modal').remove();
+                // document.querySelector("#open_modal").remove();
+                // renderPatientData();
                 subscribe('Données chargé avec succès.');
-                renderPatientData();
             };
         
             request.onerror = (err) => {
@@ -530,10 +535,24 @@ if(courant_page === '/vaccinate/create'){
 
 function emptyAllData(){
     // Suppression des valeurs du localStorage
-    localStorage.clear()
+    // localStorage.clear()
 
-    // Suppression de la base de données
-    // indexedDB.deleteDatabase(DB_Name);
+    let open_db = indexedDB.open(DB_Name, DB_VERSION);
+
+    open_db.onsuccess =  () => {
+        db = open_db.result;
+        let query = db.transaction([PATIENT_DATA], 'readwrite');
+        let store = query.objectStore(PATIENT_DATA);
+        let request = store.clear()
+
+        request.onsuccess = (event) => {
+            console.log("Donnees supprime avec success");
+        }
+
+        request.onerror = (err) => {
+            console.log("Erreur: "+err)
+        };
+    }
 }
 
 // affichage des notifications push
