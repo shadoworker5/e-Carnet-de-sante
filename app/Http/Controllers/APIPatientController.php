@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Patients;
+use App\Models\Provinces;
+use App\Models\Regions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -90,11 +92,26 @@ class APIPatientController extends Controller
         //
     }
 
-    public function getPatientList($province_id){
-        $patient = Patients::where('province_id', '=', $province_id)->get();
+    public function getPatientList($region_id, $province_id = null){
         $list_patient = [];
-        for($i = 0; $i < count($patient); $i++){
-            if(get_vacine_status_per_patient($patient[$i]['id'], $patient[$i]['birthday'])){
+        $list_province = [];
+        $patients_tmp = [];
+
+        if($province_id === null){
+            $province = Provinces::where('region_id', '=', $region_id)->get()->toArray();
+            for($i = 0; $i < count($province); $i++){
+                $list_province [] = $province[$i]['id'];
+            }
+
+            // recuperation des patients
+            for($i = 0; $i < count($list_province); $i++){
+                $patients_tmp[] = Patients::where('province_id', '=', $list_province[$i])->get();
+            }
+            return $patients_tmp;
+        }
+        if($province_id !== null){
+            $patient = Patients::where('province_id', '=', $province_id)->get();
+            for($i = 0; $i < count($patient); $i++){
                 $list_patient[] = [
                     "code_patient"      => $patient[$i]['code_patient'],
                     "full_name"         => $patient[$i]['full_name'],
@@ -109,6 +126,7 @@ class APIPatientController extends Controller
                 ];
             }
         }
+
         return $list_patient;
     }
 }

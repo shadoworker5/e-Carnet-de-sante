@@ -16,7 +16,7 @@
 
     <div class="form-group {{ $errors->has('province_id') ? 'has-error' : '' }}">
         <label class="control-label" for="province_id"> {{ __('Choisir une province') }} </label>
-        <select name="province_id" required id="province_id" class="form-control mb-3 custom-select">
+        <select name="province_id" id="province_id" class="form-control mb-3 custom-select">
             <option value=""> Choisir une province </option>
             @foreach($list_provinces as $province)
                 <option value="{{ $province['id'] }}" {{ old('province_id') == $province['id'] ? "selected" : "" }}> {{ $province['title'] }} </option>

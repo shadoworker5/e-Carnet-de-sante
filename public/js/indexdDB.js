@@ -1,5 +1,5 @@
-const DB_VERSION = 1;
-const DB_Name = 'esante_db';
+const DB_VERSION = 2;
+const DB_Name = 'db_esante';
 const PATIENT_DATA = 'data_patient';
 const VACINATE_PATIENT_DATA = 'data_vacinate_patient';
 const VACINE_CALENDAR = 'data_vacinate_calendar'
@@ -14,7 +14,6 @@ request = indexedDB.open(DB_Name, DB_VERSION);
 
 request.onupgradeneeded = () => {
     db = request.result;
-    // getData();
 
     const patient = db.createObjectStore(PATIENT_DATA, {keyPath: "id", autoIncrement: true});
     const vacinate_patient = db.createObjectStore(VACINATE_PATIENT_DATA, {keyPath: "id", autoIncrement: true});
@@ -97,7 +96,7 @@ const checking = () => {
         start_checking = planning();
     }
 }
-checking();
+// checking();
 
 // Get data from server and save
 const getData = function() {
@@ -112,15 +111,21 @@ function getDataPerLocation(){
     let form_load_data = document.getElementById('form_load_data');
     form_load_data.onsubmit = () => {        
         const province_id = form_load_data.province_id.value;
-        if(!province_id){
+        const region_id = form_load_data.region_id.value;
+        if(!region_id){
             return
         }
+        if(!province_id){
+            province_id = null;
+        }
+        console.log(region_id)
 
-        const url = '/api/get_patient_list/'+province_id;
+        const url = '/api/get_patient_list/'+region_id+'/'+province_id;
 
         fetch(url, { method: "GET" })
         .then(resulte => resulte.json())
-        .then(response => patientData(response))
+        .then(response => console.log(response))
+        // .then(response => patientData(response))
         
         return false;
     }
@@ -187,12 +192,12 @@ function patientData(data = new Object){
             base = open_db.result;
             let query = base.transaction([PATIENT_DATA], 'readwrite');
             let store = query.objectStore(PATIENT_DATA);
-            // let data_available = store.getAll()
+            let data_available = store.getAll()
             let request;
             
             data.forEach(item => {
                 // code update or save
-                // console.log(item.code_patient)                
+                
                 request = store.add(item);
             });
             
