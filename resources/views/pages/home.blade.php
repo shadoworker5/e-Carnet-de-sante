@@ -91,7 +91,7 @@
                                     <li class="nav-item">
                                         <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#load_data">
                                             <i class="fa fa-download"></i>
-                                            {{ __("Charger les données") }}
+                                            {{ __("Charger les données des patients") }}
                                         </a>
                                     </li>
                                     
@@ -144,7 +144,7 @@
                 <div class="mb-2 mt-5 text-center">
                     <button class="btn btn-primary" id="open_modal" data-bs-toggle="modal" data-bs-target="#load_data">
                         <i class="fa fa-download"></i>
-                        Charger les données
+                        Charger les données des patients
                     </button>
                 </div>
             </div>
@@ -163,15 +163,14 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel"> Charger les données </h5>
-                    <button class="close" type="button" data-bs-dismiss="modal" aria-label="Close">
+                    <h5 class="modal-title" id="exampleModalLabel"> Charger les données des patients </h5>
+                    <button class="close" type="button" onclick="window.location.reload();" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
 
                 <div class="modal-body">
-                    <form id="form_load_data" novalidate>
-                        
+                    <form id="form_load_data" novalidate>                        
                         @livewire('choose-region')
                         
                         <button type="submit" id="btn_load_data" onclick="getDataPerLocation()" class="btn btn-primary mt-2 pull-right">

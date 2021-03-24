@@ -17,7 +17,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 <!-- IOS Support -->
-
 <link rel="icon" sizes="128x128" href="/images/icon-128x128.png">
 <link rel="apple-touch-icon" sizes="128x128" href="/images/icon-128x128.png">
 <link rel="icon" sizes="192x192" href="icon-192x192.png">

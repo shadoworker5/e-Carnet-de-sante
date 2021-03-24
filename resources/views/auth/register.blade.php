@@ -14,6 +14,19 @@
                 <x-jet-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
             </div>
 
+            @php
+                $contries = App\Models\Contries::all();
+            @endphp
+            <div class="mt-4">
+                <label class="block font-medium text-sm text-gray-700" for="contry"> {{ __("Choisir votre pays") }} </label>
+                <select class="form-control custom-select" name="contry" id="contry" required>
+                    <option value=""> {{ __("Veuillez choisir un pays") }} </option>
+                    @foreach ($contries as $item)
+                        <option value="{{ $item->id }}" {{ old('contry') == $item->id ? "selected" : "" }}> {{ $item->nom_fr }} </option>
+                    @endforeach
+                </select>
+            </div>
+
             <div class="mt-4">
                 <x-jet-label for="email" value="{{ __('E-mail') }}" />
                 <x-jet-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />

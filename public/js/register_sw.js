@@ -43,6 +43,7 @@ const check = () => {
     }else{
         if(error_network.hasChildNodes()){
             document.getElementById("offline_banner").remove();
+            checking();
         }
         clearInterval(id_timer_hidden);
         id_timer_show = timer();

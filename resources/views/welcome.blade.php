@@ -1,25 +1,25 @@
 @extends('layouts.app', ['title' => 'Accueil'])
 
 @section('main_content')
-<nav style='background-image:url("images/image_index.jpg"); height: 450px'>
+<nav style='background-image:url("images/eSante-02.jpg"); height: 450px'>
     <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <div class="text-center d-md-block text-white mt-5">
+                <div class="text-center d-md-block mt-5">
                     <h2> e-Carnet de vaccination </h2>
                     <p> Avec e-Carnet de vaccination votre carnet de santé devient mobile et accessible partout dans le monde </p>
                 </div>
             </div>
 
             <div class="carousel-item">
-                <div class="text-center d-md-block text-white mt-5">
+                <div class="text-center d-md-block mt-5">
                     <h5> Rappel des vaccinations </h5>
                     <p> Vous recevez des notifications en temps réel pour vous mettre à jours des vaccinations </p>
                 </div>
             </div>
 
             <div class="carousel-item">
-                <div class="text-center d-md-block text-white mt-5">
+                <div class="text-center d-md-block mt-5">
                     <h5> Utilisable hors ligne </h5>
                     <p> Avec e-Carnet de vaccination vous pouvez collecter les données en mode hors ligne. </p>
                 </div>

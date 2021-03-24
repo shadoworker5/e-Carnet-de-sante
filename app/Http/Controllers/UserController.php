@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Fortify\ResetUserPassword;
 use App\Mail\Contact;
 use App\Models\User;
 use Illuminate\Support\Str;
@@ -66,6 +67,10 @@ class UserController extends Controller
         ]);
         
         Mail::to($request->email)->send(new Contact($msg, $request->email, $password));
+        // Test
+        // $rest = new ResetUserPassword();
+        // $rest->reset($request->email);
+        
         return redirect()->route('list_user');
     }
 

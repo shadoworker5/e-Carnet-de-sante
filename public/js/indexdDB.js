@@ -1,4 +1,4 @@
-const DB_VERSION = 2;
+const DB_VERSION = 3;
 const DB_Name = 'db_esante';
 const PATIENT_DATA = 'data_patient';
 const VACINATE_PATIENT_DATA = 'data_vacinate_patient';
@@ -15,12 +15,12 @@ request = indexedDB.open(DB_Name, DB_VERSION);
 request.onupgradeneeded = () => {
     db = request.result;
 
-    const patient = db.createObjectStore(PATIENT_DATA, {keyPath: "id", autoIncrement: true});
-    const vacinate_patient = db.createObjectStore(VACINATE_PATIENT_DATA, {keyPath: "id", autoIncrement: true});
+    const patient = db.createObjectStore(PATIENT_DATA, {keyPath: "code_patient"});
+    const vacinate_patient = db.createObjectStore(VACINATE_PATIENT_DATA, {keyPath: "code_patient"});
     const vacine_calendar = db.createObjectStore(VACINE_CALENDAR, {keyPath: 'id', autoIncrement: true});
     
-    patient.createIndex('by_patient_id', 'id', { unique: true });
-    vacinate_patient.createIndex('by_vacinate_id', 'id', { unique: true });
+    patient.createIndex('by_patient_id', 'code_patient', { unique: true });
+    vacinate_patient.createIndex('by_vacinate_id', 'code_patient', { unique: true });
     vacine_calendar.createIndex('calendar_id', 'id', { unique: true });
 };
 
@@ -80,24 +80,6 @@ function renderData(){
     }
 }
 
-// Test de connexion et envoie des donnees
-let planning = () => {
-    return setInterval(() => {
-        checking();
-    }, 1000);
-}
-
-const checking = () => {
-    if(navigator.onLine){
-        SendVacinateData();
-        clearInterval(start_checking);
-    }else{
-        clearInterval(stop_checking);
-        start_checking = planning();
-    }
-}
-// checking();
-
 // Get data from server and save
 const getData = function() {
     const url = '/api/vacine_calendar';
@@ -115,17 +97,13 @@ function getDataPerLocation(){
         if(!region_id){
             return
         }
-        if(!province_id){
-            province_id = null;
-        }
-        console.log(region_id)
 
         const url = '/api/get_patient_list/'+region_id+'/'+province_id;
 
         fetch(url, { method: "GET" })
         .then(resulte => resulte.json())
-        .then(response => console.log(response))
-        // .then(response => patientData(response))
+        .then(response => patientData(response))
+        // .then(response => console.log(response))
         
         return false;
     }
@@ -184,34 +162,29 @@ function patientData(data = new Object){
         state_message.setAttribute('class', "mt-3 text-center h5 text-danger")
         state_message.innerHTML = "Données indisponible. Veuillez réessayer svp!";
     }else{
-        document.getElementById('btn_load_data').remove();
-        state_message.setAttribute('class', "mt-3 text-center h5 text-success")
-        state_message.innerHTML = "Données chargé avec succès.";
-
+        // document.getElementById('btn_load_data').remove();
         open_db.onsuccess =  () => {
             base = open_db.result;
             let query = base.transaction([PATIENT_DATA], 'readwrite');
             let store = query.objectStore(PATIENT_DATA);
             let data_available = store.getAll()
-            let request;
             
-            data.forEach(item => {
-                // code update or save
-                
-                request = store.add(item);
-            });
-            
-            request.onsuccess =  () => {
-                // document.querySelector("#open_modal").remove();
-                // renderPatientData();
+            data_available.onsuccess = () =>{
+                data.forEach(item => {
+                    store.put(item);
+                });
+                state_message.setAttribute('class', "mt-3 text-center h5 text-success")
+                state_message.innerHTML = "Données chargé avec succès.";
                 subscribe('Données chargé avec succès.');
-            };
-        
-            request.onerror = (err) => {
-                // console.log("Erreur: "+err)
-            };
+            }
         };
     }
+}
+
+// Synchronisation de l'envoie des donnees sur le serveur
+const checking = () => {
+    // console.log("Sending.....");
+    SendVacinateData();
 }
 
 // Send patient vacinate to server
@@ -314,27 +287,7 @@ function SendPatientData(){
 // });
 
 function updateVacinate(patient_id){
-    console.log(patient_id);
-    let base;
-    let form = document.getElementById('form_edit_vacinate');
-    let open_db = indexedDB.open(DB_Name, DB_VERSION);
-    
-    // open_db.onsuccess =  () => {
-    //     base = open_db.result;
-    //     let query = base.transaction([VACINATE_PATIENT_DATA], 'readwrite');
-    //     let store = query.objectStore(VACINATE_PATIENT_DATA);
-    //     let request = store.getAll()
-    
-    //     request.onsuccess =  () => {
-    //         if (request.result) {
-    //             console.log(request.result);
-    //         }
-    //     };
-    
-    //     request.onerror = (err) => {
-    //         console.log("Erreur: "+err)
-    //     };
-    // };
+    // code
 }
 
 const codeAutoGenerate = (longueur = 10) => {
@@ -539,7 +492,6 @@ if(courant_page === '/vaccinate/create'){
 }
 
 function emptyAllData(){
-    // Suppression des valeurs du localStorage
     // localStorage.clear()
 
     let open_db = indexedDB.open(DB_Name, DB_VERSION);
@@ -555,7 +507,7 @@ function emptyAllData(){
         }
 
         request.onerror = (err) => {
-            console.log("Erreur: "+err)
+            // console.log("Erreur: "+err)
         };
     }
 }

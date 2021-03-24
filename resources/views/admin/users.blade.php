@@ -3,12 +3,12 @@
 @section('main_content')
     @livewire('list-users')
 
-    <div>
-        <button data-bs-toggle="modal" data-bs-target="#edit_user_modal" onclick="addUser()" class="btn btn-primary">
-            <i class="fa fa-user-plus"></i>
-            {{ __("Ajouter un utilisateur") }}
-        </button>
-    </div>
+    <button data-bs-toggle="modal" data-bs-target="#edit_user_modal" onclick="addUser()" class="btn btn-primary">
+        <i class="fa fa-user-plus"></i>
+        {{ __("Ajouter un utilisateur") }}
+    </button>
+    {{-- <div>
+    </div> --}}
 
     <div class="modal fade" id="edit_user_modal" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="example" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="document">

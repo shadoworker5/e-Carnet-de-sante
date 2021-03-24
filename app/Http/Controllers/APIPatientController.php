@@ -6,6 +6,7 @@ use App\Models\Patients;
 use App\Models\Provinces;
 use App\Models\Regions;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class APIPatientController extends Controller
@@ -95,20 +96,18 @@ class APIPatientController extends Controller
     public function getPatientList($region_id, $province_id = null){
         $list_patient = [];
         $list_province = [];
-        $patients_tmp = [];
+        $patients_tmp = "code_patient, full_name, birthday, born_location, name_father, name_mother, genre, name_mentor, helper_contact";
 
         if($province_id === null){
             $province = Provinces::where('region_id', '=', $region_id)->get()->toArray();
             for($i = 0; $i < count($province); $i++){
                 $list_province [] = $province[$i]['id'];
             }
+            $patients_tmp = DB::select("SELECT $patients_tmp FROM patients WHERE province_id IN (SELECT id FROM provinces WHERE region_id = $region_id)");
 
-            // recuperation des patients
-            for($i = 0; $i < count($list_province); $i++){
-                $patients_tmp[] = Patients::where('province_id', '=', $list_province[$i])->get();
-            }
             return $patients_tmp;
         }
+
         if($province_id !== null){
             $patient = Patients::where('province_id', '=', $province_id)->get();
             for($i = 0; $i < count($patient); $i++){
@@ -126,7 +125,7 @@ class APIPatientController extends Controller
                 ];
             }
         }
-
+        
         return $list_patient;
     }
 }
