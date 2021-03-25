@@ -10,3 +10,13 @@
 .bg_color{
     background-color: #00ade9;
 }
+
+.logo_menu{
+    border-radius: 10px;
+    height: 55px;
+    width: 55px;
+}
+
+.btn_vaccinate{
+    background-color: #67c473;
+}

@@ -146,7 +146,18 @@ const renderPatientData = () => {
                         { data: function(e){
                             return '<a href="#" data-code="'+e["code_patient"]+'" onclick="redirectForm(\''+e["code_patient"]+'\', \''+e["full_name"]+'\')" class="btn btn-warning"> Ajouter une vaccination </a>'
                         } },
-                    ]
+                    ],
+                    initComplete: function () {
+                        this.api().columns().every(function(){
+                            var that = this;
+                            // console.log(this.footer());
+                            $('input', this.footer()).on('keyup change clear', function(){
+                                if(that.search() !== this.value){
+                                    that.search(this.value).draw();
+                                }
+                            } );
+                        });
+                    }
                 });
             }
         }

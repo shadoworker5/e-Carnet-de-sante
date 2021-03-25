@@ -4,7 +4,7 @@
     <div class="row mt-4">
         <div class="row">
             <div class="form-floating col-md-2">
-                <input type="text" class="form-control" wire:model.defer.defer="code_patient" placeholder="Nom ou code du patient" id="floatingSearch" name="search">
+                <input type="text" class="form-control" wire:model.defer="code_patient" placeholder="Nom ou code du patient" id="floatingSearch" name="search">
                 <label for="floatingSearch"> {{ __("Nom ou code du patient") }} </label>
             </div>
 
@@ -89,6 +89,7 @@
                         <td>
                             <div class="btn-group" role="group" aria-label="Basic example">
                                 <a href="{{ route('patient.show', $patient->id) }}" class="btn btn-success">
+                                    {{-- <i class="fa fa-eye"></i> --}}
                                     Afficher
                                 </a>
 

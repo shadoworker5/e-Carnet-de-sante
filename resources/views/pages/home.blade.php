@@ -95,12 +95,12 @@
                                         </a>
                                     </li>
                                     
-                                    <li class="nav-item">
+                                    {{-- <li class="nav-item">
                                         <a class="nav-link text-danger" href="#" onclick="emptyAllData()">
                                             <i class="fa fa-download"></i>
                                             {{ __("Supprimer les données") }}
                                         </a>
-                                    </li>
+                                    </li> --}}
                                 </ul>
                             </div>
                         </div>
@@ -116,6 +116,38 @@
 
                     <div class="card-body">
                         <div class="table-responsive" id="data_patient">
+                            <div class="row mb-3" id="search_info">
+                                <div class="form-floating col-md-2">
+                                    <input type="text" class="form-control" placeholder="Code du patient" id="floatingSearchCode" name="code">
+                                    <label for="floatingSearchCode"> {{ __("Code du patient") }} </label>
+                                </div>
+
+                                <div class="form-floating col-md-2">
+                                    <input type="text" class="form-control" placeholder="Nom du patient" id="floatingSearch" name="search">
+                                    <label for="floatingSearch"> {{ __("Nom du patient") }} </label>
+                                </div>
+                    
+                                <div class="form-floating col-md-2">
+                                    <input type="date" class="form-control" eholder="Date de naissance" id="floatingBirthday" name="birthday">
+                                    <label for="floatingBirthday"> {{ __("Date de naissance") }} </label>
+                                </div>
+                                
+                                <div class="form-floating col-md-2">
+                                    <input type="text" class="form-control"  placeholder="Lieu de naissance" id="floatingLocation" name="born_location">
+                                    <label for="floatingLocation"> {{ __("Lieu de naissance") }} </label>
+                                </div>
+                                
+                                <div class="form-floating col-md-2">
+                                    <input type="text" class="form-control" placeholder="Nom du père" id="floatingFather" name="name_father">
+                                    <label for="floatingFather"> {{ __("Nom du père") }} </label>
+                                </div>
+                                
+                                <div class="form-floating col-md-2">
+                                    <input type="text" class="form-control" placeholder="Nom de la mère" id="floatingMother" name="name_mother">
+                                    <label for="floatingMother"> {{ __("Nom de la mère") }} </label>
+                                </div>
+                            </div>
+
                             <table class="table table-bordered" id="dataTable">
                                 <thead>
                                     <tr>
@@ -136,6 +168,18 @@
                                 </thead>
                                 
                                 <tbody id="patient_data"></tbody>
+
+                                <tfoot>
+                                    <tr>
+                                        <th> Code </th>
+                                        <th> Nom </th>
+                                        <th> Date de naissance </th>
+                                        <th> Lieu de naissance </th>
+                                        <th> Nom du père </th>
+                                        <th> Nom de la mère </th>
+                                        <th> Ature </th>
+                                    </tr>
+                                </tfoot>
                             </table>
                         </div>
                     </div>
@@ -144,7 +188,7 @@
                 <div class="mb-2 mt-5 text-center">
                     <button class="btn btn-primary" id="open_modal" data-bs-toggle="modal" data-bs-target="#load_data">
                         <i class="fa fa-download"></i>
-                        Charger les données des patients
+                        Télécharger les données des patients
                     </button>
                 </div>
             </div>
@@ -195,7 +239,15 @@
         <script src="{{ asset('js/jquery.dataTables.js') }}"></script>
         <script src="{{ asset('js/dataTables.bootstrap4.js') }}"></script>
         <script src="{{ asset('js/form_validate.js') }}"></script>
-        <script src="{{ asset('js/load_data.js') }}"></script>        
+        <script src="{{ asset('js/load_data.js') }}"></script>
+        <script>
+            $(document).ready(function() {
+                $('#dataTable tfoot th').each( function () {
+                    var title = $(this).text();
+                    $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+                } );
+            } );
+        </script>
     @endif
     
     @if(in_array(Auth::user()->user_role, ['root', 'admin', 'supervisor']))

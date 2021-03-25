@@ -1,6 +1,6 @@
-<nav class="navbar navbar-expand-lg navbar-light fixed-top bg_color">
+<nav class="navbar navbar-expand-lg navbar-light fixed-top bg_color" style="padding-top: 0px; padding-bottom: 0px">
 	<a class="navbar-brand text-white" href="/"> 
-		<i class="fa fa-home"></i>
+		<img src="{{ asset('images/icon-72x72.png') }}" class="logo_menu" alt="logo">
 	</a>
 
 	<button class="navbar navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,9 +36,9 @@
 							Patients
 						</a>
 
-						<ul class="dropdown-menu bg-primary" aria-labelledby="navbarDropdown">
-							<li><a class="dropdown-item text-white" href="{{ route('patient.index') }}"> {{ __('Liste des patients') }} </a></li>
-							<li><a class="dropdown-item text-white" href="{{ route('patient.create') }}"> {{ __('Ajouter un patient') }} </a></li>
+						<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+							<li><a class="dropdown-item" href="{{ route('patient.index') }}"> {{ __('Liste des patients') }} </a></li>
+							<li><a class="dropdown-item" href="{{ route('patient.create') }}"> {{ __('Ajouter un patient') }} </a></li>
 						</ul>
 					</li>
 					
@@ -47,9 +47,9 @@
 							Vaccins
 						</a>
 
-						<ul class="dropdown-menu bg-primary" aria-labelledby="Dropdown_vaccin">
-							<li><a class="dropdown-item text-white" href="{{ route('calendar.index') }}"> {{ __('Afficher le calendrier')}} </a></li>
-							<li><a class="dropdown-item text-white" href="{{ route('calendar.create') }}">{{ __('Ajouter') }}</a> </li>
+						<ul class="dropdown-menu" aria-labelledby="Dropdown_vaccin">
+							<li><a class="dropdown-item" href="{{ route('calendar.index') }}"> {{ __('Afficher le calendrier')}} </a></li>
+							<li><a class="dropdown-item" href="{{ route('calendar.create') }}">{{ __('Ajouter') }}</a> </li>
 						</ul>
 					</li>
 				@endif		

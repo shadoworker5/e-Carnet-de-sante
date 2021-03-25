@@ -16,10 +16,9 @@ class Contact extends Mailable
      *
      * @return void
      */
-    public function __construct($msg, $login, $password){
+    public function __construct($msg, $login){
         $this->msg = $msg;
         $this->login = $login;
-        $this->password = $password;
     }
 
     /**
@@ -30,6 +29,6 @@ class Contact extends Mailable
     public function build()
     {
         return $this->from(config('constaint.support_email'))
-                    ->markdown('emails.created_user', ["msg" => $this->msg, "login" => $this->login, "password" => $this->password]);
+                    ->markdown('emails.created_user', ["msg" => $this->msg, "login" => $this->login]);
     }
 }

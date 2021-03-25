@@ -49,7 +49,7 @@ class UserController extends Controller
     {
         $this->userGuard();
         $password = Str::random(10);
-        $msg = "Bonjour. Votre compte a été crée avec succès. Vous pouvez utiliser vos identifiant pour vous connecter.";
+        $msg = "Bonjour. Votre compte a été crée avec succès. Pour vous connecter, vous devrez modifier au préalable votre mot de passe.";
 
         $this->validate($request, [
             'name'          => 'required|min:4',
@@ -66,10 +66,7 @@ class UserController extends Controller
             'password'          => Hash::make($password)
         ]);
         
-        Mail::to($request->email)->send(new Contact($msg, $request->email, $password));
-        // Test
-        // $rest = new ResetUserPassword();
-        // $rest->reset($request->email);
+        Mail::to($request->email)->send(new Contact($msg, $request->email));
         
         return redirect()->route('list_user');
     }
