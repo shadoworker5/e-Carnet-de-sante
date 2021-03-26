@@ -112,7 +112,9 @@ function getDataPerLocation(){
 // Save patient data per location into local DB
 const renderPatientData = () => {
     let open_db = indexedDB.open(DB_Name, DB_VERSION);
-    // && document.querySelector("#patient_data")
+    // let search_info = document.querySelector("#search_info div")
+    // console.log(search_info);
+
 
     open_db.onsuccess =  () => {
         db = open_db.result;
@@ -147,17 +149,17 @@ const renderPatientData = () => {
                             return '<a href="#" data-code="'+e["code_patient"]+'" onclick="redirectForm(\''+e["code_patient"]+'\', \''+e["full_name"]+'\')" class="btn btn-warning"> Ajouter une vaccination </a>'
                         } },
                     ],
-                    initComplete: function () {
-                        this.api().columns().every(function(){
-                            var that = this;
-                            // console.log(this.footer());
-                            $('input', this.footer()).on('keyup change clear', function(){
-                                if(that.search() !== this.value){
-                                    that.search(this.value).draw();
-                                }
-                            } );
-                        });
-                    }
+                    // initComplete: function () {
+                    //     this.api().columns().every(function(){
+                    //         var that = this;
+                    //         // console.log(this.footer());
+                    //         $('input', this.header()).on('keyup change clear', function(){
+                    //             if(that.search() !== this.value){
+                    //                 that.search(this.value).draw();
+                    //             }
+                    //         } );
+                    //     });
+                    // }
                 });
             }
         }

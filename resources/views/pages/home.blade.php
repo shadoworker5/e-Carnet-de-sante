@@ -116,10 +116,10 @@
 
                     <div class="card-body">
                         <div class="table-responsive" id="data_patient">
-                            <div class="row mb-3" id="search_info">
+                            {{-- <div class="row mb-3" id="search_info">
                                 <div class="form-floating col-md-2">
-                                    <input type="text" class="form-control" placeholder="Code du patient" id="floatingSearchCode" name="code">
-                                    <label for="floatingSearchCode"> {{ __("Code du patient") }} </label>
+                                    <input type="text" class="form-control" placeholder="Code du patient" id="code" name="code">
+                                    <label for="code"> {{ __("Code du patient") }} </label>
                                 </div>
 
                                 <div class="form-floating col-md-2">
@@ -134,19 +134,57 @@
                                 
                                 <div class="form-floating col-md-2">
                                     <input type="text" class="form-control"  placeholder="Lieu de naissance" id="floatingLocation" name="born_location">
-                                    <label for="floatingLocation"> {{ __("Lieu de naissance") }} </label>
+                                    
                                 </div>
                                 
                                 <div class="form-floating col-md-2">
                                     <input type="text" class="form-control" placeholder="Nom du père" id="floatingFather" name="name_father">
-                                    <label for="floatingFather"> {{ __("Nom du père") }} </label>
+                                    
                                 </div>
                                 
                                 <div class="form-floating col-md-2">
                                     <input type="text" class="form-control" placeholder="Nom de la mère" id="floatingMother" name="name_mother">
-                                    <label for="floatingMother"> {{ __("Nom de la mère") }} </label>
+                                    
                                 </div>
-                            </div>
+                            </div> --}}
+
+                            <table class="mb-3">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" colspan="6"> Rechercher </th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <div class="row">
+                                        <tr>
+                                            <td id="filter_col1" data-column="0">
+                                                <input type="text" class="column_filter form-control" placeholder="Code du patient" id="col0_filter">
+                                            </td>
+
+                                            <td id="filter_col2" data-column="1">
+                                                <input type="text" class="column_filter form-control" placeholder="Nom du patient" id="col1_filter">
+                                            </td>
+
+                                            <td id="filter_col3" data-column="2">
+                                                <input type="text" class="column_filter form-control" placeholder="Date de naissance" id="col2_filter">
+                                            </td>
+
+                                            <td id="filter_col4" data-column="3">
+                                                <input type="text" class="column_filter form-control" placeholder="Lieu de naissance" id="col3_filter">
+                                            </td>
+
+                                            <td id="filter_col5" data-column="4">
+                                                <input type="text" class="column_filter form-control" placeholder="Nom du père" id="col4_filter">
+                                            </td>
+
+                                            <td id="filter_col6" data-column="5">
+                                                <input type="text" class="column_filter form-control" placeholder="Nom de la mère" id="col5_filter">
+                                            </td>
+                                        </tr>
+                                    </div>
+                                </tbody>
+                            </table>
 
                             <table class="table table-bordered" id="dataTable">
                                 <thead>
@@ -168,18 +206,6 @@
                                 </thead>
                                 
                                 <tbody id="patient_data"></tbody>
-
-                                <tfoot>
-                                    <tr>
-                                        <th> Code </th>
-                                        <th> Nom </th>
-                                        <th> Date de naissance </th>
-                                        <th> Lieu de naissance </th>
-                                        <th> Nom du père </th>
-                                        <th> Nom de la mère </th>
-                                        <th> Ature </th>
-                                    </tr>
-                                </tfoot>
                             </table>
                         </div>
                     </div>
@@ -241,10 +267,13 @@
         <script src="{{ asset('js/form_validate.js') }}"></script>
         <script src="{{ asset('js/load_data.js') }}"></script>
         <script>
-            $(document).ready(function() {
-                $('#dataTable tfoot th').each( function () {
-                    var title = $(this).text();
-                    $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+            function filterColumn(i){
+                $('#dataTable').DataTable().column(i).search($('#col'+i+'_filter').val()).draw();
+            }
+
+            $(document).ready(function(){            
+                $('input.column_filter').on('keyup change clear', function(){
+                    filterColumn($(this).parents('td').attr('data-column'));
                 } );
             } );
         </script>

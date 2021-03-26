@@ -13,7 +13,7 @@
             </div>
 
             <div class="form-floating col-md-3">
-                <input type="text" class="form-control" wire:model.defer.defer="user_name" placeholder="Nom de l'utilisateur" id="user_name" name="user_name">
+                <input type="text" class="form-control" wire:model.defer="user_name" placeholder="Nom de l'utilisateur" id="user_name" name="user_name">
                 {{-- <label for="user_name"> {{ __("Nom de l'utilisateur") }} </label> --}}
             </div>
             
