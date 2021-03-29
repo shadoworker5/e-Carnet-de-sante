@@ -36,7 +36,7 @@
 
                 <tbody id="list_patient">
                     @forelse($submissions as $submission)
-                        <tr id="{{ ++$loop->index }}" class="{{ $loop->index % 2 == 0 ? 'bg-info text-white' : '' }}">
+                        <tr id="{{ ++$loop->index }}">
                             <td> {{ getPatientName($submission->patient_id) }} </td>
 
                             <td> {{ get_vaccine_name($submission->vaccine_calendar_id) }} </td>
@@ -55,8 +55,8 @@
                             
                             <td>
                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                    <a href="{{ route('vaccinate.edit', $submission) }}" id="vacinate_{{++$loop->index}}" class="btn btn-success btn_update">
-                                        {{ __("Modifier") }}
+                                    <a href="{{ route('vaccinate.edit', $submission) }}" id="vacinate_{{++$loop->index}}" class="btn text-white btn_color btn_update">
+                                        <i class="fa fa-edit"></i>
                                     </a>
                                 </div>
                             </td>
@@ -73,7 +73,7 @@
         </div>
 
         <div class="col-md-2">
-            <a href="#" onclick="javascript:history.back();" class="btn btn-primary">
+            <a href="#" onclick="javascript:history.back();" class="btn bg_color text-white">
                 <i class="fa fa-arrow-left"></i>
                 Revenir en arrière
             </a>

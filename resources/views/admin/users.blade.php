@@ -100,7 +100,9 @@
         }
 
         function addUser(){
-            document.getElementById('edit_user').setAttribute('action', 'update_user');
+            let form_user = document.getElementById('edit_user')
+            form_user.setAttribute('action', 'update_user');
+            // form_user.reset()
             document.getElementById("modal_title").innerText = "Ajouter un utilisateur"
             document.getElementById("update_action").remove();
             document.getElementById("submit").innerText = "Ajouter"

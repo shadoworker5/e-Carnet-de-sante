@@ -103,7 +103,7 @@
                     <div class="dropdown no-arrow">
                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                            <i class="fa fa-sync-alt"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                             aria-labelledby="dropdownMenuLink">
@@ -128,7 +128,7 @@
                     <div class="dropdown no-arrow">
                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                            <i class="fa fa-sync-alt"></i>
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
@@ -163,7 +163,7 @@
                     <div class="dropdown no-arrow">
                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                            <i class="fa fa-sync-alt"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                             aria-labelledby="dropdownMenuLink">
@@ -179,7 +179,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <div class="col-xl-4 col-lg-5">
             <div class="card shadow mb-4">
@@ -188,7 +188,7 @@
                     <div class="dropdown no-arrow">
                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                            <i class="fa fa-sync-alt"></i>
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
@@ -207,7 +207,7 @@
                     </div>
                 </div>
             </div>
-        </div> --}}
+        </div>
     </div>
 @endsection
 
@@ -384,7 +384,7 @@
                 pointHoverBorderColor: "rgb(78, 115, 223)",
                 pointHitRadius: 10,
                 pointBorderWidth: 2,
-                data: [1, 4, 3, 4, 5, 6, 7, 8, 9, 0, 10, 11, 12, 0],
+                data: [1, 4, 3, 4, 5, 6, 7, 8, 9, 0, 10, 11, 12, 0, 1],
             }],
         },
         options: {
@@ -464,50 +464,28 @@
                     'A jour',
                 ],
                 datasets: [{
-                label: 'My First Dataset',
-                data: [90, 10],
-                backgroundColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(54, 162, 235)',
-                ],
+                    data: [90, 10],
+                    backgroundColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(54, 162, 235)',
+                    ],
                     hoverOffset: 4
                 }]
             },
             options: {
-            maintainAspectRatio: false,
-            layout: {
-            padding: {
-                left: 10,
-                right: 25,
-                top: 25,
-                bottom: 0
-            }
-            },
-            legend: {
-            display: false
-            },
-            tooltips: {
-                backgroundColor: "rgb(255,255,255)",
-                bodyFontColor: "#858796",
-                titleMarginBottom: 10,
-                titleFontColor: '#6e707e',
-                titleFontSize: 14,
-                borderColor: '#dddfeb',
-                borderWidth: 1,
-                xPadding: 15,
-                yPadding: 15,
-                displayColors: false,
-                intersect: false,
-                mode: 'index',
-                caretPadding: 10,
-                callbacks: {
-                    label: function(tooltipItem, chart) {
-                    var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-                    return datasetLabel + ': ' + number_format(tooltipItem.yLabel);
+                maintainAspectRatio: false,
+                layout: {
+                    padding: {
+                        left: 10,
+                        right: 25,
+                        top: 25,
+                        bottom: 0
                     }
+                },
+                legend: {
+                    display: false
                 }
             }
-        }
         }
         const chart = new Chart(document.getElementById("vaccination_percent"), cfg);
     </script>

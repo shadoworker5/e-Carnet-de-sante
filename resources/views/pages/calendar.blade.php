@@ -1,6 +1,7 @@
 @extends('layouts.app', ['title' => 'Calendrier de vaccination'])
 
 @section('main_content')
+    <br>
     <div class="row">
         <h1 class="text-center"> Calendrier de vaccination au Burkina Faso </h1>
 
@@ -26,7 +27,7 @@
 
                 <tbody>
                     @foreach($vacines as $vacine)
-                        <tr class="{{ $loop->index % 2 == 0 ? 'bg-info text-white' : '' }}">
+                        <tr>
                             <td> {{ $vacine->patient_age }} </td>
 
                             <td> {{ $vacine->name_vaccine }} </td>
@@ -37,8 +38,8 @@
                             
                             @if(!in_array(Auth::user()->user_role, ['collector', 'guest']))
                                 <td>
-                                    <a href="{{ route('calendar.edit', $vacine) }}" class="btn btn-success">
-                                        {{ __('Modifier') }}
+                                    <a href="{{ route('calendar.edit', $vacine) }}" class="btn btn_color text-white">
+                                        <i class="fa fa-edit"></i>
                                     </a>
                                 </td>
                             @endif

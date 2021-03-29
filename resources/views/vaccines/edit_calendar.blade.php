@@ -2,7 +2,7 @@
 
 @section('main_content')
     <div class="row">
-        <div class="col-md-6 offset-md-3 mb-2">
+        <div class="col-md-6 mt-3 offset-md-3 mb-2">
             <h2 class="text-center"> {{ __('Modifier la vaccination') }}</h2>
             <form action="{{ route('calendar.update', $vacine) }}" class="needs-validation" novalidate method="post">
                 @csrf

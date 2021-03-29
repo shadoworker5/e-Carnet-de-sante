@@ -14,12 +14,23 @@ class AdminController extends Controller{
         // Recuperation des regions
         $region = Regions::all();
         $list_region = [];
-        $count_patient = [];
+        $count_patient[] = get_patient_update_status(Patients::all()->toArray());
+        $count = [];
+        // dd(count(in_array(0, $count_patient)));
+        // for($i = 0; $i < count($count_patient); $i++){
+        //     if($count_patient[$i]){
+        //         $count [] = [ 'up_day' => $i+1 ];
+        //     }
+        //     if(!$count_patient[$i]){
+        //         $count [] = [ 'down_day' => $i+1 ];
+        //     }
+        // }
+
+        dd($count);
         
         for($i = 0; $i < count($region); $i++) {
             $list_region[] = $region[$i]['title'];
         }
-
         
         $user = User::all();
         

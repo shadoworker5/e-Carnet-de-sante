@@ -17,6 +17,15 @@
     width: 55px;
 }
 
-.btn_vaccinate{
+.btn_color{
     background-color: #67c473;
+}
+
+.img_size{
+    height: 150px;
+    width: 200px;
+}
+
+.logo_space{
+    margin-right: 20px;
 }

@@ -26,7 +26,7 @@
                         </div>                     
                         
                         <div>
-                            <button type="submit" class="btn btn-primary mt-2 pull-right"> Submit </button>
+                            <button type="submit" class="btn btn-primary mt-2 pull-right"> {{ __("Enregistré") }} </button>
                         </div>
                     </form>
                 </div>

@@ -45,12 +45,12 @@
                                     <td> {{ __( $region['title'] ) }} </td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">                                            
-                                            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit_region" onclick="setRegion('{{$region['id']}}','{{$region['title']}}')">
-                                                {{ __("Modifier") }}
+                                            <button class="btn text-white" style="background-color: #00ade9" data-bs-toggle="modal" data-bs-target="#edit_region" onclick="setRegion('{{$region['id']}}','{{$region['title']}}')">
+                                                <i class="fa fa-edit"></i>
                                             </button>
                                             
-                                            <button wire:click="showRegion({{ $region['id'] }})" class="btn btn-success">
-                                                {{ __("Afficher") }}
+                                            <button wire:click="showRegion({{ $region['id'] }})" class="btn text-white" style="background-color: #67c473">
+                                                <i class="fa fa-eye"></i>
                                             </button>
                                         </div>
                                     </td>
@@ -105,12 +105,12 @@
                                     <td> {{ __($province['title']) }} </td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">
-                                            <a href="#" class="btn btn-danger">
-                                                {{ __("Supprimer") }}
+                                            <a href="#" class="btn text-white" style="background-color: #00ade9" onclick="setProvince('{{$province['id']}}','{{$province['title']}}')" data-bs-toggle="modal" data-bs-target="#edit_province">
+                                                <i class="fa fa-edit"></i>
                                             </a>
-
-                                            <a href="#" class="btn btn-primary" onclick="setProvince('{{$province['id']}}','{{$province['title']}}')" data-bs-toggle="modal" data-bs-target="#edit_province">
-                                                {{ __("Modifier") }}
+                                            
+                                            <a href="#" class="btn btn-danger">
+                                                <i class="fa fa-trash-alt"></i>
                                             </a>
                                         </div>
                                     </td>
@@ -235,7 +235,7 @@
                         </div>
 
                         <div>
-                            <button type="submit" class="btn btn-primary mt-2"> {{ __("Envoyé") }} </button>
+                            <button type="submit" class="btn btn-primary mt-2"> {{ __("Enregistré") }} </button>
                         </div>
                     </form>
                 </div>
@@ -273,7 +273,7 @@
                         </div>                     
                         
                         <div>
-                            <button type="submit" class="btn btn-primary mt-2 pull-right"> Submit </button>
+                            <button type="submit" class="btn btn-primary mt-2 pull-right"> {{ __("Enregistré") }} </button>
                         </div>
                     </form>
                 </div>

@@ -2,7 +2,7 @@
 
 @section('main_content')
     <div class="row">
-        <div class="col-md-6 offset-md-3 mb-2">
+        <div class="col-md-6 mt-3 offset-md-3 mb-2">
             <h2 class="text-center"> {{ __('Ajouter une vaccination') }}</h2>
             
             <form action="{{ route('vaccinate.store') }}" id="form_vacinate" class="needs-validation" novalidate method="post">
@@ -101,7 +101,7 @@
                 </div>
 
                 <div class="mt-2 align-center offset-md-4">
-                    <button class="btn btn-danger">
+                    <button class="btn btn-danger"  onclick="javascript:history.back();">
                         {{ __('Annuler') }}
                     </button>
 

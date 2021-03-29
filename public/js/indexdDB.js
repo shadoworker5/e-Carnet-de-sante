@@ -115,7 +115,6 @@ const renderPatientData = () => {
     // let search_info = document.querySelector("#search_info div")
     // console.log(search_info);
 
-
     open_db.onsuccess =  () => {
         db = open_db.result;
         let query = db.transaction([PATIENT_DATA]);
@@ -496,12 +495,17 @@ function getPatientName(){
 }
 
 if(courant_page === '/vaccinate/create'){
+    let patient_infos = document.querySelector('#patient_name');
     let field_code = document.querySelector('#patient_code');
     field_code.value = getPatientCode();
     getPatientCode() !== null ? field_code.setAttribute('readonly', true) : "";
 
-    document.querySelector('#patient_info').value = getPatientName();    
-    document.querySelector('#patient_name').setAttribute('class', 'form-group')
+    document.querySelector('#patient_info').value = getPatientName();
+    if(getPatientName() === null){
+        patient_infos.remove()
+    }else{
+        patient_infos.setAttribute('class', 'form-group')
+    }
 }
 
 function emptyAllData(){

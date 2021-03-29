@@ -1,5 +1,6 @@
 <div>
-    <h1 class="text-center"> Liste des patients </h1>
+    <br>
+    <h1 class="text-center mt-3"> Liste des patients </h1>
     
     <div class="row mt-4">
         <div class="row">
@@ -40,11 +41,12 @@
                 <option value="{{ $i }}"> {{ $i }} <option>
                     @endfor
             </select> --}}
-            
-            <button class="btn btn-primary col-md-4 offset-2" wire:click="searchPatient">
-                <i class="fa fa-search"></i>
-                {{ __("Rechercher") }}
-            </button>
+            <div class="text-center">
+                <button class="btn bg_color col-md-4 text-white" style="border-radius:20px" wire:click="searchPatient">
+                    <i class="fa fa-search"></i>
+                    {{ __("Rechercher") }}
+                </button>
+            </div>
         </div>
 
     </div>
@@ -71,7 +73,7 @@
 
             <tbody>
                 @foreach($patients as $patient )
-                    <tr class="{{ $loop->index % 2 == 0 ? 'bg-info text-white' : '' }}">
+                    <tr>
                         <td> {{ $patient->code_patient }} </td>
 
                         <td> {{ $patient->full_name }} </td>
@@ -83,19 +85,18 @@
                         <td> {{ $patient->name_father.', '.$patient->name_mother }} </td>
 
                         <td>
-                            {!! get_vacine_status_per_patient($patient->id, $patient->birthday) ? '<div class="text-center text-danger"> <i class="fa fa-times fa-2x"></i> </div>' : '<div class="text-center text-success"> <i class="fa fa-check"></i> </div>' !!}
+                            {!! get_vacine_status_per_patient($patient->id, $patient->birthday) ? '<div class="text-center"> <i class="fa fa-times fa-2x text-danger"></i> </div>' : '<div class="text-center"> <i class="fa fa-check fa-2x text-success"></i> </div>' !!}
                         </td>
                         
                         <td>
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                <a href="{{ route('patient.show', $patient->id) }}" class="btn btn-success">
-                                    {{-- <i class="fa fa-eye"></i> --}}
-                                    Afficher
+                                <a href="{{ route('patient.show', $patient->id) }}" class="btn bg_color text-white">
+                                    <i class="fa fa-eye"></i>
                                 </a>
 
                                 @if(get_vacine_status_per_patient($patient->id, $patient->birthday)) 
-                                    <a href="{{ route('add_vacination', $patient->code_patient) }}" class="btn btn-warning">
-                                        Ajouter vacciner
+                                    <a href="{{ route('add_vacination', $patient->code_patient) }}" class="btn btn_color text-white">
+                                        <i class="fa fa-plus"></i>
                                     </a>
                                 @endif
                             </div>

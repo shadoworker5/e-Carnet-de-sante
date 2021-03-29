@@ -1,7 +1,9 @@
 @extends(in_array(Auth::user()->user_role, ['root']) ? 'layouts.app' : 'layouts.app', ['title' => 'Liste des patients'])
 
 @section('main_content')
-    @livewire('list-patients')
+    <div>
+        @livewire('list-patients')
+    </div>
     {{-- <h1 class="text-center"> Liste des patients </h1>
     
     <div class="row mt-4">

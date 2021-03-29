@@ -1,6 +1,6 @@
 <div class="container-fluid bg_color text-white">
     <div class="row">
-        <div class="col-md-4 text-center mt-3">
+        {{-- <div class="col-md-4 text-center mt-3">
             <h4> Adresse </h4>
             <span>
                 Boulevard circulaire Tensoba <br> En face de la station SOGEL-B <br>
@@ -33,6 +33,23 @@
             <a href="https://www.linkedin.com/africasys" style="text-decoration:none" target="_blank" rel="noopener" class="text-white">
                 <i class="fab fa-linkedin fa-2x"></i>
             </a>
+        </div> --}}
+        <div class="text-center mt-2">
+            <span class="col-md-3 logo_space">
+                <img src="{{ asset('images/drapeau_bf.png') }}" alt="" srcset="" class="img_size">
+            </span>
+                
+            <span class="col-md-3 logo_space">
+                <img src="{{ asset('images/logo-africasys.png') }}" alt="" srcset="" class="img_size">
+            </span>
+                
+            <span class="col-md-3 logo_space">
+                <img src="{{ asset('images/logo_cloudlyYours.jpg') }}" alt="" srcset="" class="img_size">
+            </span>
+
+            <span class="col-md-3">
+                <img src="{{ asset('images/logo.png') }}" alt="" srcset="" class="img_size">
+            </span>
         </div>
     </div>
 
