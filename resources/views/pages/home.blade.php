@@ -91,7 +91,7 @@
                                     <li class="nav-item">
                                         <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#load_data">
                                             <i class="fa fa-download"></i>
-                                            {{ __("Charger les données des patients") }}
+                                            {{ __("Télécharger les données des patients") }}
                                         </a>
                                     </li>
                                     
@@ -116,38 +116,6 @@
 
                     <div class="card-body">
                         <div class="table-responsive" id="data_patient">
-                            {{-- <div class="row mb-3" id="search_info">
-                                <div class="form-floating col-md-2">
-                                    <input type="text" class="form-control" placeholder="Code du patient" id="code" name="code">
-                                    <label for="code"> {{ __("Code du patient") }} </label>
-                                </div>
-
-                                <div class="form-floating col-md-2">
-                                    <input type="text" class="form-control" placeholder="Nom du patient" id="floatingSearch" name="search">
-                                    <label for="floatingSearch"> {{ __("Nom du patient") }} </label>
-                                </div>
-                    
-                                <div class="form-floating col-md-2">
-                                    <input type="date" class="form-control" eholder="Date de naissance" id="floatingBirthday" name="birthday">
-                                    <label for="floatingBirthday"> {{ __("Date de naissance") }} </label>
-                                </div>
-                                
-                                <div class="form-floating col-md-2">
-                                    <input type="text" class="form-control"  placeholder="Lieu de naissance" id="floatingLocation" name="born_location">
-                                    
-                                </div>
-                                
-                                <div class="form-floating col-md-2">
-                                    <input type="text" class="form-control" placeholder="Nom du père" id="floatingFather" name="name_father">
-                                    
-                                </div>
-                                
-                                <div class="form-floating col-md-2">
-                                    <input type="text" class="form-control" placeholder="Nom de la mère" id="floatingMother" name="name_mother">
-                                    
-                                </div>
-                            </div> --}}
-
                             <table class="mb-3">
                                 <thead>
                                     <tr>

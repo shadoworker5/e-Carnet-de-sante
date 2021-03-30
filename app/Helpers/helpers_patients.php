@@ -91,24 +91,39 @@ if(!function_exists('format_vaccinate_time')){
 if(!function_exists('get_patient_update_status')){
     function get_patient_update_status($patient_list){
         $count = [];
+        $response = ['yes' => 0, 'no' => 0];
+
         for($i = 0; $i < count($patient_list); $i++){
-            $count[] = get_vacine_status_per_patient($patient_list[$i]['id'], $patient_list[$i]['birthday']); // ? 1 : 0;
+            $count[] = get_vacine_status_per_patient($patient_list[$i]['id'], $patient_list[$i]['birthday']) ? "no" : "yes";
         }
 
-        return $count;
+        foreach($count as $value){
+            $response[$value] += 1;
+        }
+
+        return $response;
     }
 }
 
-// if(!function_exists('get_patient_update_status')){
-//     function get_patient_update_status($patient_id){
-//         $vacines =  DB::select('SELECT patient_age, name_vaccine FROM vaccine_calendars WHERE status = "0"');
+if(!function_exists('get_all_patient_per_regions')){
+    function get_all_patient_per_regions($region){
+        // Recuperation de la liste des province
+        // $list_province = [];
+        // for($i = 0; $i < count($region); $i++){
+        //     $list_province[] = Provinces::whereRegionId($region[$i]['id'])->get()->toArray();
+        // }
+
+        // Recuperation des patiens
+        $list_patient = [];
+        for($i = 0; $i < count($region); $i++){
+            // $list_patient[] = Patients::whereProvinceId($list_province[$i]['id'])->get()->toArray();
+            $list_patient[] = DB::select("SELECT COUNT(code_patient) FROM patients WHERE province_id IN 
+            (SELECT id FROM provinces WHERE region_id = ".$region[$i]['id'].")");
+        }
         
-//         $vaccination = DB::select('SELECT patient_id, vaccine_calendar_id, name_vaccine, vacine_status, rappelle
-//                                 FROM patient_vaccinate, vaccine_calendars
-//                                 WHERE patient_id = '.$patient_id.' ');
-//         // return $vaccination;
-//     }
-// }
+        return $list_patient;
+    }
+}
 
 // if(!function_exists('get_status_vacinate_per_patient')){
 //     function get_status_vacinate_per_patient($patient_id){

@@ -134,7 +134,7 @@ const renderPatientData = () => {
                 document.querySelector("#show_patient_liste").setAttribute('class', 'd-none');
             }
 
-            if(courant_page === '/home' && request.result.length > 0){
+            if(courant_page === '/home' && request.result.length > 0 && document.querySelector("#data_patient")){
                 $('#dataTable').DataTable({
                     data: data_show,
                     columns: [
@@ -147,18 +147,7 @@ const renderPatientData = () => {
                         { data: function(e){
                             return '<a href="#" data-code="'+e["code_patient"]+'" onclick="redirectForm(\''+e["code_patient"]+'\', \''+e["full_name"]+'\')" class="btn btn-warning"> Ajouter une vaccination </a>'
                         } },
-                    ],
-                    // initComplete: function () {
-                    //     this.api().columns().every(function(){
-                    //         var that = this;
-                    //         // console.log(this.footer());
-                    //         $('input', this.header()).on('keyup change clear', function(){
-                    //             if(that.search() !== this.value){
-                    //                 that.search(this.value).draw();
-                    //             }
-                    //         } );
-                    //     });
-                    // }
+                    ]
                 });
             }
         }
@@ -186,8 +175,8 @@ function patientData(data = new Object){
                     store.put(item);
                 });
                 state_message.setAttribute('class', "mt-3 text-center h5 text-success")
-                state_message.innerHTML = "Données chargé avec succès.";
-                subscribe('Données chargé avec succès.');
+                state_message.innerHTML = "Données chargées avec succès.";
+                subscribe('Données chargées avec succès.');
             }
         };
     }
@@ -414,14 +403,7 @@ if(courant_page === "/patient/create"){
 
 // Ce code permet d'afficher les informations sur un patient
 function showPatient(patient_id){
-    // if(!navigator.onLine){
-    //     showPatientData(patient_id);
-    //     window.location.href = '/offline_show';
-    // }else{
-    //     showPatientData(patient_id);
-    //     // window.location.href = '/offline_show';
-    //     window.location.href = '/patient/'+patient_id;
-    // }
+    // code
 }
 
 function showPatientData(patient_id){
@@ -430,8 +412,7 @@ function showPatientData(patient_id){
     open_db.onsuccess =  () => {
         let query = db.transaction([PATIENT_DATA]);
         let store = query.objectStore(PATIENT_DATA);
-        // let index_query = store.index('id')
-        let request =  store.getAll();     //index_query.get(`"${patient_id}"`);
+        let request =  store.getAll();
 
         request.onsuccess = (event) => {
             if(request.result){
@@ -447,27 +428,7 @@ function showPatientData(patient_id){
 }
 
 function renderPatient(code, name, naissance, name_father, name_mother, name_helper, contact, email){
-    // localStorage.setItem('code', code);
-    // localStorage.setItem('name', name);
-    // localStorage.setItem('naissance', naissance);
-    // localStorage.setItem('name_father', name_father);
-    // localStorage.setItem('name_father', name_father);
-    // localStorage.setItem('name_mother', name_mother);
-    // localStorage.setItem('name_helper', name_helper);
-    // localStorage.setItem('contact', contact);
-    // localStorage.setItem('email', email);
-}
-
-if(courant_page === '/offline_show'){
-    // document.getElementById('code').textContent = localStorage.getItem('code');
-    // document.getElementById('name').textContent = localStorage.getItem('name');
-    // document.getElementById('naissance').textContent = localStorage.getItem('naissance');
-    // document.getElementById('name_father').textContent = localStorage.getItem('name_father');
-    // document.getElementById('name_mother').textContent = localStorage.getItem('name_mother');
-    // document.getElementById('name_helper').textContent = localStorage.getItem('name_helper');
-    // document.getElementById('contact').textContent = localStorage.getItem('contact');
-    // document.getElementById('email').textContent = localStorage.getItem('email');
-    // document.getElementById('vacine_patient').setAttribute('data-code', localStorage.getItem('code'))
+    // code
 }
 
 // Code du bouton qui permet de redigier vers le formulaire hos ligne

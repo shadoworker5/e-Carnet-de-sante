@@ -6,50 +6,50 @@ use App\Models\Patient_vaccinate;
 use App\Models\Patients;
 use App\Models\Regions;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller{
     public function index(){
-        // Recuperation des regions
-        $region = Regions::all();
-        $list_region = [];
-        $count_patient[] = get_patient_update_status(Patients::all()->toArray());
-        $count = [];
-        // dd(count(in_array(0, $count_patient)));
-        // for($i = 0; $i < count($count_patient); $i++){
-        //     if($count_patient[$i]){
-        //         $count [] = [ 'up_day' => $i+1 ];
-        //     }
-        //     if(!$count_patient[$i]){
-        //         $count [] = [ 'down_day' => $i+1 ];
-        //     }
-        // }
+        // Recuperation des utilisateurs
+        $user = User::all();
 
-        dd($count);
+        // Recuperation des regions
+        $list_region = [];
+        $region = Regions::all();
+
+        // Recuperation des patients par region
+        $list_patient_per_region = get_all_patient_per_regions($region->toArray());
+
+        // dd($list_patient_per_region);
         
         for($i = 0; $i < count($region); $i++) {
             $list_region[] = $region[$i]['title'];
         }
         
-        $user = User::all();
+        // Recuperation des statistiques des patients a jour
+        $count_patient = get_patient_update_status(Patients::all()->toArray());
         
+        // Recuperation du genre des patients
         $genre = ['M', 'F'];
         $genre_count = [];
-        foreach ($genre as $key => $value) {
+
+        foreach($genre as $key => $value){
             $genre_count[$value] = Patients::where(DB::raw("genre"), $value)->count();
         }
 
+        // Recuperation des vaccinations
         $months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         $vacinate_count = [];
-        foreach ($months as $key => $value) {
+        foreach($months as $key => $value){
             $vacinate_count[] = Patient_vaccinate::where(DB::raw("DATE_FORMAT(created_at, '%b')"), $value)->count();
         }
 
         return view('admin.dashboard', [
                     'user_count'    => $user,
                     'genre_count'   => $genre_count,
-                    'list_region'   => $list_region
+                    'list_region'   => $list_region,
+                    'count_patient' => $count_patient,
+                    'list_patient_per_region' => $list_patient_per_region
                 ])->with('vacinate_count',json_encode($vacinate_count, JSON_NUMERIC_CHECK));
     }
 

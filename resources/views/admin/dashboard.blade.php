@@ -149,7 +149,7 @@
                         </span>
 
                         <span class="mr-2">
-                            <i class="fas fa-circle text-primary"></i> {{ __("Homme") }}
+                            <i class="fas fa-circle" style="color: #00ade9"></i> {{ __("Homme") }}
                         </span>
                     </div>
                 </div>
@@ -181,7 +181,7 @@
             </div>
         </div> --}}
 
-        <div class="col-xl-4 col-lg-5">
+        {{-- <div class="col-xl-4 col-lg-5">
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary"> {{ __("Taux de vaccination") }} </h6>
@@ -203,17 +203,26 @@
                     <div class="chart-pie pt-4 pb-2">
                         <canvas id="vaccination_percent"></canvas>
                     </div>
+                    
                     <div class="mt-4 text-center small">
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-success"></i> {{ __("A jour") }}
+                        </span>
+
+                        <span class="mr-2">
+                            <i class="fas fa-circle"  style="color: #00ade9"></i> {{ __("Pas à jour") }}
+                        </span>
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
+    {{-- {!! json_encode($list_patient_per_region) !!} --}}
 @endsection
 
 @section('script')
     <script>
-        let male =    {{ $genre_count['M'] }}, female =  {{$genre_count['F']}};
+        let male =    {!! json_encode($genre_count['M']) !!}, female =  {!! json_encode($genre_count['F']) !!};
         var ctx = document.getElementById("myPieChart");
         var myPieChart = new Chart(ctx, {
             type: 'doughnut',
@@ -221,7 +230,7 @@
                 labels: ["Homme", "Femme"],
                 datasets: [{
                 data: [male, female],
-                backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+                backgroundColor: ['#00ade9', '#1cc88a', '#36b9cc'],
                 hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
                 hoverBorderColor: "rgba(234, 236, 244, 1)",
                 }],
@@ -229,17 +238,17 @@
             options: {
                 maintainAspectRatio: false,
                 tooltips: {
-                backgroundColor: "rgb(255,255,255)",
-                bodyFontColor: "#858796",
-                borderColor: '#dddfeb',
-                borderWidth: 1,
-                xPadding: 15,
-                yPadding: 15,
-                displayColors: false,
-                caretPadding: 10,
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyFontColor: "#858796",
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 15,
+                    displayColors: false,
+                    caretPadding: 10,
                 },
                 legend: {
-                display: false
+                    display: false
                 },
                 cutoutPercentage: 80,
             },
@@ -366,127 +375,140 @@
 
     <script>
         let list_region = {!! json_encode($list_region) !!}
-        var ctx = document.getElementById("patient_per_region");
-        var myLineChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: list_region,
-            datasets: [{
-                label: "Nombre",
-                lineTension: 0.3,
-                backgroundColor: "rgb(78, 115, 223)",
-                borderColor: "rgb(78, 115, 223, 1)",
-                pointRadius: 3,
-                pointBackgroundColor: "rgb(78, 115, 223)",
-                pointBorderColor: "rgb(78, 115, 223)",
-                pointHoverRadius: 3,
-                pointHoverBackgroundColor: "rgb(78, 115, 223)",
-                pointHoverBorderColor: "rgb(78, 115, 223)",
-                pointHitRadius: 10,
-                pointBorderWidth: 2,
-                data: [1, 4, 3, 4, 5, 6, 7, 8, 9, 0, 10, 11, 12, 0, 1],
-            }],
-        },
-        options: {
-            maintainAspectRatio: false,
-            layout: {
-                padding: {
-                    left: 10,
-                    right: 25,
-                    top: 25,
-                    bottom: 0
-                }
-            },
-            scales: {
-                xAxes: [{
-                    time: {
-                        unit: 'date'
-                    },
-                    gridLines: {
-                        display: false,
-                        drawBorder: false
-                    },
-                    ticks: {
-                        maxTicksLimit: 7
-                    }
-                }],
-                yAxes: [{
-                    ticks: {
-                        maxTicksLimit: 5,
-                        padding: 10,
-                        callback: function(value, index, values) {
-                            return number_format(value);
-                        }
-                    },
-                    gridLines: {
-                    color: "rgb(234, 236, 244)",
-                    zeroLineColor: "rgb(234, 236, 244)",
-                    drawBorder: false,
-                    borderDash: [2],
-                    zeroLineBorderDash: [2]
-                    }
-                }],
-            },
-            legend: {
-                display: false
-            },
-            tooltips: {
-                backgroundColor: "rgb(255,255,255)",
-                bodyFontColor: "#858796",
-                titleMarginBottom: 10,
-                titleFontColor: '#6e707e',
-                titleFontSize: 14,
-                borderColor: '#dddfeb',
-                borderWidth: 1,
-                xPadding: 15,
-                yPadding: 15,
-                displayColors: false,
-                intersect: false,
-                mode: 'index',
-                caretPadding: 10,
-                callbacks: {
-                    label: function(tooltipItem, chart) {
-                    var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-                    return datasetLabel + ': ' + number_format(tooltipItem.yLabel);
-                    }
-                }
-            }
-        }
-        });
+        let data = {!! json_encode($list_patient_per_region) !!}
+        // var ctx = document.getElementById("patient_per_region");
+        // var myLineChart = new Chart(ctx, {
+        //     type: 'bar',
+        //     data: {
+        //         labels: list_region,
+        //         datasets: [{
+        //             label: "Nombre",
+        //             lineTension: 0.3,
+        //             backgroundColor: "rgb(78, 115, 223)",
+        //             borderColor: "rgb(78, 115, 223, 1)",
+        //             pointRadius: 3,
+        //             pointBackgroundColor: "rgb(78, 115, 223)",
+        //             pointBorderColor: "rgb(78, 115, 223)",
+        //             pointHoverRadius: 3,
+        //             pointHoverBackgroundColor: "rgb(78, 115, 223)",
+        //             pointHoverBorderColor: "rgb(78, 115, 223)",
+        //             pointHitRadius: 10,
+        //             pointBorderWidth: 2,
+        //             data: data 
+        //         }],
+        //     },
+        //     options: {
+        //         maintainAspectRatio: false,
+        //         layout: {
+        //             padding: {
+        //                 left: 10,
+        //                 right: 25,
+        //                 top: 25,
+        //                 bottom: 0
+        //             }
+        //         },
+        //         scales: {
+        //             xAxes: [{
+        //                 time: {
+        //                     unit: 'date'
+        //                 },
+        //                 gridLines: {
+        //                     display: false,
+        //                     drawBorder: false
+        //                 },
+        //                 ticks: {
+        //                     maxTicksLimit: 7
+        //                 }
+        //             }],
+        //             yAxes: [{
+        //                 ticks: {
+        //                     maxTicksLimit: 5,
+        //                     padding: 10,
+        //                     callback: function(value, index, values) {
+        //                         return number_format(value);
+        //                     }
+        //                 },
+        //                 gridLines: {
+        //                 color: "rgb(234, 236, 244)",
+        //                 zeroLineColor: "rgb(234, 236, 244)",
+        //                 drawBorder: false,
+        //                 borderDash: [2],
+        //                 zeroLineBorderDash: [2]
+        //                 }
+        //             }],
+        //         },
+        //         legend: {
+        //             display: false
+        //         },
+        //         tooltips: {
+        //             backgroundColor: "rgb(255,255,255)",
+        //             bodyFontColor: "#858796",
+        //             titleMarginBottom: 10,
+        //             titleFontColor: '#6e707e',
+        //             titleFontSize: 14,
+        //             borderColor: '#dddfeb',
+        //             borderWidth: 1,
+        //             xPadding: 15,
+        //             yPadding: 15,
+        //             displayColors: false,
+        //             intersect: false,
+        //             mode: 'index',
+        //             caretPadding: 10,
+        //             callbacks: {
+        //                 label: function(tooltipItem, chart) {
+        //                 var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+        //                 return datasetLabel + ': ' + number_format(tooltipItem.yLabel);
+        //                 }
+        //             }
+        //         }
+        //     }
+        // });
     </script>
     
     <script>
-        const cfg = {
-            type: 'pie',
-            data: {
-                labels: [
-                    'Pas à jour',
-                    'A jour',
-                ],
-                datasets: [{
-                    data: [90, 10],
-                    backgroundColor: [
-                        'rgb(255, 99, 132)',
-                        'rgb(54, 162, 235)',
-                    ],
-                    hoverOffset: 4
-                }]
-            },
-            options: {
-                maintainAspectRatio: false,
-                layout: {
-                    padding: {
-                        left: 10,
-                        right: 25,
-                        top: 25,
-                        bottom: 0
-                    }
-                },
-                legend: {
-                    display: false
-                }
-            }
-        }
-        const chart = new Chart(document.getElementById("vaccination_percent"), cfg);
+        let up_day = {!! json_encode($count_patient['yes']) !!};
+        let down_day = {!! json_encode($count_patient['no']) !!};
+        // const cfg = {
+        //     type: 'pie',
+        //     data: {
+        //         labels: [
+        //             'Pas à jour',
+        //             'A jour',
+        //         ],
+        //         datasets: [{
+        //             data: [down_day, up_day],
+        //             backgroundColor: [
+        //                 '#00ade9',
+        //                 '#1cc88a',
+        //             ],
+        //             hoverOffset: 4
+        //         }]
+        //     },
+        //     options: {
+        //         maintainAspectRatio: false,
+        //         tooltips: {
+        //             backgroundColor: "rgb(255,255,255)",
+        //             bodyFontColor: "#858796",
+        //             borderColor: '#dddfeb',
+        //             borderWidth: 1,
+        //             xPadding: 15,
+        //             yPadding: 15,
+        //             displayColors: false,
+        //             caretPadding: 10,
+        //         },
+        //         layout: {
+        //             padding: {
+        //                 left: 10,
+        //                 right: 25,
+        //                 top: 25,
+        //                 bottom: 0
+        //             }
+        //         },
+        //         legend: {
+        //             display: false
+        //         }
+        //     }
+        // }
+        // const chart = new Chart(document.getElementById("vaccination_percent"), cfg);
     </script>
 @endsection
