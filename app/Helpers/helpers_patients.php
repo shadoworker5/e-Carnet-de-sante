@@ -107,31 +107,18 @@ if(!function_exists('get_patient_update_status')){
 
 if(!function_exists('get_all_patient_per_regions')){
     function get_all_patient_per_regions($region){
-        // Recuperation de la liste des province
-        // $list_province = [];
-        // for($i = 0; $i < count($region); $i++){
-        //     $list_province[] = Provinces::whereRegionId($region[$i]['id'])->get()->toArray();
-        // }
-
         // Recuperation des patiens
         $list_patient = [];
         for($i = 0; $i < count($region); $i++){
-            // $list_patient[] = Patients::whereProvinceId($list_province[$i]['id'])->get()->toArray();
-            $list_patient[] = DB::select("SELECT COUNT(code_patient) FROM patients WHERE province_id IN 
-            (SELECT id FROM provinces WHERE region_id = ".$region[$i]['id'].")");
+            $list_patient[] = DB::select("SELECT COUNT(code_patient) AS count_number FROM patients WHERE province_id IN (SELECT id FROM provinces WHERE region_id = ".$region[$i]['id'].")");
+        }
+
+        // Transformation dans un seul tableau
+        $response = [];
+        for($i = 0; $i < count($list_patient); $i++){
+            $response[] = $list_patient[$i][0]->count_number;
         }
         
-        return $list_patient;
+        return $response;
     }
 }
-
-// if(!function_exists('get_status_vacinate_per_patient')){
-//     function get_status_vacinate_per_patient($patient_id){
-//         $vacines =  DB::select('SELECT patient_age, name_vaccine FROM vaccine_calendars WHERE status = "0"');
-                
-//         $vaccination = DB::select('SELECT patient_id, vaccine_calendar_id, name_vaccine, vacine_status, rappelle
-//                                 FROM patient_vaccinate, vaccine_calendars
-//                                 WHERE patient_id = '.$patient_id.' ');
-//         // return $vaccination;
-//     }
-// }

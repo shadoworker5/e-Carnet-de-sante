@@ -19,8 +19,6 @@ class AdminController extends Controller{
 
         // Recuperation des patients par region
         $list_patient_per_region = get_all_patient_per_regions($region->toArray());
-
-        // dd($list_patient_per_region);
         
         for($i = 0; $i < count($region); $i++) {
             $list_region[] = $region[$i]['title'];
