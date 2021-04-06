@@ -4,11 +4,11 @@
             <span class="col-md-3 logo_space">
                 <img src="{{ asset('images/eSante-05.jpg') }}" alt="logo" srcset="" class="img_size">
             </span>
-                
+
             <span class="col-md-3 logo_space">
                 <img src="{{ asset('images/drapeau_bf.png') }}" alt="drapeau_bf" srcset="" class="img_size">
             </span>
-                
+
             <span class="col-md-3 logo_space">
                 <img src="{{ asset('images/logo_cloudlyYours.jpg') }}" alt="logo_cloudlyYours" srcset="" class="img_size">
             </span>

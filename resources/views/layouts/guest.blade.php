@@ -4,29 +4,30 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        
+
         <!-- Section PWA -->
         @include('layouts.partials.meta')
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Styles -->
-        <link rel="stylesheet" href="{{ mix('css/app.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/all.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/style.css') }}">
         <link rel="stylesheet" href="{{ asset('styles_css/bootstrap.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
         <!-- Scripts -->
-        <script src="{{ mix('js/app.js') }}" defer></script>
+        <script src="{{ asset('js/app.js') }}" defer></script>
     </head>
     <body>
         <header>
             @include('layouts.partials.menu_top')
         </header>
-            {{ $slot }}
-        <div>
+
+        {{ $slot }}
+
+        {{-- <div>
             @include('layouts.partials.footer')
-        </div>
+        </div> --}}
 
         <script src="{{ asset('js/bootstrap.js') }}"></script>
     </body>
