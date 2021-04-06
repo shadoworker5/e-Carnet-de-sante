@@ -17,16 +17,16 @@ class AdminController extends Controller{
         $list_region = [];
         $region = Regions::all();
 
-        // Recuperation des patients par region
-        $list_patient_per_region = get_all_patient_per_regions($region->toArray());
-        
+    // Recuperation des patients par region
+    $list_patient_per_region = get_all_patient_per_regions($region->toArray());
+
         for($i = 0; $i < count($region); $i++) {
             $list_region[] = $region[$i]['title'];
         }
-        
+
         // Recuperation des statistiques des patients a jour
         $count_patient = get_patient_update_status(Patients::all()->toArray());
-        
+
         // Recuperation du genre des patients
         $genre = ['M', 'F'];
         $genre_count = [];
