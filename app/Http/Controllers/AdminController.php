@@ -17,8 +17,8 @@ class AdminController extends Controller{
         $list_region = [];
         $region = Regions::all();
 
-    // Recuperation des patients par region
-    $list_patient_per_region = get_all_patient_per_regions($region->toArray());
+        // Recuperation des patients par region
+        $list_patient_per_region = get_all_patient_per_regions($region->toArray());
 
         for($i = 0; $i < count($region); $i++) {
             $list_region[] = $region[$i]['title'];
@@ -57,5 +57,9 @@ class AdminController extends Controller{
 
     public function setings(){
         return view('admin.setings');
+    }
+
+    public function notifyCampagne(){
+        return view('admin.campagne');
     }
 }

@@ -1,6 +1,6 @@
 <div>
     <h1 class="text-center"> {{ __("Liste des utilisateurs") }} </h1>
-    
+
     <div class="row mt-4">
         <div class="row">
             <div class="col-md-3">
@@ -14,7 +14,7 @@
             <div class="form-floating col-md-3">
                 <input type="text" class="form-control" wire:model.defer="user_name" placeholder="Nom de l'utilisateur" id="user_name" name="user_name">
             </div>
-            
+
             <div class="form-floating col-md-3">
                 <input type="text" class="form-control" wire:model.defer="user_mail" placeholder="Address e-mail" id="floatingFather" name="user_mail">
             </div>
@@ -36,11 +36,11 @@
                     <th> {{ __('Nom') }} </th>
 
                     <th> {{ __('E-mail') }} </th>
-                    
+
                     <th> {{ __('Type d\'utilisateur') }} </th>
 
                     <th> {{ __('Status du compte') }} </th>
-                    
+
                     <th> {{ __('Action') }} </th>
                 </tr>
             </thead>
@@ -53,19 +53,28 @@
                         <td> {{ $user->name }} </td>
 
                         <td> {{ $user->email }} </td>
-                        
+
                         <td> {{ $user->user_role }} </td>
-                        
+
                         <td class="text-center">
                             {!! $user->account_status === '1' ? '<i class="fa fa-check fa-2x text-success"></i>' : '<i class="fa fa-times fa-2x text-danger"></i>' !!}
                         </td>
-                        
+
                         <td>
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                <a href="#" href="#" data-bs-toggle="modal" data-bs-target="#edit_user_modal" class="btn text-white" style="background-color: #00ade9" onclick="setUser('{{$user->id}}', '{{$user->name}}', '{{$user->email}}', '{{$user->user_role}}')">
+                                @if($user->account_status === '1')
+                                    <a href="#" data-bs-toggle="modal" onclick="disableUser('{{$user->id}}')" data-bs-target="#enable_user_modal" class="btn text-danger" style="background-color: #67c473">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                @else
+                                    <a href="#" data-bs-toggle="modal" onclick="enableUser('{{$user->id}}')" data-bs-target="#enable_user_modal" class="btn text-white" style="background-color: #67c473">
+                                        <i class="fa fa-check"></i>
+                                    </a>
+                                @endif
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#edit_user_modal" class="btn text-white" style="background-color: #00ade9" onclick="setUser('{{$user->id}}', '{{$user->name}}', '{{$user->email}}', '{{$user->user_role}}')">
                                     <i class="fa fa-edit"></i>
                                 </a>
-                                
+
                                 <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete_user" onclick="delUser('{{ $user->id }}')">
                                     <i class="fa fa-trash-alt"></i>
                                 </button>
@@ -81,13 +90,13 @@
                 @endforelse
             </tbody>
         </table>
-            
+
         <form id="del_user" action="" method="POST" style="display: none;">
             @csrf
             {{ method_field('DELETE') }}
         </form>
     </div>
-    
+
     <div class="offset-md-5">
         {{ $users->links() }}
     </div>

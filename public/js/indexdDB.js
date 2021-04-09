@@ -18,7 +18,7 @@ request.onupgradeneeded = () => {
     const patient = db.createObjectStore(PATIENT_DATA, {keyPath: "code_patient"});
     const vacinate_patient = db.createObjectStore(VACINATE_PATIENT_DATA, {keyPath: "code_patient"});
     const vacine_calendar = db.createObjectStore(VACINE_CALENDAR, {keyPath: 'id', autoIncrement: true});
-    
+
     patient.createIndex('by_patient_id', 'code_patient', { unique: true });
     vacinate_patient.createIndex('by_vacinate_id', 'code_patient', { unique: true });
     vacine_calendar.createIndex('calendar_id', 'id', { unique: true });
@@ -33,57 +33,60 @@ request.onblocked = () => {
 };
 
 function renderData(){
-    let query = db.transaction([VACINATE_PATIENT_DATA]);
-    let store = query.objectStore(VACINATE_PATIENT_DATA);
-    let request = store.getAll()
-    let list_patient = document.querySelector("#list_patient")
-    
-    request.onsuccess = (event) => {
-        if (request.result && courant_page === '/list_vacinate') {
-            for (let i = 0; i < request.result.length; i++) {
-                if(request.result[i].status === '0'){
-                    let html = `
-                    <tr>
-                        <td> ${request.result[i].code_patient} </td>
-    
-                        <td> ${btoa(request.result[i].vaccine_name)} </td>
-    
-                        <td> ${request.result[i].date_vaccinate} </td>
-    
-                        <td> ${request.result[i].time_vaccinate} </td>
-                        
-                        <td> ${request.result[i].lot_number_vaccine} </td>
-    
-                        <td> ${request.result[i].rappelle === "" ? 'NP' : request.result[i].rappelle} </td>
-            
-                        <td> ${request.result[i].doctor_name} </td>
-    
-                        <td> ${request.result[i].doctor_phone} </td>        
-                        
-                        <td>
-                            <div class="btn-group" role="group" aria-label="Basic example">
-                                <a href="patient/${request.result[i].id}" data-bs-toggle="modal" data-bs-target="#edit_vacinate" class="btn btn-success btn_update" id="vacinate_ ${request.result[i].code_patient}">
-                                    Modifier
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                    `;    
-                    list_patient.innerHTML += html;
+    let open_db = indexedDB.open(DB_Name, DB_VERSION);
+    open_db.onsuccess =  () => {
+        db = open_db.result;
+
+        let query = db.transaction([VACINATE_PATIENT_DATA]);
+        let store = query.objectStore(VACINATE_PATIENT_DATA);
+        let request = store.getAll()
+
+        request.onsuccess = (event) => {
+            if (request.result && courant_page === '/list_vacinate') {
+                let list_patient = document.querySelector("#list_patient");
+
+                for (let i = 0; i < request.result.length; i++) {
+                    if(request.result[i].status === '0'){
+                        let html = `
+                        <tr>
+                            <td> ${request.result[i].code_patient} </td>
+
+                            <td> ${btoa(request.result[i].vaccine_name)} </td>
+
+                            <td> ${request.result[i].date_vaccinate} </td>
+
+                            <td> ${request.result[i].time_vaccinate} </td>
+
+                            <td> ${request.result[i].lot_number_vaccine} </td>
+
+                            <td> ${request.result[i].rappelle === "" ? 'NP' : request.result[i].rappelle} </td>
+
+                            <td> ${request.result[i].doctor_name} </td>
+
+                            <td> ${request.result[i].doctor_phone} </td>
+
+                            <td>
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <a href="patient/${request.result[i].id}" data-bs-toggle="modal" data-bs-target="#edit_vacinate" class="btn btn-success btn_update" id="vacinate_ ${request.result[i].code_patient}">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        `;
+                        list_patient.innerHTML += html;
+                    }
                 }
             }
-        } 
-    }
-
-    request.onerror = (err) => {
-        // console.log("Erreur: "+err);
+        }
     }
 }
+renderData();
 
 // Get data from server and save
 const getData = function() {
     const url = '/api/vacine_calendar';
-    
+
     // fetch(url, { method: "GET" })
     // .then(resulte => resulte.json())
     // .then(response => SaveData(response))
@@ -91,7 +94,7 @@ const getData = function() {
 
 function getDataPerLocation(){
     let form_load_data = document.getElementById('form_load_data');
-    form_load_data.onsubmit = () => {        
+    form_load_data.onsubmit = () => {
         const province_id = form_load_data.province_id.value;
         const region_id = form_load_data.region_id.value;
         if(!region_id){
@@ -104,7 +107,7 @@ function getDataPerLocation(){
         .then(resulte => resulte.json())
         .then(response => patientData(response))
         // .then(response => console.log(response))
-        
+
         return false;
     }
 }
@@ -120,12 +123,12 @@ const renderPatientData = () => {
         let query = db.transaction([PATIENT_DATA]);
         let store = query.objectStore(PATIENT_DATA);
         let request = store.getAll()
-        
+
         request.onsuccess = (event) => {
             for (let i = 0; i < request.result.length; i++) {
-                data_show.push(request.result[i]);            
+                data_show.push(request.result[i]);
             }
-            
+
             if(request.result.length > 0 && document.querySelector("#open_modal")){
                 document.querySelector("#open_modal").remove();
             }
@@ -169,7 +172,7 @@ function patientData(data = new Object){
             let query = base.transaction([PATIENT_DATA], 'readwrite');
             let store = query.objectStore(PATIENT_DATA);
             let data_available = store.getAll()
-            
+
             data_available.onsuccess = () =>{
                 data.forEach(item => {
                     store.put(item);
@@ -197,7 +200,7 @@ function SendVacinateData(){
         let store = query.objectStore(VACINATE_PATIENT_DATA);
         let request = store.getAll();
         let url = '/api/vacinate_patient';
-        
+
         request.onsuccess = (event) => {
             if (request.result) {
                 for(let i = 0; i < request.result.length; i++){
@@ -212,7 +215,7 @@ function SendVacinateData(){
                             rappelle            : request.result[i].rappelle,
                             image_path          : request.result[i].image_path,
                             doctor_name         : request.result[i].doctor_name,
-                            doctor_phone        : request.result[i].doctor_phone            
+                            doctor_phone        : request.result[i].doctor_phone
                         };
                         let options = {
                             method: 'POST',
@@ -224,13 +227,13 @@ function SendVacinateData(){
                         fetch(url, options)
                         .then(resulte => resulte.json())
                         .then(resulte => subscribe(resulte['response']));
-    
+
                         // mise a jour
                         request.result[i].status = '1'
                         store.put(request.result[i]);
                     }
                 }
-            } 
+            }
         }
     }
 }
@@ -244,7 +247,7 @@ function SendPatientData(){
         let store = query.objectStore(PATIENT_DATA);
         let request = store.getAll();
         let url = '/api/patient';
-            
+
         request.onsuccess = (event) => {
             if (request.result) {
                 for(let i = 0; i < request.result.length; i++){
@@ -271,13 +274,13 @@ function SendPatientData(){
                         fetch(url, options)
                         .then(resulte => resulte.json())
                         .then(resulte => console.log(resulte));
-    
+
                         // mise a jour
                         request.result[i].status = '1'
                         store.put(request.result[i]);
                     }
                 }
-            } 
+            }
         }
     }
 }
@@ -292,11 +295,11 @@ function updateVacinate(patient_id){
 }
 
 const codeAutoGenerate = (longueur = 10) => {
-    //cette partie permet de generer de facon aleatoire 
+    //cette partie permet de generer de facon aleatoire
     let lettre = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     let mot = "";
     let taille = lettre.length;
-    
+
     for(let i=0; i < longueur; i++){
         mot += lettre[Math.floor(Math.random() * taille)];
     }
@@ -307,13 +310,13 @@ let btn_send_vacinate = document.getElementById("submit_vacinate_patient");
 if(courant_page === "/vaccinate/create" || courant_page.startsWith('/add_vacinate/') || courant_page === "/offline_vacinate"){
     btn_send_vacinate.addEventListener("click", event => {
         if(!navigator.onLine){
-            event.preventDefault();        
+            event.preventDefault();
             // Recuperation du formulaires
             let vacinate_data = document.querySelector('#form_vacinate');
-    
+
             let transaction = db.transaction([VACINATE_PATIENT_DATA], "readwrite");
             let store = transaction.objectStore(VACINATE_PATIENT_DATA);
-    
+
             // Recuperation des donnees du formulaires
             let user_id = document.querySelector("a[data-user]").getAttribute('data-user')
             const data_vacinate = {
@@ -329,7 +332,7 @@ if(courant_page === "/vaccinate/create" || courant_page.startsWith('/add_vacinat
                 image_path          : vacinate_data.image_path.value,
                 status              : '0'
             };
-    
+
             let request = store.add(data_vacinate);
             request.onsuccess = function(e){
                 vacinate_data.patient_code.value        = '';
@@ -341,7 +344,7 @@ if(courant_page === "/vaccinate/create" || courant_page.startsWith('/add_vacinat
                 vacinate_data.lot_number_vaccine.value  = '';
                 vacinate_data.rappelle.value            = '';
                 vacinate_data.image_path.value          = '';
-                
+
                 subscribe('Vaccination enregistré avec succès.');
                 window.location.href = '/home';
             }
@@ -389,11 +392,11 @@ if(courant_page === "/patient/create"){
                 form_add_patient.helper_contact.value   = '';
                 form_add_patient.helper_email.value     = '';
                 form_add_patient.helper_email.value     = '';
-                
+
                 subscribe('Patient enregistré avec succès.');
                 window.location.href = '/home';
             }
-    
+
             request.onerror = function(e){
                 // code
             }

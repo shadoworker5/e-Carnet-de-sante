@@ -15,11 +15,12 @@ class Seting extends Component
 
     public function showRegion($id){
         $this->region_id = $id;
+        // $this->render();
     }
 
-    public function editRegion($id){
-        $this->region_name = Regions::findOrFail($id);
-    }
+    // public function editRegion($id){
+    //     $this->region_name = Regions::findOrFail($id);
+    // }
 
     public function editProvince($id){
         $this->province_name = Provinces::findOrFail($id);
@@ -27,6 +28,7 @@ class Seting extends Component
 
     public function updatingContry_id(){
         $this->contry_id = $this->contry_id;
+        $this->render();
     }
 
     public function render()

@@ -1,11 +1,11 @@
-const DYNAMIC_CACHE = 'pwa-dynamic-v4';
+const DYNAMIC_CACHE = 'pwa-dynamic-v5';
 
 var filesToCache = [
     '/',
     '/home',
     '/offline',
     '/list_vacinate',
-    'calendar',
+    '/calendar',
     '/patient/create',
     '/vaccinate/create',
     '/css/app.css',
@@ -24,7 +24,7 @@ self.addEventListener("install", event => {
     self.skipWaiting();
     event.waitUntil(
         caches.open(DYNAMIC_CACHE).then(cache => {
-            return cache.addAll(filesToCache);          
+            return cache.addAll(filesToCache);
         })
     );
 });
@@ -54,7 +54,7 @@ self.addEventListener("fetch", event => {
         }).catch((response) => {
             return caches.match(event.request)
             .then((result) => {
-                if (result === undefined) { 
+                if (result === undefined) {
                     return caches.match('/offline');
                 }
                 return result;

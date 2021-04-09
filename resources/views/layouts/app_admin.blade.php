@@ -10,7 +10,7 @@
         <link rel="stylesheet" href="{{ asset('css/all.min.css') }}">
         <link rel="stylesheet" href="{{ asset('css/style.css') }}">
         <link rel="stylesheet" href="{{ asset('css/sb-admin-2.min.css') }}">
-        
+
         <!-- Section PWA -->
         @include('layouts.partials.meta')
 
@@ -29,9 +29,9 @@
 
                     <div class="sidebar-brand-text mx-3"> {{ config('app.name') }} </div>
                 </a>
-    
+
                 <hr class="sidebar-divider my-0">
-    
+
                 <li class="nav-item {{ $title == 'Dashboard' ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('dashboard') }}">
                         <i class="fas fa-fw fa-tachometer-alt"></i>
@@ -45,13 +45,13 @@
                         <span> Accueil </span>
                     </a>
                 </li>
-    
+
                 <hr class="sidebar-divider">
-    
+
                 <div class="sidebar-heading">
                     {{ __("Patients et utilisateurs") }}
                 </div>
-    
+
                 <li class="nav-item {{ $title == 'Liste des patients' ? 'active' : '' }}">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                         aria-expanded="true" aria-controls="collapseTwo">
@@ -66,7 +66,7 @@
                         </div>
                     </div>
                 </li>
-    
+
                 <li class="nav-item {{ $title == 'Liste des utilisateurs' ? 'active' : '' }}">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUsers"
                         aria-expanded="true" aria-controls="collapseUsers">
@@ -81,13 +81,29 @@
                         </div>
                     </div>
                 </li>
-    
+
                 <hr class="sidebar-divider">
-    
+
                 <div class="sidebar-heading">
-                    {{ __("Paramètres") }} 
+                    {{ __("Paramètres") }}
                 </div>
-    
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseNotification"
+                        aria-expanded="true" aria-controls="collapseNotification">
+                        <i class="fas fa-syringe"></i>
+                        <span> {{ __("Notification") }} </span>
+                    </a>
+                    <div id="collapseNotification" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header"> {{ __("Options") }} </h6>
+                            <a class="collapse-item" href="{{ route('new_campagne') }}"> {{ __("Nouveau campagne") }} </a>
+                            <a class="collapse-item" href="#"> {{ __("Notifier les retards") }} </a>
+                            <a class="collapse-item" href="#"> {{ __("Notifier les rappels ") }} </a>
+                        </div>
+                    </div>
+                </li>
+
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseVacine"
                         aria-expanded="true" aria-controls="collapseVacine">
@@ -97,7 +113,7 @@
                     <div id="collapseVacine" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header"> {{ __("Options") }} </h6>
-                            <a class="collapse-item" href="{{ route('calendar.index') }}"> {{ __("Calendrier des vaccinations") }} </a>
+                            <a class="collapse-item" href="{{ route('calendar.index') }}"> {{ __("Calendrier national") }} </a>
                             <a class="collapse-item" href="{{ route('calendar.create') }}"> {{ __("Ajouter un vaccin") }} </a>
                         </div>
                     </div>
@@ -109,21 +125,21 @@
                         <span> {{ __("Réglages") }} </span>
                     </a>
                 </li>
-    
+
                 <hr class="sidebar-divider d-none d-md-block">
-    
+
                 <div class="text-center d-none d-md-inline">
                     <button class="rounded-circle border-0" id="sidebarToggle"></button>
                 </div>
             </ul>
-            
+
             <div id="content-wrapper" class="d-flex flex-column">
                 <div id="content">
                     <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
                         <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                             <i class="fa fa-bars"></i>
                         </button>
-    
+
                         <!-- <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                             <div class="input-group">
                                 <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
@@ -135,7 +151,7 @@
                                 </div>
                             </div>
                         </form> -->
-    
+
                         <ul class="navbar-nav ml-auto">
                             <li class="nav-item dropdown no-arrow d-sm-none">
                                 <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
@@ -159,21 +175,21 @@
                                     </form>
                                 </div>
                             </li>
-    
+
                             <li class="nav-item dropdown no-arrow">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="mr-2 d-none d-lg-inline text-gray-600 small"> {{ Auth::user()->name }} </span>
                                     <img class="img-profile rounded-circle" src="images/icon-72x72.png">
                                 </a>
-                                
+
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                     aria-labelledby="userDropdown">
                                     <a class="dropdown-item" href="{{ route('profile') }}">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         {{ __("Mon profile") }}
                                     </a>
-                                    
+
                                     <div class="dropdown-divider"></div>
 
                                     <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">
@@ -182,18 +198,18 @@
                                     </a>
                                 </div>
                             </li>
-    
+
                         </ul>
-    
+
                     </nav>
-                    
+
                     <div id="error_network"></div>
-                   
+
                     <div class="container-fluid">
                         @yield('main_content')
-                    </div>    
+                    </div>
                 </div>
-                
+
                 <footer class="sticky-footer bg-white">
                     <div class="container my-auto">
                         <div class="copyright text-center my-auto">
@@ -221,7 +237,7 @@
                     <div class="modal-body text-center"> Etes vous sûr de vouloir vous deconnecter? </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cancel</button>
-                        
+
                         <a class="btn btn-danger" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             {{ __('Déconnexion') }}
                         </a>
@@ -237,15 +253,15 @@
         <script src="{{ asset('js/jquery.min.js') }}"></script>
         <script src="{{ asset('js/bootstrap.bundle.js') }}"></script>
         <script src="{{ asset('js/bootstrap.js') }}"></script>
-    
+
         <script src="{{ asset('js/jquery.easing.min.js') }}"></script>
-    
+
         <script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
-    
+
         <script src="{{ asset('js/Chart.min.js') }}"></script>
 
         <script src="{{ asset('js/register_sw.js') }}"></script>
-    
+
         @livewireScripts
         @yield('script')
     </body>

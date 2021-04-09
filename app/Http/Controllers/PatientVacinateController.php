@@ -63,7 +63,7 @@ class PatientVacinateController extends Controller
             'doctor_phone'          => 'required|min:10',
             'lot_number_vaccine'    => 'required|min:5',
         ]);
-        
+
         $patient_id = Patients::where('code_patient', '=', $request->patient_code)->get()->toArray()[0]['id'];
 
         // if(get_vacine_status_per_patient($patient_id) === "Pas à jour"){
@@ -78,7 +78,7 @@ class PatientVacinateController extends Controller
                 'lot_number_vacine'     => $request->lot_number_vaccine,
                 'vacine_status'         => '1',
                 'rappelle'              => $request->rappelle !== "" ? $request->rappelle : null,
-                'path_capture'          => $request->image_path !== "" ? $request->image_path : null    
+                'path_capture'          => $request->image_path !== "" ? $request->image_path : null
             ]);
         // }
         if(Auth::user()->user_role === 'collector'){
@@ -116,7 +116,7 @@ class PatientVacinateController extends Controller
         $vaccines = Vaccine_calendar::all();
         $vaccine_info = Patient_vaccinate::findOrFail($patient_vaccinates);
         $patient_code = Patients::findOrFail($vaccine_info->patient_id);
-        
+
         return view('vaccines.edit', ['vaccine_info' => $vaccine_info, 'vaccines' => $vaccines, 'patient_code' => $patient_code->code_patient]);
     }
 
@@ -137,12 +137,12 @@ class PatientVacinateController extends Controller
             'date_vaccinate'        => 'required|date',
             'time_vaccinate'        => 'required',
             'doctor_name'           => 'required|min:5',
-            'doctor_phone'          => 'required|min:10',
+            'doctor_phone'          => 'required|min:12|regex:/^\+/',
             'lot_number_vaccine'    => 'required|min:5',
         ]);
 
         $patient_id = Patients::where('code_patient', '=', $request->patient_code)->get()->toArray()[0]['id'];
-        
+
         $vaccines = Patient_vaccinate::findOrFail($id);
         $vaccines->update([
             'user_id'               => Auth::id(),
@@ -155,7 +155,7 @@ class PatientVacinateController extends Controller
             'lot_number_vacine'     => $request->lot_number_vaccine,
             'vacine_status'         => '1',
             'rappelle'              => $request->rappelle !== "" ? $request->rappelle : null,
-            'path_capture'          => $request->image_path !== "" ? $request->image_path : null    
+            'path_capture'          => $request->image_path !== "" ? $request->image_path : null
         ]);
         return redirect('patient');
     }
@@ -173,7 +173,7 @@ class PatientVacinateController extends Controller
 
     public function addVacinate($patient_code){
         $this->userGuard();
-        
+
         $vaccines = Vaccine_calendar::all();
 
         return view('vaccines.vacinate_patient', ['vaccines' =>$vaccines, 'patient_code' => $patient_code]);

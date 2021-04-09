@@ -2,13 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Imports\RegionImport;
-use App\Models\Regions;
 use Illuminate\Http\Request;
-use Excel;
-use Illuminate\Support\Facades\Auth;
 
-class RegionsController extends Controller
+class NotificationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -36,14 +32,9 @@ class RegionsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request){
-        if($request->contries_id !== null){
-            session(['contry_id' => "$request->contries_id"]);
-            Excel::import(new RegionImport, $request->list_region);
-        }
-        session()->forget('contry_id');
-
-        return redirect()->route('setings');
+    public function store(Request $request)
+    {
+        //
     }
 
     /**
@@ -65,7 +56,7 @@ class RegionsController extends Controller
      */
     public function edit($id)
     {
-
+        //
     }
 
     /**
@@ -77,16 +68,7 @@ class RegionsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'region' => 'required|min:2'
-        ]);
-
-        $region = Regions::findOrFail($id);
-        $region->update([
-            'title' => $request->region
-        ]);
-
-        return redirect()->route('setings');
+        //
     }
 
     /**
@@ -97,11 +79,6 @@ class RegionsController extends Controller
      */
     public function destroy($id)
     {
-        Regions::destroy($id);
-        return redirect()->route('setings');
-    }
-
-    public function importForm(){
-        # code...
+        //
     }
 }

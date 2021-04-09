@@ -60,7 +60,7 @@ class PatientsController extends Controller
             'father_name'   => 'required|min:5',
             'mother_name'   => 'required|min:5',
             'mentor_name'   => 'required|min:5',
-            'helper_contact'=> 'required'
+            'helper_contact'=> 'required|regex:/^\+/'
         ]);
 
         Patients::create([
@@ -77,7 +77,7 @@ class PatientsController extends Controller
             'code_patient'  => Str::random(10),
             'user_id'       => Auth::user()->id
         ]);
-        
+
         return redirect(route('patient.index'));
     }
 
@@ -93,7 +93,7 @@ class PatientsController extends Controller
 
         $info = Patients::findOrFail($patients);
         $vaccination = Patient_vaccinate::where('patient_id', '=', $patients)->get();
-        
+
         $vaccine_update = DB::select('SELECT * FROM vaccine_calendars WHERE id NOT IN (SELECT vaccine_calendar_id FROM patient_vaccinates WHERE patient_id = '.$patients.')');
 
         return view('patients.show_patient', ['infos' => $info, 'vaccinations' => $vaccination, 'vaccine_updates' => $vaccine_update]);
@@ -147,7 +147,7 @@ class PatientsController extends Controller
             'helper_email'  => $request->helper_email,
             'user_id'       => Auth::user()->id
         ]);
-        
+
         if(Auth::user()->user_role === 'collector'){
             return redirect(route('home'));
         }
@@ -183,7 +183,7 @@ class PatientsController extends Controller
         // }else{
         //     $liste = Patients::paginate($per_page);
         // }
-        
+
         // return view('pages.list_patient', ['patients' => $liste]);
     }
 

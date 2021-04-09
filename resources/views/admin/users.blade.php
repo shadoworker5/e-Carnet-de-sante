@@ -7,9 +7,8 @@
         <i class="fa fa-user-plus"></i>
         {{ __("Ajouter un utilisateur") }}
     </button>
-    {{-- <div>
-    </div> --}}
 
+    {{-- Edit user --}}
     <div class="modal fade" id="edit_user_modal" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="example" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -44,7 +43,7 @@
                                 {{ __("Veuillez renseigner l'e-mail l'utilisateur") }}
                             </div>
                         </div>
-                        
+
                         <div class="form-group">
                             <label class="control-label" for="user_right"> {{ __('Type d\'utilisateur') }} </label>
                             <select class="form-control custom-select" required name="user_right" id="user_right">
@@ -86,6 +85,33 @@
             </div>
         </div>
     </div>
+
+    {{-- Enable or disable user --}}
+    <div class="modal fade" id="enable_user_modal" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="example" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal_title">Alert</h5>
+                    <button class="close" type="button" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+
+                <div class="modal-body text-center" id="enable_content"></div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-danger" type="button" data-bs-dismiss="modal"> {{ __("Fermer") }} </button>
+                    <button type="submit" class="btn btn-primary" onclick="document.getElementById('enable_user').submit();">
+                        {{ __("Enregistré") }}
+                    </button>
+
+                    <form action="" method="POST" id="enable_user" class="d-none">
+                        @csrf
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
@@ -102,7 +128,7 @@
         function addUser(){
             let form_user = document.getElementById('edit_user')
             form_user.setAttribute('action', 'update_user');
-            // form_user.reset()
+            form_user.reset()
             document.getElementById("modal_title").innerText = "Ajouter un utilisateur"
             document.getElementById("update_action").remove();
             document.getElementById("submit").innerText = "Ajouter"
@@ -110,6 +136,16 @@
 
         function delUser(user_id){
             document.getElementById('del_user').setAttribute('action', 'update_user/'+user_id);
+        }
+
+        function enableUser(id){
+            document.getElementById('enable_user').setAttribute('action', 'set_user_status/'+id+'/1');
+            document.getElementById("enable_content").innerText = "Etes vous sûr de vouloir de activé cet utilisateur?";
+        }
+
+        function disableUser(id){
+            document.getElementById('enable_user').setAttribute('action', 'set_user_status/'+id+'/0');
+            document.getElementById("enable_content").innerText = "Etes vous sûr de vouloir de desactivé cet utilisateur?";
         }
     </script>
 @endsection

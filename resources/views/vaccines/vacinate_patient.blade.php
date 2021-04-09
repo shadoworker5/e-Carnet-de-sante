@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-md-6 mt-3 offset-md-3 mb-2">
             <h2 class="text-center"> {{ __('Ajouter une vaccination') }}</h2>
-            
+
             <form action="{{ route('vaccinate.store') }}" id="form_vacinate" class="needs-validation" novalidate method="post">
                 @csrf
 
@@ -17,12 +17,12 @@
                         Veuillez saisir le code du patient
                     </div>
                 </div>
-                
+
                 <div class="form-group d-none" id="patient_name">
                     <label class="control-label" for="patient_info"> {{ __('Nom complet du patient') }} </label>
                     <input type="text" name="patient_info" class="form-control" id="patient_info" readonly>
-                </div>                    
-            
+                </div>
+
                 <div class="form-group {{ $errors->has('vaccine_name') ? 'has-error' : '' }}">
                     <label class="control-label" for="vaccine_name"> {{ __('Nom du vaccin') }} </label>
                     <select class="form-control custom-select" required name="vaccine_name" id="vaccine_name">
@@ -57,22 +57,22 @@
                         Veuillez choisir l'heure
                     </div>
                 </div>
-                
+
                 <div class="form-group {{ $errors->has('lot_number_vaccine') ? 'has-error' : '' }}">
                     <label class="control-label" for="lot_number_vaccine"> {{ __('Numéro du lot du vaccin') }} </label>
-                    <input type="tel" class="form-control" required name="lot_number_vaccine" id="lot_number_vaccine" value="{{ old('lot_number_vaccine') }}" placeholder="Numéro du lot du vaccin">
+                    <input type="text" class="form-control" required name="lot_number_vaccine" id="lot_number_vaccine" value="{{ old('lot_number_vaccine') }}" placeholder="Numéro du lot du vaccin">
                     {!! $errors->first('lot_number_vaccine', '<span class="text-danger">:message</span>') !!}
 
                     <div class="invalid-feedback">
                         Veuillez saisir le numéro du vaccin
                     </div>
                 </div>
-                    
+
                 <div class="form-group {{ $errors->has('rappelle') ? 'has-error' : '' }}">
                     <label class="control-label" for="rappelle"> {{ __('Temps de rappel') }} </label>
                     <input type="text" class="form-control" name="rappelle" id="rappelle" value="{{ old('rappelle') }}" placeholder="Temps de rappel (NP par défaut)">
                     {!! $errors->first('rappelle', '<span class="text-danger">:message</span>') !!}
-                </div>                                
+                </div>
 
                 <div class="form-group {{ $errors->has('image_path') ? 'has-error' : '' }}">
                     <label class="control-label" for="image_path"> {{ __('Photo du flacon du vaccin') }} </label>
@@ -94,7 +94,7 @@
                     <label class="control-label" for="doctor_phone"> {{ __('Contact') }} </label>
                     <input type="text" class="form-control" required name="doctor_phone" id="doctor_phone" value="{{ old('doctor_phone') }}" placeholder="Contact">
                     {!! $errors->first('doctor_phone', '<span class="text-danger">:message</span>') !!}
-                    
+
                     <div class="invalid-feedback">
                         Veuillez saisir le contact
                     </div>
@@ -110,10 +110,20 @@
                     </button>
                 </div>
             </form>
-        </div>        
+        </div>
     </div>
 @endsection
 
 @section('script_js')
     <script src="{{ asset('js/form_validate.js') }}"></script>
+    <script>
+        // function controlValue(){
+        //     let contact_control = document.getElementById('doctor_phone')
+        //     console.log(contact_control.value);
+        //     let regex = /^\+/
+        //     let response = regex.test(contact_control.value) // ? contact_control.classList.add('was-validated') : ''
+        //     console.log(response);
+        // }
+
+    </script>
 @endsection

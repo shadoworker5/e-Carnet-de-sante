@@ -65,9 +65,9 @@ class UserController extends Controller
             'user_role'         => $request->user_right,
             'password'          => Hash::make($password)
         ]);
-        
+
         Mail::to($request->email)->send(new Contact($msg, $request->email));
-        
+
         return redirect()->route('list_user');
     }
 
@@ -118,7 +118,7 @@ class UserController extends Controller
             'account_status'    => $request->statu,
             'user_role'         => $request->user_right
         ]);
-        
+
         return redirect()->route('list_user');
     }
 
@@ -132,6 +132,20 @@ class UserController extends Controller
     {
         $this->userGuard();
         User::destroy($id);
+        return redirect()->route('list_user');
+    }
+
+    /**
+     * Custom method to set user status
+    */
+    public function setStatus($id, $status){
+        $this->userGuard();
+        $user = User::findOrFail($id);
+
+        $user->update([
+            'account_status'    => $status
+        ]);
+
         return redirect()->route('list_user');
     }
 }
