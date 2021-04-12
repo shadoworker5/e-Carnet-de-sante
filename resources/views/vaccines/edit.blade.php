@@ -4,8 +4,8 @@
     <div class="row">
         <div class="col-md-6 offset-md-3 mb-2">
             <h2 class="text-center"> {{ __('Modifier une vaccination') }}</h2>
-            
-            <form action="{{ route('vaccinate.update', $vaccine_info->id) }}" method="POST">
+
+            <form action="{{ route('vaccinate.update', $vaccine_info->id) }}" enctype="multipart/form-data" method="POST">
                 @csrf
                 {{ method_field('PUT') }}
 
@@ -45,24 +45,24 @@
                     <input type="text" class="form-control" name="doctor_name" id="doctor_name" value="{{ old('doctor_name') ?? $vaccine_info->name_doctor }}" placeholder="Nom du docteur ou l'agent">
                     {!! $errors->first('doctor_name', '<span class="text-danger">:message</span>') !!}
                 </div>
-                
+
                 <div class="form-group {{ $errors->has('doctor_phone') ? 'has-error' : '' }}">
                     <label class="control-label" for="doctor_phone"> {{ __('Contact') }} </label>
                     <input type="text" class="form-control" name="doctor_phone" id="doctor_phone" value="{{ old('doctor_phone') ?? $vaccine_info->doctor_contact }}" placeholder="Contact">
                     {!! $errors->first('doctor_phone', '<span class="text-danger">:message</span>') !!}
                 </div>
-                
+
                 <div class="form-group {{ $errors->has('lot_number_vaccine') ? 'has-error' : '' }}">
                     <label class="control-label" for="lot_number_vaccine"> {{ __('Numéro du lot du vaccin') }} </label>
                     <input type="tel" class="form-control" name="lot_number_vaccine" id="lot_number_vaccine" value="{{ old('lot_number_vaccine') ?? $vaccine_info->lot_number_vacine }}" placeholder="Numéro du lot du vaccin">
                     {!! $errors->first('lot_number_vaccine', '<span class="text-danger">:message</span>') !!}
                 </div>
-                    
+
                 <div class="form-group {{ $errors->has('rappelle') ? 'has-error' : '' }}">
                     <label class="control-label" for="rappelle"> {{ __('Temps de rappelle') }} </label>
                     <input type="text" class="form-control" name="rappelle" id="rappelle" value="{{ old('rappelle') ?? ($vaccine_info->rappelle == null ? '' : $vaccine_info->rappelle) }}" placeholder="Temps de rappelle (NP par défaut)">
                     {!! $errors->first('rappelle', '<span class="text-danger">:message</span>') !!}
-                </div>                                
+                </div>
 
                 <div class="form-group {{ $errors->has('image_path') ? 'has-error' : '' }}">
                     <label class="control-label" for="image_path"> {{ __('Photo du flacon du vaccin') }} </label>
@@ -76,7 +76,7 @@
                     </button>
 
                     <button type="submit" class="btn btn-primary">
-                        {{ __('Ajouter') }}
+                        {{ __('Modifier') }}
                     </button>
                 </div>
             </form>

@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 
 class APIVacinatePatient extends Controller
 {
+    protected $image_path;
+
     /**
      * Display a listing of the resource.
      *
@@ -36,8 +38,14 @@ class APIVacinatePatient extends Controller
             'lot_number_vaccine'    => 'required|min:5',
         ]);
 
+        if ($request->file('image_path') !== null && $request->file('image_path')->isValid()){
+            $this->image_path = $request->file('image_path')->getClientOriginalName();
+
+            $request->image_path->move(public_path('flacon_images'), $this->image_path);
+        }
+
         $patient_info = Patients::where('code_patient', '=', $request->code_patient)->get()->toArray()[0];
-        
+
         Patient_vaccinate::create([
             'user_id'                => $request->user_id,
             'patient_id'             => $patient_info['id'],
@@ -49,7 +57,7 @@ class APIVacinatePatient extends Controller
             'lot_number_vacine'      => $request->lot_number_vaccine,
             'vacine_status'          => '1',
             'rappelle'               => $request->rappelle !== "" ? $request->rappelle : null,
-            'path_capture'           => $request->image_path !== "" ? $request->image_path : null
+            'path_capture'           => $request->image_path !== "" ? $this->image_path : null
         ]);
         return response()->json([
             'response' => "Données de vaccination sauvegarder avec succès"

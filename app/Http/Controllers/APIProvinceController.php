@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Imports\ProvinceImport;
-use App\Models\Provinces;
 use Illuminate\Http\Request;
-use Excel;
 
-class ProvinceController extends Controller
+class APIProvinceController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +13,7 @@ class ProvinceController extends Controller
      */
     public function index()
     {
-        return Provinces::all();
+        //
     }
 
     /**
@@ -37,13 +34,7 @@ class ProvinceController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->region_id !== null){
-            session(['region_id' => "$request->region_id"]);
-            Excel::import(new ProvinceImport, $request->list_province);
-        }
-        session()->forget('region_id');
-
-        return redirect()->route('setings');
+        //
     }
 
     /**
@@ -77,18 +68,7 @@ class ProvinceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'province'  => 'required|min:2',
-            'region_id' => 'required'
-        ]);
-
-        $province = Provinces::findOrFail($id);
-        $province->update([
-            'title' => $request->province,
-            'region_id' => $request->region_id
-        ]);
-
-        return redirect()->route('setings');
+        //
     }
 
     /**

@@ -10,7 +10,7 @@
         <link rel="stylesheet" href="{{ asset('styles_css/bootstrap.css') }}">
         <link rel="stylesheet" href="{{ asset('css/all.css') }}">
         <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-        
+
         @yield('head_file')
 
         @include('layouts.partials.meta')
@@ -23,13 +23,13 @@
         <header>
             @include('layouts.partials.menu_top')
         </header>
-        
+
         <div id="error_network"></div>
-        
+
         <div class="container-fluid mt-5">
             @yield('main_content')
         </div>
-        
+
         <div>
             @include('layouts.partials.footer')
         </div>
@@ -42,7 +42,8 @@
         <script src="{{ asset('js/indexdDB.js') }}" async></script>
         <script src="{{ asset('js/Chart.min.js') }}"></script>
         <script src="{{ asset('js/register_sw.js') }}"></script>
-        
+        <script src="{{ asset('js/load_data.js') }}"></script>
+
         @livewireScripts
         @yield('script_js')
     </body>

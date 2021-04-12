@@ -24,7 +24,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="card-body">
                         <div class="chart-area">
                             <canvas id="myAreaChart"></canvas>
@@ -50,7 +50,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="card-body">
                         <div class="chart-pie pt-4 pb-2">
                             <canvas id="myPieChart"></canvas>
@@ -83,18 +83,18 @@
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('patient.create') }}"> {{ __('Ajouter un patient') }} </a>
                                     </li>
-                                    
+
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('calendar.index') }}"> {{ __('Calendrier des vaccinations') }} </a>
                                     </li>
-                                    
+
                                     <li class="nav-item">
                                         <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#load_data">
                                             <i class="fa fa-download"></i>
                                             {{ __("Télécharger les données des patients") }}
                                         </a>
                                     </li>
-                                    
+
                                     {{-- <li class="nav-item">
                                         <a class="nav-link text-danger" href="#" onclick="emptyAllData()">
                                             <i class="fa fa-download"></i>
@@ -107,7 +107,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="col-md-9">
                 <div class="card shadow mb-4" id="show_patient_liste">
                     <div class="card-header py-3">
@@ -162,9 +162,9 @@
                                         <th> {{ __('Nom') }} </th>
 
                                         <th> {{ __('Date de naissance') }} </th>
-                                        
+
                                         <th> {{ __('Lieu de naissance') }} </th>
-                                        
+
                                         <th> {{ __('Nom du père') }} </th>
 
                                         <th> {{ __('Nom de la mère') }} </th>
@@ -172,7 +172,7 @@
                                         <th> {{ __('Action') }} </th>
                                     </tr>
                                 </thead>
-                                
+
                                 <tbody id="patient_data"></tbody>
                             </table>
                         </div>
@@ -208,15 +208,15 @@
                 </div>
 
                 <div class="modal-body">
-                    <form id="form_load_data" novalidate>                        
-                        @livewire('choose-region')
-                        
+                    <form id="form_load_data" novalidate>
+                        @include('layouts.partials.choose_province')
+
                         <button type="submit" id="btn_load_data" onclick="getDataPerLocation()" class="btn btn-primary mt-2 pull-right">
                             <i class="fa fa-download"></i>
                             Charger
                         </button>
                     </form>
-                    
+
                     <div class="" id="error_message"> </div>
                     <div class="mt-3" id="progress_bar"></div>
                 </div>
@@ -239,17 +239,17 @@
                 $('#dataTable').DataTable().column(i).search($('#col'+i+'_filter').val()).draw();
             }
 
-            $(document).ready(function(){            
+            $(document).ready(function(){
                 $('input.column_filter').on('keyup change clear', function(){
                     filterColumn($(this).parents('td').attr('data-column'));
                 } );
             } );
         </script>
     @endif
-    
+
     @if(in_array(Auth::user()->user_role, ['root', 'admin', 'supervisor']))
         <script>
-            let male =  <?=  $genre_count['M'] ?>, 
+            let male =  <?=  $genre_count['M'] ?>,
             female = <?= $genre_count['F'] ?>;
             var ctx = document.getElementById("myPieChart");
             var myPieChart = new Chart(ctx, {

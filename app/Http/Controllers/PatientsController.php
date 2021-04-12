@@ -24,9 +24,9 @@ class PatientsController extends Controller
      */
     public function index(){
         $this->userGuard();
-        // if(Auth::user()->user_role === 'collector'){
-        //     return redirect(route('home'));
-        // }
+        if(Auth::user()->user_role === 'collector'){
+            return redirect(route('home'));
+        }
         return view('pages.list_patient');
     }
 
@@ -78,6 +78,9 @@ class PatientsController extends Controller
             'user_id'       => Auth::user()->id
         ]);
 
+        if(Auth::user()->user_role === 'collector'){
+            return redirect(route('home'));
+        }
         return redirect(route('patient.index'));
     }
 
@@ -144,7 +147,7 @@ class PatientsController extends Controller
             'name_mother'   => $request->mother_name,
             'name_mentor'   => $request->mentor_name,
             'helper_contact'=> $request->helper_contact,
-            'helper_email'  => $request->helper_email,
+            'helper_email'  => $request->helper_email !== null ? $request->helper_email : 'NP',
             'user_id'       => Auth::user()->id
         ]);
 

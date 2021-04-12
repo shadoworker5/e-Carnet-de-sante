@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BackEndController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\PatientsController;
@@ -56,8 +57,9 @@ Route::resource('patient', PatientsController::class)->middleware(['auth']);
 Route::resource('vaccinate', PatientVacinateController::class)->middleware('auth');
 Route::resource('calendar', VacineCalendarController::class)->middleware(['auth']);
 Route::resource('regions', RegionsController::class)->middleware(['authadmin']);
-Route::resource('provinces', ProvinceController::class)->middleware(['authadmin']);
+Route::resource('provinces', ProvinceController::class)->middleware(['auth']);
 Route::resource('pays', PaysController::class)->middleware(['authadmin']);
 
 Route::get('/add_vacinate/{id}', [PatientVacinateController::class, 'addVacinate'])->middleware('auth')->name('add_vacination');
 Route::post('/set_user_status/{id}/{status}', [UserController::class, 'setStatus'])->middleware('auth')->name('set_user_status');
+Route::get('/get_province/{id}', [BackEndController::class, 'getProvince'])->middleware('auth')->name('get_province');

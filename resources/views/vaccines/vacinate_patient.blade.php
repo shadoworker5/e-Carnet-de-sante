@@ -5,7 +5,7 @@
         <div class="col-md-6 mt-3 offset-md-3 mb-2">
             <h2 class="text-center"> {{ __('Ajouter une vaccination') }}</h2>
 
-            <form action="{{ route('vaccinate.store') }}" id="form_vacinate" class="needs-validation" novalidate method="post">
+            <form action="{{ route('vaccinate.store') }}" id="form_vacinate" enctype="multipart/form-data" class="needs-validation" novalidate method="post">
                 @csrf
 
                 <div class="form-group">
@@ -76,7 +76,7 @@
 
                 <div class="form-group {{ $errors->has('image_path') ? 'has-error' : '' }}">
                     <label class="control-label" for="image_path"> {{ __('Photo du flacon du vaccin') }} </label>
-                    <input type="file" class="form-control" name="image_path" id="image_path" value="{{ old('image_path') }}" placeholder="Photo du flacon du vaccin">
+                    <input type="file" class="form-control" capture="environment" accept="image/*" name="image_path" id="image_path" value="{{ old('image_path') }}">
                     {!! $errors->first('image_path', '<span class="text-danger">:message</span>') !!}
                 </div>
 
@@ -116,14 +116,4 @@
 
 @section('script_js')
     <script src="{{ asset('js/form_validate.js') }}"></script>
-    <script>
-        // function controlValue(){
-        //     let contact_control = document.getElementById('doctor_phone')
-        //     console.log(contact_control.value);
-        //     let regex = /^\+/
-        //     let response = regex.test(contact_control.value) // ? contact_control.classList.add('was-validated') : ''
-        //     console.log(response);
-        // }
-
-    </script>
 @endsection

@@ -253,15 +253,11 @@
         <script src="{{ asset('js/jquery.min.js') }}"></script>
         <script src="{{ asset('js/bootstrap.bundle.js') }}"></script>
         <script src="{{ asset('js/bootstrap.js') }}"></script>
-
         <script src="{{ asset('js/jquery.easing.min.js') }}"></script>
-
         <script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
-
         <script src="{{ asset('js/Chart.min.js') }}"></script>
-
         <script src="{{ asset('js/register_sw.js') }}"></script>
-
+        <script src="{{ asset('js/load_data.js') }}"></script>
         @livewireScripts
         @yield('script')
     </body>

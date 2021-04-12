@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 
 class PatientVacinateController extends Controller
 {
+    protected $image_path;
+
     public function __construct(){
         // $this->middleware(['authadmin', 'authsupervisor']);
         // $this->middleware('log')->only('index');
@@ -64,23 +66,28 @@ class PatientVacinateController extends Controller
             'lot_number_vaccine'    => 'required|min:5',
         ]);
 
+        if ($request->file('image_path') !== null && $request->file('image_path')->isValid()){
+            $this->image_path = $request->file('image_path')->getClientOriginalName();
+
+            $request->image_path->move(public_path('flacon_images'), $this->image_path);
+        }
+
         $patient_id = Patients::where('code_patient', '=', $request->patient_code)->get()->toArray()[0]['id'];
 
-        // if(get_vacine_status_per_patient($patient_id) === "Pas à jour"){
-            Patient_vaccinate::create([
-                'user_id'               => Auth::id(),
-                'patient_id'            => $patient_id,
-                'vaccine_calendar_id'   => $request->vaccine_name,
-                'date_vacination'       => $request->date_vaccinate,
-                'time_vacination'       => $request->time_vaccinate,
-                'name_doctor'           => $request->doctor_name,
-                'doctor_contact'        => $request->doctor_phone,
-                'lot_number_vacine'     => $request->lot_number_vaccine,
-                'vacine_status'         => '1',
-                'rappelle'              => $request->rappelle !== "" ? $request->rappelle : null,
-                'path_capture'          => $request->image_path !== "" ? $request->image_path : null
-            ]);
-        // }
+        Patient_vaccinate::create([
+            'user_id'               => Auth::id(),
+            'patient_id'            => $patient_id,
+            'vaccine_calendar_id'   => $request->vaccine_name,
+            'date_vacination'       => $request->date_vaccinate,
+            'time_vacination'       => $request->time_vaccinate,
+            'name_doctor'           => $request->doctor_name,
+            'doctor_contact'        => $request->doctor_phone,
+            'lot_number_vacine'     => $request->lot_number_vaccine,
+            'vacine_status'         => '1',
+            'rappelle'              => $request->rappelle !== "" ? $request->rappelle : null,
+            'path_capture'          => $request->image_path !== "" ? $this->image_path : null
+        ]);
+
         if(Auth::user()->user_role === 'collector'){
             return redirect(route('offline_submission'));
         }
@@ -141,6 +148,12 @@ class PatientVacinateController extends Controller
             'lot_number_vaccine'    => 'required|min:5',
         ]);
 
+        if ($request->file('image_path') !== null && $request->file('image_path')->isValid()){
+            $this->image_path = $request->file('image_path')->getClientOriginalName();
+
+            $request->image_path->move(public_path('flacon_images'), $this->image_path);
+        }
+
         $patient_id = Patients::where('code_patient', '=', $request->patient_code)->get()->toArray()[0]['id'];
 
         $vaccines = Patient_vaccinate::findOrFail($id);
@@ -155,8 +168,12 @@ class PatientVacinateController extends Controller
             'lot_number_vacine'     => $request->lot_number_vaccine,
             'vacine_status'         => '1',
             'rappelle'              => $request->rappelle !== "" ? $request->rappelle : null,
-            'path_capture'          => $request->image_path !== "" ? $request->image_path : null
+            'path_capture'          => $request->image_path !== "" ? $this->image_path : null
         ]);
+
+        if(Auth::user()->user_role === 'collector'){
+            return redirect(route('offline_submission'));
+        }
         return redirect('patient');
     }
 

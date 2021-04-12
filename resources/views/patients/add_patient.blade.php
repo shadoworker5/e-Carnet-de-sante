@@ -31,7 +31,7 @@
                     <select class="form-control custom-select" required name="genre" id="genre">
                         <option value=""> Veuilez choisir le genre </option>
                         <option value="M" {{ old('genre') == 'M' ? "selected" : "" }}> {{ __("Homme") }} </option>
-                        <option value="F" {{ old('genre') == 'F' ? "selected" : "" }}> {{ __("Femme") }} </option>                        
+                        <option value="F" {{ old('genre') == 'F' ? "selected" : "" }}> {{ __("Femme") }} </option>
                     </select>
                     {!! $errors->first('genre', '<span class="text-danger">:message</span>') !!}
 
@@ -40,7 +40,7 @@
                     </div>
                 </div>
 
-                @livewire('choose-region')
+                @include('layouts.partials.choose_province')
 
                 <div class="form-group {{ $errors->has('born_location') ? 'has-error' : '' }}">
                     <label class="control-label" for="born_location"> {{ __('Lieu de naissance') }} </label>
@@ -59,7 +59,7 @@
                         Veuillez saisir le nom du père
                     </div>
                 </div>
-                    
+
                 <div class="form-group {{ $errors->has('mother_name') ? 'has-error' : '' }}">
                     <label class="control-label" for="mother_name"> {{ __('Nom de la mère') }} </label>
                     <input type="text" class="form-control" name="mother_name" required id="mother_name" value="{{ old('mother_name') }}" placeholder="Nom de la mère">
@@ -68,7 +68,7 @@
                         Veuillez saisir le nom de mère
                     </div>
                 </div>
-                    
+
                 <div class="form-group {{ $errors->has('mentor_name') ? 'has-error' : '' }}">
                     <label class="control-label" for="mentor_name"> {{ __('Personne à prévenir en cas de besoin') }} </label>
                     <input type="text" class="form-control" name="mentor_name" required id="mentor_name" value="{{ old('mentor_name') }}" placeholder="Nom du personne à prévenir">
@@ -77,7 +77,7 @@
                         Veuillez saisir le nom du personne à prévenir
                     </div>
                 </div>
-                    
+
                 <div class="form-group {{ $errors->has('helper_contact') ? 'has-error' : '' }}">
                     <label class="control-label" for="helper_contact"> {{ __('Contact en cas de besoin') }} </label>
                     <input type="text" class="form-control" required name="helper_contact" id="helper_contact" value="{{ old('helper_contact') }}" placeholder="Contact en cas de besoin">
@@ -86,7 +86,7 @@
                         Veuillez saisir le contact
                     </div>
                 </div>
-                    
+
                 <div class="form-group {{ $errors->has('helper_email') ? 'has-error' : '' }}">
                     <label class="control-label" for="helper_email"> {{ __('E-mail (facultatif)') }} </label>
                     <input type="text" class="form-control" name="helper_email" id="helper_email" value="{{ old('helper_email') }}" placeholder="E-mail (NP par défaut)">

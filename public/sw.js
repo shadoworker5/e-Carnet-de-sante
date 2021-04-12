@@ -1,4 +1,4 @@
-const DYNAMIC_CACHE = 'pwa-dynamic-v5';
+const DYNAMIC_CACHE = 'pwa-dynamic-v7';
 
 var filesToCache = [
     '/',
@@ -47,7 +47,7 @@ self.addEventListener("fetch", event => {
             return fetch(event.request).then(fetchResponse => {
                 return caches.open(DYNAMIC_CACHE).then(cache => {
                     cache.put(event.request.url, fetchResponse.clone());
-                    limitCacheSize(DYNAMIC_CACHE, 350);
+                    // limitCacheSize(DYNAMIC_CACHE, 350);
                     return fetchResponse;
                 })
             });

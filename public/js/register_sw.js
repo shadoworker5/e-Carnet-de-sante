@@ -1,23 +1,18 @@
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js')
-        .then((reg) => {
-            // code
-        }).catch((err) => {
-            // code d'erreur
-        })
+    navigator.serviceWorker.register('sw.js').then((reg) => {}).catch((err) => {})
 }
 
-// Cheack connexion and send to database
 let dalay_check = 1000;
 let id_timer_hidden, id_timer_show;
 
 let timer = () => {
-    return setInterval(() => {
+    setInterval(() => {-
         check();
     }, dalay_check);
 }
 
 const check = () => {
+    timer();
     let error_network = document.getElementById("error_network");
     let btn_close = document.createElement('button');
     btn_close.className = "btn-close";
@@ -38,15 +33,11 @@ const check = () => {
         if(!error_network.hasChildNodes()){
             error_network.appendChild(banner);
         }
-        clearInterval(id_timer_show);
-        id_timer_hidden = timer();
     }else{
         if(error_network.hasChildNodes()){
             document.getElementById("offline_banner").remove();
             checking();
         }
-        clearInterval(id_timer_hidden);
-        id_timer_show = timer();
     }
 }
 check();

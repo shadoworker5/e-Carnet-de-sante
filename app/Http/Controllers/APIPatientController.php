@@ -30,6 +30,7 @@ class APIPatientController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
+            'province_id'   => 'required',
             'user_id'       => 'required',
             'name_patient'  => 'required|min:5',
             'birthday'      => 'required',
@@ -42,6 +43,7 @@ class APIPatientController extends Controller
         ]);
 
         Patients::create([
+            'province_id'   => $request->province_id,
             'full_name'     => $request->name_patient,
             'birthday'      => $request->birthday,
             'genre'         => $request->genre,
@@ -55,7 +57,7 @@ class APIPatientController extends Controller
             'user_id'       => $request->user_id
         ]);
         return response()->json([
-            'success' => "Données sauvegarder avec succès"
+            'response' => "Données sauvegarder avec succès"
         ]);
     }
 
@@ -125,7 +127,7 @@ class APIPatientController extends Controller
                 ];
             }
         }
-        
+
         return $list_patient;
     }
 }
