@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Provinces;
 use Illuminate\Http\Request;
 
 class APIProvinceController extends Controller
@@ -13,7 +14,7 @@ class APIProvinceController extends Controller
      */
     public function index()
     {
-        //
+        return Provinces::all();
     }
 
     /**

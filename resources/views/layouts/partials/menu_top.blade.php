@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light fixed-top bg_color" style="padding-top: 0px; padding-bottom: 0px">
-	<a class="navbar-brand text-white" href="/"> 
+	<a class="navbar-brand text-white" href="/">
 		<img src="{{ asset('images/icon-72x72.png') }}" class="logo_menu" alt="logo">
 	</a>
 
@@ -19,7 +19,7 @@
 						<a class="nav-link text-white" aria-current="page" href="{{ route('profile') }}"> {{ __('Mon compte') }} </a>
 					</li>
 				@endif
-				
+
 				<li class="nav-item">
 					<a class="nav-link text-white" href="{{ route('home') }}"> {{ __("Accueil") }} </a>
 				</li>
@@ -41,7 +41,7 @@
 							<li><a class="dropdown-item" href="{{ route('patient.create') }}"> {{ __('Ajouter un patient') }} </a></li>
 						</ul>
 					</li>
-					
+
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle text-white" href="#" id="Dropdown_vaccin" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 							Vaccins
@@ -52,12 +52,12 @@
 							<li><a class="dropdown-item" href="{{ route('calendar.create') }}">{{ __('Ajouter') }}</a> </li>
 						</ul>
 					</li>
-				@endif		
+				@endif
 				@if(in_array(Auth::user()->user_role, ['root', 'admin', 'collector']))
 					<li class="nav-item">
 						<a class="nav-link text-white" href="{{ route('offline_submission') }}"> {{ __("Mon activité") }} </a>
 					</li>
-				@endif		
+				@endif
 			@endauth
 		</ul>
 
@@ -68,13 +68,13 @@
 						<a class="nav-link dropdown-toggle text-white" data-user="{{ base64_encode(Auth::user()->id) }}" href="#" id="Dropdown_user" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 							{{ Auth::user()->name }}
 						</a>
-	
+
 						<ul class="dropdown-menu bg_color" aria-labelledby="Dropdown_user">
 							<li>
 								<a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
 									{{ __('Déconnexion') }}
 								</a>
-	
+
 								<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
 									@csrf
 								</form>
@@ -85,9 +85,13 @@
 					<li class="nav-item">
 						<a class="nav-link active text-white" aria-current="page" href="{{ route('login') }}"> {{ __("S'authentifier") }} </a>
 					</li>
-					
+
 					<li class="nav-item">
 						<a class="nav-link active text-white" aria-current="page" href="{{ route('register') }}"> {{ __("S'inscrire") }} </a>
+					</li>
+
+					<li class="nav-item">
+						<a class="nav-link active text-white" aria-current="page" href="{{ route('search') }}"> {{ __("Patient ?") }} </a>
 					</li>
 				@endauth
 			</ul>

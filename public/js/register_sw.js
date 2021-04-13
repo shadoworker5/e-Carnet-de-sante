@@ -27,7 +27,7 @@ const check = () => {
     banner.style.zIndex = 1000;
     banner.style.position = 'fixed';
     banner.style.top = 0;
-    banner.style.width = '100%'
+    banner.style.width = '100%';
 
     if(!navigator.onLine){
         if(!error_network.hasChildNodes()){

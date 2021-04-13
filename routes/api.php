@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\APIPatientController;
+use App\Http\Controllers\APIProvinceController;
 use App\Http\Controllers\APIVacinatePatient;
 use App\Http\Controllers\APIVacineCalendarController;
 use Illuminate\Http\Request;
@@ -26,3 +27,4 @@ Route::get('/get_patient_list/{region_id}/{province_id?}', [APIPatientController
 Route::apiResources(['patient' => APIPatientController::class]);
 Route::apiResources(['vacine_calendar' => APIVacineCalendarController::class]);
 Route::apiResources(['vacinate_patient' => APIVacinatePatient::class]);
+Route::apiResources(['api_provinces' => APIProvinceController::class]);

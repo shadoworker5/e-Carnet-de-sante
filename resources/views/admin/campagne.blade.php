@@ -5,7 +5,7 @@
         <div class="col-md-6 mt-3 offset-md-3 mb-2">
             <h2 class="text-center"> {{ __('Ajouter une campagne de vaccination') }}</h2>
 
-            <form action="#" id="form_campagne" class="needs-validation" novalidate method="post">
+            <form action="{{ route('notify') }}" id="form_campagne" class="needs-validation" novalidate method="post">
                 @csrf
 
                 <div class="form-group">
@@ -73,10 +73,13 @@
                     $list_regions = App\Models\Regions::all();
                 @endphp
 
-                <div class="form-group d-none" id="regions">
-                    <label class="control-label" for="image_path"> {{ __('Cochez les régions concernées') }} </label> <br>
+                <div class="d-none" id="regions">
+                    <label class="control-label"> {{ __('Cochez les régions concernées') }} </label> <br>
                     @foreach($list_regions as $regions)
-                        <input type="checkbox" value="{{ $regions->title.'_'$loop->index + 1 }}" class=""> {{ $regions->title }}
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="{{ $regions->id }}" id="{{ $regions->title.'_'.$loop->index }}">
+                            <label class="form-check-label" for="{{ $regions->title.'_'.$loop->index }}"> {{ $regions->title }} </label> <br>
+                        </div>
                     @endforeach
                 </div>
 
@@ -85,7 +88,7 @@
                         {{ __('Annuler') }}
                     </button>
 
-                    <button type="submit" id="submit_vacinate_patient" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary">
                         {{ __('Envoyé') }}
                     </button>
                 </div>

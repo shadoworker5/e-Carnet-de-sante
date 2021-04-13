@@ -6,6 +6,7 @@ use App\Models\Patient_vaccinate;
 use App\Models\Patients;
 use App\Models\Regions;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller{
@@ -61,5 +62,13 @@ class AdminController extends Controller{
 
     public function notifyCampagne(){
         return view('admin.campagne');
+    }
+
+    public function notifyRappel(){
+        return view('admin.rappel');
+    }
+
+    public function redirectNotify(Request $request){
+        return redirect()->route('dashboard');
     }
 }

@@ -1,6 +1,6 @@
 {
-    "name": "e-Santé",
-    "short_name": "eSante",
+    "name": "e-Carnet de vaccination",
+    "short_name": "e-Carnet",
     "start_url": "/",
     "scope": ".",
     "display": "standalone",

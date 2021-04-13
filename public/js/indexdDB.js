@@ -255,7 +255,7 @@ function SendVacinateData(){
         request.onsuccess = (event) => {
             if (request.result) {
                 for(let i = 0; i < request.result.length; i++){
-                    if(request.result[i].status === "1"){
+                    if(request.result[i].status === "0"){
                         let vaccination = {
                             user_id             : atob(request.result[i].user_id),
                             vaccine_id          : request.result[i].vaccine_name,

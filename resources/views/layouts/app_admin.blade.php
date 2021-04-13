@@ -98,8 +98,7 @@
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header"> {{ __("Options") }} </h6>
                             <a class="collapse-item" href="{{ route('new_campagne') }}"> {{ __("Nouveau campagne") }} </a>
-                            <a class="collapse-item" href="#"> {{ __("Notifier les retards") }} </a>
-                            <a class="collapse-item" href="#"> {{ __("Notifier les rappels ") }} </a>
+                            <a class="collapse-item" href="{{ route('notification_rappel') }}"> {{ __("Notifier les rappels ") }} </a>
                         </div>
                     </div>
                 </li>

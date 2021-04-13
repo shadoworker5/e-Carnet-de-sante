@@ -6,9 +6,8 @@
             <a href="#" onclick="javascript:history.back();" class="btn btn-primary"> Revenir en arrière </a>
         </div>
 
-        <div class="col-md-8">
+        <div class="col-md-8 mt-3">
             <div>
-                {{-- <h1 class="text-center"> {{ __("Tableau des vaccinations à jour") }} </h1> --}}
                 <table class="table table-striped">
                     <thead>
                         <tr class="text-center">
@@ -21,12 +20,12 @@
                             <td> {{ __("Code du patient: ") }} </td>
                             <td> {{ $patient_code }} </td>
                         </tr>
-                        
+
                         <tr>
                             <td> {{ __("Numéro du lot du vaccin: ") }} </td>
                             <td> {{ $vaccine_info->lot_number_vacine }} </td>
                         </tr>
-                        
+
                         <tr>
                             <td> {{ __("Date de vaccination: ") }} </td>
                             <td> {{ $vaccine_info->date_vacination }} </td>
@@ -36,14 +35,14 @@
                             <td> {{ __("Heure de vaccination: ") }} </td>
                             <td> {{ $vaccine_info->time_vacination }} </td>
                         </tr>
-                        
+
                         <tr>
                             <td> {{ __("Validité de la vaccination: ") }} </td>
                             <td> {{ date('Y-m-d') > $vaccine_info->validity_vacine ? 'Valide' : 'Invalide' }} </td>
                         </tr>
 
                         <tr>
-                            <td> {{ __("Rappelle: ") }} </td>                    
+                            <td> {{ __("Rappelle: ") }} </td>
                             <td> {{ $vaccine_info->rappelle }} </td>
                         </tr>
 
@@ -63,7 +62,7 @@
                             <td> {{ __("Contact: ") }} </td>
                             <td> {{ $vaccine_info->doctor_contact }} </td>
                         </tr>
-                        
+
                         @if($vaccine_info->others_field !== null)
                             <tr>
                                 <td> {{ __("Autre: ") }} </td>
@@ -81,11 +80,11 @@
                                                 {{ __('Supprimer') }}
                                             </a>
                                         @endif
-                                        
+
                                         <a href="{{ route('vaccinate.edit', $vaccine_info) }}" class="btn btn-primary">
                                             {{ __('Modifier') }}
                                         </a>
-                                    </div>                                
+                                    </div>
                                 </td>
                             </tr>
                         @endif

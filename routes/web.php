@@ -47,9 +47,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 Route::middleware(['auth:sanctum', 'verified', 'authadmin'])->group(function(){
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
     Route::get('/list_user', [AdminController::class, 'listUser'])->name('list_user');
-    Route::get('/new_campagne', [AdminController::class, 'notifyCampagne'])->name('new_campagne');
     Route::get('/seting', [AdminController::class, 'setings'])->name('setings');
     Route::resource('update_user', UserController::class);
+    Route::post('/redirect', [AdminController::class, 'redirectNotify'])->name('notify');
+    Route::get('/new_campagne', [AdminController::class, 'notifyCampagne'])->name('new_campagne');
+    Route::get('/notification_rappel', [AdminController::class, 'notifyRappel'])->name('notification_rappel');
 });
 
 
@@ -63,3 +65,7 @@ Route::resource('pays', PaysController::class)->middleware(['authadmin']);
 Route::get('/add_vacinate/{id}', [PatientVacinateController::class, 'addVacinate'])->middleware('auth')->name('add_vacination');
 Route::post('/set_user_status/{id}/{status}', [UserController::class, 'setStatus'])->middleware('auth')->name('set_user_status');
 Route::get('/get_province/{id}', [BackEndController::class, 'getProvince'])->middleware('auth')->name('get_province');
+
+// Setting for patients
+Route::get('/search', [BackEndController::class, 'showForm'])->name('search');
+Route::post('/response', [BackEndController::class, 'getResponse'])->name('response');
