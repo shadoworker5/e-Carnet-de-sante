@@ -113,9 +113,9 @@
                                                 <i class="fa fa-edit"></i>
                                             </a>
 
-                                            <a href="#" class="btn btn-danger">
+                                            <button class="btn text-white" style="background-color: #e90000" data-bs-toggle="modal" data-bs-target="#del_province" onclick="delProvince('{{$province['id']}}')">
                                                 <i class="fa fa-trash-alt"></i>
-                                            </a>
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>

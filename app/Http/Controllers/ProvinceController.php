@@ -6,9 +6,16 @@ use App\Imports\ProvinceImport;
 use App\Models\Provinces;
 use Illuminate\Http\Request;
 use Excel;
+use Illuminate\Support\Facades\Auth;
 
 class ProvinceController extends Controller
 {
+    protected function userGuard(){
+        if(in_array(Auth::user()->user_role, ['guest'])){
+            return redirect()->route('home');
+        }
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -37,6 +44,8 @@ class ProvinceController extends Controller
      */
     public function store(Request $request)
     {
+        $this->userGuard();
+
         if($request->region_id !== null){
             session(['region_id' => "$request->region_id"]);
             Excel::import(new ProvinceImport, $request->list_province);
@@ -77,6 +86,8 @@ class ProvinceController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->userGuard();
+
         $this->validate($request, [
             'province'  => 'required|min:2',
             'region_id' => 'required'
@@ -99,6 +110,8 @@ class ProvinceController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->userGuard();
+        Provinces::destroy($id);
+        return redirect()->route('setings');
     }
 }

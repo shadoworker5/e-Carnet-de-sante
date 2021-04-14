@@ -26,32 +26,23 @@ class BackEndController extends Controller{
     }
 
     public function getResponse(Request $request){
-        // dd($request->all());
-
-        if($request->code_patient !== null && $request->full_name !== null && $request->genre !== null
-        && $request->birthday !== null && $request->born_location !== null && $request->father_name !== null &&
-        $request->mother_name !== null && $request->mentor_name !== null &&
-        $request->province_id !== null &&  $request->helper_contact !== null){
+        if($request->code_patient !== null && $request->full_name !== null &&
+            $request->birthday !== null && $request->born_location !== null &&
+            $request->father_name !== null && $request->mother_name !== null
+            ){
             $this->liste = Patients::where([
                                         ['code_patient', '=', "$request->code_patient"],
-                                        ['code_patient', '=', "$request->code_patient"],
                                         ['full_name', '=', "$request->full_name"],
-                                        ['genre', '=', "$request->genre"],
                                         ['birthday', '=', "$request->birthday"],
                                         ['born_location', '=', "$request->born_location"],
                                         ['name_father', '=', "$request->name_father"],
-                                        ['name_mother', '=', "$request->name_mother"],
-                                        ['name_mentor', '=', "$request->mentor_name"],
-                                        ['province_id', '=', "$request->province_id"],
-                                        ['helper_contact', '=', "$request->helper_contact"]
+                                        ['name_mother', '=', "$request->name_mother"]
                                     ])->get()->toArray();
 
         }else if($request->code_patient !== null){
             $this->liste = $this->searchQuery('code_patient', $request->code_patient);
         }else if($request->full_name !== null){
             $this->liste = $this->searchQuery('full_name', $request->full_name);
-        }else if($request->genre !== null){
-            $this->liste = $this->searchQuery('genre', $request->genre);
         }else if($request->birthday !== null){
             $this->liste = $this->searchQuery('birthday', $request->birthday);
         }else if($request->born_location !== null){
@@ -60,12 +51,6 @@ class BackEndController extends Controller{
             $this->liste = $this->searchQuery('name_father', $request->father_name);
         }else if($request->mother_name !== null){
             $this->liste = $this->searchQuery('name_mother', $request->mother_name);
-        }else if($request->mentor_name !== null){
-            $this->liste = $this->searchQuery('name_mentor', $request->mentor_name);
-        }else if($request->province_id !== null){
-            $this->liste = $this->searchQuery('province_id', $request->province_id);
-        }else if($request->helper_contact !== null){
-            $this->liste = $this->searchQuery('helper_contact', $request->helper_contact);
         }
 
         if($this->liste === null){

@@ -7,6 +7,8 @@
                 <li>{{ $error }}</li>
             @endforeach
         </ul>
-        <div class="text-red-600">{{ __('Veuillez contacter un administrateur si le problème persiste.') }}</div>
+        <div>
+            Veuillez contacter <a href="mailto:kassoum.traore@africasys.com"  class="text-blue-600"> un administrateur </a> si le problème persiste
+        </div>
     </div>
 @endif

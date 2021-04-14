@@ -8,6 +8,11 @@
         {{ method_field('DELETE') }}
     </form>
 
+    <form action="" method="POST" id="delete_province" style="display: none;">
+        @csrf
+        {{ method_field('DELETE') }}
+    </form>
+
     <!-- Modal de modification -->
     <div class="modal fade" id="edit_region" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModal" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -65,6 +70,29 @@
             </div>
         </div>
     </div>
+
+    {{-- Modal de suppression d'une province --}}
+    <div class="modal fade" id="del_province" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="exampleDelete" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal_title">Alert</h5>
+                    <button class="close" type="button" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+
+                <div class="modal-body text-center"> Etes vous sûr de vouloir supprimer ce province? </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal"> {{ __("Fermer") }} </button>
+                    <button class="btn btn-danger" onclick="document.getElementById('delete_province').submit()">
+                        {{ __("Supprimé") }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
@@ -86,6 +114,10 @@
 
         function delRegion(id){
             document.getElementById('delete_region').setAttribute('action', 'regions/'+id);
+        }
+
+        function delProvince(id){
+            document.getElementById('delete_province').setAttribute('action', 'provinces/'+id);
         }
     </script>
 @endsection

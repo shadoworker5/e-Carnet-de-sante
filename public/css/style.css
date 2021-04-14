@@ -22,10 +22,23 @@
 }
 
 .img_size{
-    height: 120px;
-    width: 150px;
+    height: 55px;
+    width: 55px;
 }
 
 .logo_space{
-    margin-right: 20px;
+    margin-right: 5px;
+}
+
+body{
+    height: auto;
+}
+
+.footer_style{
+    position: fixed;
+    margin-bottom: 0%;
+    padding-bottom: 0px;
+    bottom: 0px;
+    position: relative;
+    margin-top: 20px;
 }

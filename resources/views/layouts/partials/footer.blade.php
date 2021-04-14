@@ -14,7 +14,7 @@
             </span>
 
             <span class="col-md-3 logo_space">
-                <img src="{{ asset('images/logo-africasys.png') }}" alt="logo-africasys" class="img_size">
+                <img src="{{ asset('images/logo-africasys150.png') }}" alt="logo-africasys" class="img_size">
             </span>
 
             <span class="col-md-3">
