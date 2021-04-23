@@ -54,9 +54,16 @@
 					</li>
 				@endif
 				@if(in_array(Auth::user()->user_role, ['root', 'admin', 'collector']))
-					<li class="nav-item">
-						<a class="nav-link text-white" href="{{ route('offline_submission') }}"> {{ __("Mon activité") }} </a>
-					</li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ __("Mon activité") }}
+                        </a>
+
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="{{ route('offline_submission') }}"> {{ __('Liste des vaccinations') }} </a></li>
+                            <li><a class="dropdown-item" href="{{ route('offline_add_patient') }}"> {{ __('Liste des patients') }} </a></li>
+                        </ul>
+                    </li>
 				@endif
 			@endauth
 		</ul>

@@ -81,8 +81,8 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="edit_vacinate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+    <div class="modal fade" id="edit_vacinate" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel"> {{ __('Modifier une vaccination') }} </h5>
@@ -167,11 +167,7 @@
                         </div>
 
                         <div class="mt-2 align-center offset-md-4">
-                            <button class="btn btn-danger" type="button" data-bs-dismiss="modal">
-                                {{ __('Annuler') }}
-                            </button>
-
-                            <button type="submit" id="submit_vacinate_patient" class="btn btn-primary">
+                            <button type="submit" id="submit_vacinate_edit" class="btn btn-primary">
                                 {{ __('Modifier') }}
                             </button>
                         </div>
@@ -179,8 +175,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> {{ __("Fermer") }} </button>
-                    <a href="#" class="btn btn-danger"> {{ __("Supprimer") }} </a> -->
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"> {{ __("Fermer") }} </button>
                 </div>
             </div>
         </div>

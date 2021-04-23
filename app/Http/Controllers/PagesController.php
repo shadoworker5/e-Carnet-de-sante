@@ -15,7 +15,7 @@ class PagesController extends Controller{
     public function index(){
         $user = User::all();
         $patients = Patients::orderBy('id')->get();
-        
+
         $genre = ['M', 'F'];
         $genre_count = [];
         foreach ($genre as $key => $value) {
@@ -34,7 +34,7 @@ class PagesController extends Controller{
                     'patients'      => $patients
                 ])->with('vacinate_count', json_encode($vacinate_count, JSON_NUMERIC_CHECK));
     }
-    
+
     public function profile(){
         return view('profile.show');
     }
@@ -45,8 +45,14 @@ class PagesController extends Controller{
 
     public function offlineSubmission(){
         $submission = Patient_vaccinate::where('user_id', '=', Auth::id())->get();
-        
+
         return view('offlines.list_vacinate', ['submissions' => $submission]);
+    }
+
+    public function offlineAddPatient(){
+        $submission_patient = Patients::where('user_id', '=', Auth::id())->get();
+
+        return view('offlines.list_patient', ['submissions' => $submission_patient]);
     }
 
     public function offlineShow(){
