@@ -270,7 +270,7 @@ if(courant_page === '/list_patient'){
             }
 
             request.onerror = () => {
-                console.log("Error edit: "+request.error);
+                //console.log("Error edit: "+request.error);
             }
         }
     })
@@ -286,7 +286,7 @@ function renderPatientADD(){
         let request = store.getAll()
 
         request.onsuccess = (event) => {
-            if (request.result && courant_page === '/list_patient' && !navigator.onLine) {
+            if (request.result && courant_page === '/list_patient' && navigator.onLine) {
                 let list_patient_add = document.querySelector("#list_patient_add");
             	$('#list_patient_add').find("tr").remove()
 
@@ -294,7 +294,7 @@ function renderPatientADD(){
                     if(request.result[i].status === '1'){
                         let html = `
                         <tr>
-                            <td> ${request.result[i].name_patient} </td>
+                            <td> ${request.result[i].full_name} </td>
 
                             <td> ${request.result[i].birthday} </td>
 
@@ -302,11 +302,11 @@ function renderPatientADD(){
 
                             <td> ${request.result[i].born_location} </td>
 
-                            <td> ${request.result[i].father_name} </td>
+                            <td> ${request.result[i].name_father} </td>
 
-                            <td> ${request.result[i].mother_name} </td>
+                            <td> ${request.result[i].name_mother} </td>
 
-                            <td> ${request.result[i].mentor_name} </td>
+                            <td> ${request.result[i].name_mentor} </td>
 
                             <td> ${request.result[i].helper_contact} </td>
 
@@ -430,12 +430,25 @@ const renderPatientData = () => {
 
     open_db.onsuccess =  () => {
         db = open_db.result;
+
+        // Get from ADD_NEW_PATIENT
+        let query_add = db.transaction([ADD_NEW_PATIENT]);
+        let store_add = query_add.objectStore(ADD_NEW_PATIENT);
+        let request_add = store_add.getAll()
+
+        request_add.onsuccess = () => {
+            for (let i = 0; i < request_add.result.length; i++) {
+                data_show.push(request_add.result[i]);
+            }
+        }
+
+        // Get from PATIENT_DATA
         let query = db.transaction([PATIENT_DATA]);
         let store = query.objectStore(PATIENT_DATA);
         let request = store.getAll()
 
-        request.onsuccess = (event) => {
-            for (let i = 0; i < request.result.length; i++) {
+        request.onsuccess = () => {
+            for (let i = 0; i < request.result.length; i++){
                 data_show.push(request.result[i]);
             }
 
@@ -447,22 +460,22 @@ const renderPatientData = () => {
                 document.querySelector("#show_patient_liste").setAttribute('class', 'd-none');
             }
 
-            if(courant_page === '/home' && request.result.length > 0 && document.querySelector("#data_patient")){
-            	$(document).ready(function () {
-                	$('#dataTable').DataTable({
-                    	data: data_show,
-                    	columns: [
-                        	{ data: 'code_patient', "sWidth": "auto" },
-                        	{ data: 'full_name', "sWidth": "auto" },
-                        	{ data: 'birthday', "sWidth": "auto" },
-                        	{ data: 'born_location', "sWidth": "auto" },
-                        	{ data: 'name_father', "sWidth": "auto" },
-                        	{ data: 'name_mother', "sWidth": "auto" },
-                        	{ data: function(e){
-                            	return '<a href="#" data-code="'+e["code_patient"]+'" onclick="redirectForm(\''+e["code_patient"]+'\', \''+e["full_name"]+'\')" class="btn text-white" style="background-color: #67c473;"> <i class="fa fa-plus"></i> </a>'
-                        	}}
-                    	]
-                	});
+            if(courant_page === '/home' && data_show.length > 0 && document.querySelector("#data_patient")){
+                $(document).ready(function () {
+                    $('#dataTable').DataTable({
+                        data: data_show,
+                        columns: [
+                            { data: 'code_patient', "sWidth": "auto" },
+                            { data: 'full_name', "sWidth": "auto" },
+                            { data: 'birthday', "sWidth": "auto" },
+                            { data: 'born_location', "sWidth": "auto" },
+                            { data: 'name_father', "sWidth": "auto" },
+                            { data: 'name_mother', "sWidth": "auto" },
+                            { data: function(e){
+                                return '<a href="#" data-code="'+e["code_patient"]+'" onclick="redirectForm(\''+e["code_patient"]+'\', \''+e["full_name"]+'\')" class="btn text-white" style="background-color: #67c473;"> <i class="fa fa-plus"></i> </a>'
+                            }}
+                        ]
+                    });
                 })
             }
         }
@@ -504,6 +517,56 @@ const checking = () => {
     SendVacinateData();
 }
 
+// Send patient add to server
+function SendPatientData(){
+    let open_data = indexedDB.open(DB_Name, DB_VERSION);
+    open_data.onsuccess =  () => {
+        db = open_data.result;
+        let query = db.transaction([ADD_NEW_PATIENT], 'readwrite');
+        let store = query.objectStore(ADD_NEW_PATIENT);
+        let request = store.getAll();
+        let url = '/api/patient';
+
+        request.onsuccess = (event) => {
+            if (request.result) {
+                for(let i = 0; i < request.result.length; i++){
+                    if(request.result[i].status === "0"){
+                        let add_patient = {
+                            code_patient    : request.result[i].code_patient,
+                            province_id     : request.result[i].province_id ,
+                            user_id         : atob(request.result[i].user_id),
+                            full_name       : request.result[i].full_name,
+                            birthday        : request.result[i].birthday,
+                            genre           : request.result[i].genre,
+                            born_location   : request.result[i].born_location,
+                            name_father     : request.result[i].name_father,
+                            name_mother     : request.result[i].name_mother,
+                            name_mentor     : request.result[i].name_mentor,
+                            helper_contact  : request.result[i].helper_contact,
+                            helper_email    : request.result[i].helper_email
+                        };
+                        let options = {
+                            method: 'POST',
+                            body: JSON.stringify(add_patient),
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        }
+                        fetch(url, options)
+                        .then(resulte => resulte.json())
+                        .then(resulte => subscribe(resulte['response']))
+                        // .catch(err => console.log(err))
+
+                        // mise a jour
+                        request.result[i].status = '1'
+                        store.put(request.result[i]);
+                    }
+                }
+            }
+        }
+    }
+}
+
 // Send patient vacinate to server
 function SendVacinateData(){
     let open_data = indexedDB.open(DB_Name, DB_VERSION);
@@ -539,7 +602,8 @@ function SendVacinateData(){
                         }
                         fetch(url, options)
                         .then(resulte => resulte.json())
-                        .then(resulte => subscribe(resulte['response']));
+                        .then(resulte => subscribe(resulte['response']))
+                        // .catch(err => console.log(err))
 
                         // mise a jour
                         request.result[i].status = '1'
@@ -549,58 +613,6 @@ function SendVacinateData(){
             }
         }
     }
-}
-
-// Send patient vacinate to server
-function SendPatientData(){
-    let open_data = indexedDB.open(DB_Name, DB_VERSION);
-    open_data.onsuccess =  () => {
-        db = open_data.result;
-        let query = db.transaction([ADD_NEW_PATIENT], 'readwrite');
-        let store = query.objectStore(ADD_NEW_PATIENT);
-        let request = store.getAll();
-        let url = '/api/patient';
-
-        request.onsuccess = (event) => {
-            if (request.result) {
-                for(let i = 0; i < request.result.length; i++){
-                    if(request.result[i].status === "0"){
-                        let vaccination = {
-                            province_id     : request.result[i].province_id ,
-                            user_id         : atob(request.result[i].user_id),
-                            name_patient    : request.result[i].name_patient,
-                            birthday        : request.result[i].birthday,
-                            genre           : request.result[i].genre,
-                            born_location   : request.result[i].born_location,
-                            father_name     : request.result[i].father_name,
-                            mother_name     : request.result[i].mother_name,
-                            mentor_name     : request.result[i].mentor_name,
-                            helper_contact  : request.result[i].helper_contact,
-                            helper_email    : request.result[i].helper_email
-                        };
-                        let options = {
-                            method: 'POST',
-                            body: JSON.stringify(vaccination),
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
-                        }
-                        fetch(url, options)
-                        .then(resulte => resulte.json())
-                        .then(resulte => subscribe(resulte['response']));
-
-                        // mise a jour
-                        request.result[i].status = '1'
-                        store.put(request.result[i]);
-                    }
-                }
-            }
-        }
-    }
-}
-
-function updateVacinate(patient_id){
-    // code
 }
 
 const codeAutoGenerate = (longueur = 10) => {
@@ -614,8 +626,22 @@ const codeAutoGenerate = (longueur = 10) => {
     return mot;
 }
 
-let btn_save_vacinate = document.getElementById("get_submit_vacinate_patient");
+let btn_save_vacinate = document.getElementById("submit_vacinate_patient");
 if(courant_page === "/vaccinate/create" || courant_page.startsWith('/add_vacinate/')){
+    let patient_infos = document.querySelector('#patient_name');
+    let field_code = document.querySelector('#patient_code');
+
+    getPatientCode() !== 'null' ? field_code.setAttribute('readonly', true) : "";
+
+    if(getPatientName() === 'null'){
+        patient_infos.remove();
+    	document.querySelector('#patient_info').value = ""
+    }else{
+        patient_infos.setAttribute('class', 'form-group');
+    	field_code.value = getPatientCode();
+    	document.querySelector('#patient_info').value = getPatientName();
+    }
+
     btn_save_vacinate.addEventListener("click", event => {
     	if(!navigator.onLine){
             event.preventDefault();
@@ -684,19 +710,17 @@ if(courant_page === "/patient/create"){
                 user_id         : user_id,
                 province_id     : form_add_patient.province_id.value,
                 code_patient    : codeAutoGenerate(),
-                name_patient    : form_add_patient.name.value,
+                full_name       : form_add_patient.name.value,
                 birthday        : form_add_patient.birthday.value,
                 born_location   : form_add_patient.born_location.value,
-                father_name     : form_add_patient.father_name.value,
-                mother_name     : form_add_patient.mother_name.value,
-                mentor_name     : form_add_patient.mentor_name.value,
+                name_father     : form_add_patient.father_name.value,
+                name_mother     : form_add_patient.mother_name.value,
+                name_mentor     : form_add_patient.mentor_name.value,
                 helper_contact  : form_add_patient.helper_contact.value,
                 helper_email    : form_add_patient.helper_email.value,
                 genre           : form_add_patient.genre.value,
                 status          : '0'
             };
-
-            // console.log(data_patient);
 
             let open_data = indexedDB.open(DB_Name, DB_VERSION);
             open_data.onsuccess =  () => {
@@ -753,6 +777,7 @@ function redirectForm(patient_code, patient_name){
         window.location.href = '/vaccinate/create';
     }else{
         setPatientInfo(patient_code, patient_name);
+        // window.location.href = '/vaccinate/create';
         window.location.href = '/add_vacinate/'+patient_code;
     }
 }
@@ -773,22 +798,6 @@ function getPatientName(){
 function emptyInfo(){
 	localStorage.setItem("patient_code", null);
 	localStorage.setItem("patient_name", null);
-}
-
-if(courant_page === '/vaccinate/create' || courant_page.startsWith('/add_vacinate/')){
-	let patient_infos = document.querySelector('#patient_name');
-    let field_code = document.querySelector('#patient_code');
-
-    getPatientCode() !== 'null' ? field_code.setAttribute('readonly', true) : "";
-
-    if(getPatientName() === 'null'){
-        patient_infos.remove();
-    	document.querySelector('#patient_info').value = ""
-    }else{
-        patient_infos.setAttribute('class', 'form-group');
-    	field_code.value = getPatientCode();
-    	document.querySelector('#patient_info').value = getPatientName();
-    }
 }
 
 function emptyAllData(){

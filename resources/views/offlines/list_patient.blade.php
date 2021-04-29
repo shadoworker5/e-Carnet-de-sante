@@ -163,7 +163,7 @@
                             </div>
                         </div>
 
-                        
+
 
                         <div class="form-group">
                             <label class="control-label" for="helper_email"> {{ __('E-mail (facultatif)') }} </label>
